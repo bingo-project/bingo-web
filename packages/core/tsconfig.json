@@ -1,0 +1,4 @@
+{
+  "extends": "@bingo/tsconfig/react.json",
+  "include": ["src"]
+}

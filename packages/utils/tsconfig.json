@@ -1,0 +1,4 @@
+{
+  "extends": "@bingo/tsconfig/base.json",
+  "include": ["src"]
+}
