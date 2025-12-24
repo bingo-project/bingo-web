@@ -1,0 +1,7 @@
+{
+  "extends": "@bingo/tsconfig/react.json",
+  "compilerOptions": {
+    "resolveJsonModule": true
+  },
+  "include": ["src"]
+}

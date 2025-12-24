@@ -13,6 +13,7 @@
   "dependencies": {
     "@bingo/ui": "workspace:*",
     "@bingo/core": "workspace:*",
+    "@bingo/locales": "workspace:*",
     "@bingo/utils": "workspace:*",
     "@heroui/react": "^2.8.6",
     "framer-motion": "^12.0.0",

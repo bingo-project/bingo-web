@@ -1,0 +1,15 @@
+{
+  "nav": {
+    "home": "首页",
+    "about": "关于"
+  },
+  "home": {
+    "title": "Bingo Web",
+    "welcome": "欢迎来到 Bingo Web",
+    "getStarted": "开始使用"
+  },
+  "about": {
+    "title": "关于",
+    "description": "关于 Bingo Web"
+  }
+}

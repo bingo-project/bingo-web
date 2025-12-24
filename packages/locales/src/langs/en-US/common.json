@@ -1,0 +1,15 @@
+{
+  "nav": {
+    "home": "Home",
+    "about": "About"
+  },
+  "home": {
+    "title": "Bingo Web",
+    "welcome": "Welcome to Bingo Web",
+    "getStarted": "Get Started"
+  },
+  "about": {
+    "title": "About",
+    "description": "About Bingo Web"
+  }
+}
