@@ -11,5 +11,39 @@
   "about": {
     "title": "关于",
     "description": "关于 Bingo Web"
+  },
+  "hero": {
+    "title": "Bingo Web",
+    "subtitle": "现代化前端开发脚手架",
+    "getStarted": "快速开始"
+  },
+  "features": {
+    "monorepo": {
+      "title": "Monorepo 架构",
+      "desc": "pnpm workspace 多包管理，代码复用更简单"
+    },
+    "api": {
+      "title": "API 请求封装",
+      "desc": "Axios 封装，请求/响应拦截器开箱即用"
+    },
+    "i18n": {
+      "title": "国际化支持",
+      "desc": "内置 i18n，轻松支持多语言"
+    },
+    "darkMode": {
+      "title": "暗黑模式",
+      "desc": "一键切换明暗主题，自动持久化"
+    },
+    "typescript": {
+      "title": "类型安全",
+      "desc": "全量 TypeScript，类型推导更智能"
+    },
+    "lint": {
+      "title": "代码规范",
+      "desc": "ESLint + Prettier + Husky 一站式配置"
+    }
+  },
+  "footer": {
+    "copyright": "© 2025 Bingo Web"
   }
 }
