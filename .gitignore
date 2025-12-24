@@ -9,9 +9,14 @@ build
 
 # IDE
 .idea
-.vscode
 *.swp
 *.swo
+
+# VSCode - keep shared settings, ignore personal preferences
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+!.vscode/launch.json
 
 # OS
 .DS_Store
