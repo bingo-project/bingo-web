@@ -14,10 +14,12 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "clean": "pnpm -r clean && rm -rf node_modules",
-    "prepare": "husky"
+    "prepare": "husky",
+    "api:gen": "openapi-ts -i ${SWAGGER_URL:-http://localhost:8080/swagger/doc.json} -o ./packages/core/src/api/generated -c axios"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.2",
+    "@hey-api/openapi-ts": "^0.89.2",
     "eslint": "^9",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-react-hooks": "^7.0.1",

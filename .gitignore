@@ -22,8 +22,7 @@ Thumbs.db
 npm-debug.log*
 pnpm-debug.log*
 
-# Environment
-.env
+# Environment (keep .env templates, ignore local overrides)
 .env.local
 .env.*.local
 
