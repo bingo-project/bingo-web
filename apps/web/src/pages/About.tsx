@@ -1,7 +1,7 @@
 // ABOUTME: About page component
 // ABOUTME: Displays information about the application
 
-import { useTranslation } from '@bingo/locales'
+import { useTranslation } from '@/locales'
 
 export function AboutPage() {
   const { t } = useTranslation()

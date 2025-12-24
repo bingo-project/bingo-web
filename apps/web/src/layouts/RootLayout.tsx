@@ -3,14 +3,14 @@
 
 import { Outlet, Link } from 'react-router'
 import { Navbar, NavbarBrand, NavbarContent, NavbarItem, Button } from '@heroui/react'
-import { useTranslation, i18n } from '@bingo/locales'
+import { useTranslation, i18n, changeLanguage } from '@/locales'
 
 export function RootLayout() {
   const { t } = useTranslation()
 
   const toggleLanguage = () => {
     const newLang = i18n.language === 'zh-CN' ? 'en-US' : 'zh-CN'
-    i18n.changeLanguage(newLang)
+    changeLanguage(newLang)
   }
 
   return (

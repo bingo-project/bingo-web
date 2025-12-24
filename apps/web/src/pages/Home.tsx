@@ -2,7 +2,7 @@
 // ABOUTME: Displays the landing page content
 
 import { Button } from '@heroui/react'
-import { useTranslation } from '@bingo/locales'
+import { useTranslation } from '@/locales'
 
 export function HomePage() {
   const { t } = useTranslation()

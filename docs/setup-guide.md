@@ -555,11 +555,70 @@ pnpm dev
 
 ---
 
+## 已完成功能
+
+- [x] ESLint 9 (flat config) + Prettier
+- [x] Husky + lint-staged
+- [x] React Router 7
+- [x] react-i18next 国际化
+- [x] API 请求封装 (axios)
+- [x] OpenAPI 代码生成工具
+- [x] 环境变量配置
+- [x] Vitest 单元测试
+
+---
+
+## OpenAPI 代码生成
+
+从后端 Swagger 文档生成类型安全的 API 代码：
+
+```bash
+# 使用默认地址 (localhost:8080)
+pnpm api:gen
+
+# 指定 Swagger URL
+SWAGGER_URL=https://api.example.com/swagger.json pnpm api:gen
+```
+
+生成代码位于 `packages/core/src/api/generated/`
+
+---
+
+## 环境变量
+
+| 文件               | 用途                         |
+| ------------------ | ---------------------------- |
+| `.env`             | 通用配置（应用名、命名空间） |
+| `.env.development` | 开发环境（端口、本地 API）   |
+| `.env.production`  | 生产环境（API 地址、压缩）   |
+| `.env.local`       | 本地覆盖（不提交到 git）     |
+
+支持的环境变量：
+
+- `VITE_APP_TITLE` - 应用标题
+- `VITE_APP_NAMESPACE` - 应用命名空间
+- `VITE_PORT` - 开发服务器端口
+- `VITE_BASE` - 基础路径
+- `VITE_API_BASE_URL` - API 地址
+- `VITE_DEVTOOLS` - 是否开启 devtools
+- `VITE_COMPRESS` - 压缩方式 (none/gzip/brotli)
+
+---
+
+## 单元测试
+
+```bash
+pnpm test          # 运行一次
+pnpm test:watch    # 监听模式
+pnpm test:coverage # 覆盖率报告
+```
+
+测试文件命名：`*.test.ts` 或 `*.spec.ts`
+
+---
+
 ## 后续步骤
 
-1. 添加 ESLint + Prettier 配置
-2. 添加 Husky + lint-staged
-3. 配置 React Router 7
-4. 配置 react-i18next 国际化
-5. 搭建 apps/h5 移动端应用
-6. 配置 OpenAPI 代码生成
+1. 搭建 apps/h5 移动端应用
+2. Web3 集成（wagmi + viem + RainbowKit）
+3. WebSocket 实时数据封装
