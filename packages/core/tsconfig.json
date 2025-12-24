@@ -1,4 +1,7 @@
 {
   "extends": "@bingo/tsconfig/react.json",
+  "compilerOptions": {
+    "types": ["vite/client"]
+  },
   "include": ["src"]
 }
