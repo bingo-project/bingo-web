@@ -41,13 +41,13 @@ bingo-web/
 
 ## 常用命令
 
-| 命令 | 说明 |
-|------|------|
-| `pnpm dev` | 启动 Web 开发服务器 |
-| `pnpm build` | 构建 Web 应用 |
-| `pnpm build:all` | 构建所有应用 |
-| `pnpm lint` | 运行代码检查 |
-| `pnpm clean` | 清理构建产物和依赖 |
+| 命令             | 说明                |
+| ---------------- | ------------------- |
+| `pnpm dev`       | 启动 Web 开发服务器 |
+| `pnpm build`     | 构建 Web 应用       |
+| `pnpm build:all` | 构建所有应用        |
+| `pnpm lint`      | 运行代码检查        |
+| `pnpm clean`     | 清理构建产物和依赖  |
 
 ## 环境要求
 

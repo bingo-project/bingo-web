@@ -122,6 +122,7 @@ mkdir -p apps/web apps/h5 packages/ui packages/core packages/utils packages/tsco
 ### 3. 配置共享 TypeScript
 
 **packages/tsconfig/package.json:**
+
 ```json
 {
   "name": "@bingo/tsconfig",
@@ -131,6 +132,7 @@ mkdir -p apps/web apps/h5 packages/ui packages/core packages/utils packages/tsco
 ```
 
 **packages/tsconfig/base.json:**
+
 ```json
 {
   "compilerOptions": {
@@ -151,6 +153,7 @@ mkdir -p apps/web apps/h5 packages/ui packages/core packages/utils packages/tsco
 ```
 
 **packages/tsconfig/react.json:**
+
 ```json
 {
   "extends": "./base.json",
@@ -169,6 +172,7 @@ pnpm init
 ```
 
 **apps/web/package.json:**
+
 ```json
 {
   "name": "@bingo/web",
@@ -207,6 +211,7 @@ pnpm init
 ```
 
 **apps/web/vite.config.ts:**
+
 ```typescript
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
@@ -226,6 +231,7 @@ export default defineConfig({
 ```
 
 **apps/web/tailwind.config.ts:**
+
 ```typescript
 import { heroui } from '@heroui/react'
 import type { Config } from 'tailwindcss'
@@ -248,6 +254,7 @@ export default config
 ```
 
 **apps/web/postcss.config.js:**
+
 ```javascript
 export default {
   plugins: {
@@ -258,6 +265,7 @@ export default {
 ```
 
 **apps/web/tsconfig.json:**
+
 ```json
 {
   "extends": "@bingo/tsconfig/react.json",
@@ -272,6 +280,7 @@ export default {
 ```
 
 **apps/web/index.html:**
+
 ```html
 <!DOCTYPE html>
 <html lang="en">
@@ -288,6 +297,7 @@ export default {
 ```
 
 **apps/web/src/main.tsx:**
+
 ```tsx
 import React from 'react'
 import ReactDOM from 'react-dom/client'
@@ -305,6 +315,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
 ```
 
 **apps/web/src/App.tsx:**
+
 ```tsx
 import { Button } from '@heroui/react'
 
@@ -323,6 +334,7 @@ export default App
 ```
 
 **apps/web/src/index.css:**
+
 ```css
 @import 'tailwindcss';
 ```
@@ -330,6 +342,7 @@ export default App
 ### 5. 创建 packages/ui
 
 **packages/ui/package.json:**
+
 ```json
 {
   "name": "@bingo/ui",
@@ -358,6 +371,7 @@ export default App
 ```
 
 **packages/ui/tsconfig.json:**
+
 ```json
 {
   "extends": "@bingo/tsconfig/react.json",
@@ -372,6 +386,7 @@ export default App
 ```
 
 **packages/ui/src/index.ts:**
+
 ```typescript
 // Re-export HeroUI components
 export * from '@heroui/react'
@@ -383,6 +398,7 @@ export * from '@heroui/react'
 ### 6. 创建 packages/core
 
 **packages/core/package.json:**
+
 ```json
 {
   "name": "@bingo/core",
@@ -412,6 +428,7 @@ export * from '@heroui/react'
 ```
 
 **packages/core/tsconfig.json:**
+
 ```json
 {
   "extends": "@bingo/tsconfig/react.json",
@@ -420,17 +437,20 @@ export * from '@heroui/react'
 ```
 
 **packages/core/src/index.ts:**
+
 ```typescript
 export * from './stores'
 export * from './hooks'
 ```
 
 **packages/core/src/stores/index.ts:**
+
 ```typescript
 // Export stores
 ```
 
 **packages/core/src/hooks/index.ts:**
+
 ```typescript
 // Export hooks
 ```
@@ -438,6 +458,7 @@ export * from './hooks'
 ### 7. 创建 packages/utils
 
 **packages/utils/package.json:**
+
 ```json
 {
   "name": "@bingo/utils",
@@ -456,6 +477,7 @@ export * from './hooks'
 ```
 
 **packages/utils/tsconfig.json:**
+
 ```json
 {
   "extends": "@bingo/tsconfig/base.json",
@@ -464,6 +486,7 @@ export * from './hooks'
 ```
 
 **packages/utils/src/index.ts:**
+
 ```typescript
 // Export utility functions
 export const formatDate = (date: Date): string => {
