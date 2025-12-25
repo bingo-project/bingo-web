@@ -1,17 +1,4 @@
 @import 'tailwindcss';
-
-@custom-variant dark (&:where(.dark, .dark *));
-
-:root {
-  --color-primary: #006fee;
-}
-
-body {
-  @apply bg-white text-black transition-colors duration-200;
-}
-
-.dark body,
-body.dark,
-.dark {
-  @apply bg-black text-white;
-}
+@plugin './hero.ts';
+@source '../../node_modules/@heroui/theme/dist/**/*.{js,ts,jsx,tsx}';
+@custom-variant dark (&:is(.dark *));
