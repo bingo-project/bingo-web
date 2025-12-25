@@ -1,6 +1,15 @@
 Design an email verification pending page for a SaaS web application.
 
+**Design System:**
+
+- Style: Modern tech aesthetic - clean, minimal, gradient accents
+- Primary color: Purple-blue gradient (`#7C3AED` → `#2563EB`)
+- Buttons: Full radius (pill shape) for all buttons
+- Cards: 16px border radius, subtle shadow
+- Theme: Support both light and dark mode
+
 **Context:**
+
 A simple page shown after email registration, prompting users to check their inbox and click the verification link. Provides option to resend the email.
 
 **Elements:**
@@ -18,7 +27,7 @@ Verification Card (centered):
 
 Action Area:
 
-- "Resend email" button (secondary style)
+- "Resend email" button (outlined, full radius)
 - Countdown text after clicking: "Resend available in 60s"
 - "Use a different email" link
 
@@ -39,14 +48,6 @@ Footer:
 - Cooldown: Resend button disabled with countdown timer
 - Error: Toast notification for network errors
 
-**Style:**
-
-- Centered card on subtle background
-- Large, friendly email icon with gentle animation
-- Clear call-to-action for next steps
-- Reassuring, helpful tone
-- Dark mode support
-
 **Constraints:**
 
 - Use HeroUI components (Button, Card)
@@ -54,3 +55,4 @@ Footer:
 - Icon animation with CSS or Framer Motion
 - Responsive design
 - Accessible
+- i18n: All text via translation keys

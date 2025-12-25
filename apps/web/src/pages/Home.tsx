@@ -27,7 +27,7 @@ export function HomePage() {
     <div className="flex flex-col">
       {/* Hero Section */}
       <section className="flex min-h-[50vh] flex-col items-center justify-center px-4 py-16 lg:min-h-[calc(50vh-32px)]">
-        <h1 className="mb-4 bg-linear-to-r from-[#006FEE] to-[#00AAFF] bg-clip-text text-center text-4xl font-bold text-transparent md:text-5xl lg:text-6xl">
+        <h1 className="mb-4 bg-linear-to-r from-[#7C3AED] to-[#2563EB] bg-clip-text text-center text-4xl font-bold text-transparent md:text-5xl lg:text-6xl">
           {t('hero.title')}
         </h1>
         <p className="mb-8 text-center text-lg text-gray-600 dark:text-gray-400 md:text-xl">{t('hero.subtitle')}</p>
@@ -38,7 +38,7 @@ export function HomePage() {
             </Chip>
           ))}
         </div>
-        <Button color="primary" size="lg">
+        <Button color="primary" size="lg" radius="full">
           {t('hero.getStarted')}
         </Button>
       </section>

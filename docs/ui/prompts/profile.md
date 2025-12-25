@@ -1,6 +1,16 @@
 Design a profile/settings page for a SaaS web application.
 
+**Design System:**
+
+- Style: Modern tech aesthetic - clean, minimal, gradient accents
+- Primary color: Purple-blue gradient (`#7C3AED` → `#2563EB`)
+- Buttons: Full radius (pill shape) for all buttons
+- Cards: 16px border radius, subtle shadow
+- Inputs: 8px border radius
+- Theme: Support both light and dark mode
+
 **Context:**
+
 A user profile management page where users can view and edit their personal information, change password, manage notification preferences, and view account details.
 
 **Elements:**
@@ -27,7 +37,7 @@ Main Content - Profile Section:
 Avatar Area:
 
 - Large circular avatar image
-- "Change avatar" button
+- "Change avatar" button (outlined, full radius)
 - Helper text: "JPG, PNG. Max 2MB"
 - Upload modal/drawer on click
 
@@ -36,7 +46,7 @@ Basic Info Form:
 - Nickname input field
 - Email field (read-only with verified badge)
 - Bio textarea (optional)
-- "Save changes" button
+- "Save changes" button (primary gradient, full radius)
 
 Account Info Card:
 
@@ -51,12 +61,12 @@ Change Password Card:
 - Current password input
 - New password input with strength indicator
 - Confirm new password input
-- "Update password" button
+- "Update password" button (primary gradient, full radius)
 
 Active Sessions Card:
 
 - List of logged-in devices
-- Each row: device name, IP, last active time, "Revoke" button
+- Each row: device name, IP, last active time, "Revoke" button (danger, full radius)
 
 Main Content - Notifications Section (when selected):
 
@@ -79,14 +89,6 @@ Language Settings:
 - Error - Upload failed: Toast with error message
 - Success: Toast confirmation after save
 
-**Style:**
-
-- Sidebar + content layout (dashboard style)
-- Cards to group related settings
-- Clean form layouts with proper spacing
-- Consistent with overall app design
-- Dark mode support
-
 **Constraints:**
 
 - Use HeroUI components (Input, Button, Switch, Avatar, Card, Dropdown)
@@ -94,3 +96,4 @@ Language Settings:
 - TailwindCSS for styling
 - Responsive: Sidebar collapses to top nav on mobile
 - Accessible
+- i18n: All text via translation keys

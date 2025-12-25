@@ -1,85 +1,113 @@
-Design a landing page for a SaaS web application.
+Design a landing page for a developer-focused SaaS scaffold product.
 
-**Context:**
-A scaffold product landing page that showcases product value, features, pricing, and converts visitors to sign up. This is the main entry point for potential users.
+**Product:**
+
+Bingo Web Scaffold - an out-of-the-box Web2+Web3 frontend scaffold that lets developers focus on business logic instead of infrastructure. Target users are frontend developers and small teams who need to quickly start Web2 or Web3 projects.
+
+**Design System:**
+
+- Style: Modern tech aesthetic - clean, minimal, gradient accents
+- Primary color: Purple-blue gradient (`#7C3AED` → `#2563EB`)
+- Buttons: Full radius (pill shape) for all buttons
+- Cards: 16px border radius, subtle shadow, hover lift effect
+- Theme: Support both light and dark mode (follow system preference, manual toggle available)
+- Animations: Fade-in + slide-up on scroll, smooth hover transitions
 
 **Elements:**
 
 Header:
 
-- Logo on left
-- Navigation links: Features, Pricing, FAQ (scroll anchors)
-- Theme toggle button (light/dark)
-- Language switcher dropdown
-- Login button (secondary) and Get Started button (primary CTA)
+- Logo on left (text logo "Bingo" or icon + text)
+- Navigation links: Features, Pricing, FAQ (smooth scroll anchors)
+- Theme toggle button (sun/moon icon)
+- Language switcher dropdown (EN/中文)
+- Login button (secondary, outlined, full radius)
+- Get Started button (primary, gradient background, full radius)
 
 Hero Section:
 
-- Large headline with value proposition
-- Subtitle with 2-3 sentences of product description
-- Primary CTA button: "Get Started"
-- Secondary CTA button: "Learn More"
-- Background: gradient or subtle pattern
+- Large headline: Bold, gradient text effect using primary colors
+- Subtitle: 2-3 sentences describing the product value
+- Tech stack chips: React 19, Vite, TypeScript, HeroUI, Web3 (horizontal row)
+- Primary CTA: "Get Started" button (gradient, full radius, large)
+- Secondary CTA: "View on GitHub" button (outlined, full radius)
+- Background: Subtle gradient mesh or geometric pattern
 
 Social Proof Section:
 
-- 3-4 key metrics with numbers (e.g., "10K+ Users", "500+ Projects")
-- Partner/client logo bar (6-8 logos, horizontal scroll on mobile)
+- 3-4 key metrics displayed as large numbers with labels
+- Example metrics: "10K+ Downloads", "500+ Projects", "99.9% Uptime", "50+ Contributors"
+- Partner/technology logo bar (6-8 logos): Vercel, Cloudflare, AWS, etc.
+- Note: This is a template section - actual scaffold users will replace with their own metrics
 
 Features Section:
 
-- Section title
-- 3-4 column grid of feature cards
-- Each card: icon, title, short description
+- Section title: "Everything you need to ship fast"
+- 6 feature cards in 3-column grid (2 rows)
+- Each card: Icon (emoji or Lucide icon), title, short description
+- Features to highlight:
+  - Monorepo structure (pnpm workspace)
+  - Type-safe API integration (OpenAPI codegen)
+  - Internationalization (i18n ready)
+  - Dark mode (system + manual toggle)
+  - TypeScript (full type safety)
+  - Code quality (ESLint + Prettier + Husky)
+- Cards: Rounded corners (16px), hover effect with shadow increase
 
 Testimonials Section:
 
-- Carousel of testimonial cards
-- Each card: avatar, name, title, quote, star rating
+- Carousel of 3-5 testimonial cards
+- Each card: Avatar, name, title/company, quote text, star rating (5 stars)
+- Auto-rotate with pause on hover
+- Navigation dots below
 
 Pricing Section:
 
-- Section title
-- Monthly/Yearly billing toggle
-- 2-4 pricing cards side by side
-- Each card: plan name, price, feature list with checkmarks, CTA button
-- Highlight recommended plan
+- Section title: "Simple, transparent pricing"
+- Billing toggle: Monthly / Yearly with "Save 20%" badge
+- 3 pricing cards side by side:
+  - Free: $0/forever, basic features, "Get Started" button (outlined)
+  - Pro: $19/mo (highlighted with "Most Popular" badge), all features, "Subscribe" button (gradient)
+  - Enterprise: Custom pricing, "Contact Sales" button (outlined)
+- Each card: Plan name, price, feature list with checkmarks, CTA button (full radius)
 
 FAQ Section:
 
-- Section title
-- Accordion list of 5-7 common questions
-- Expand/collapse on click
+- Section title: "Frequently asked questions"
+- 5-7 accordion items with expand/collapse
+- Common questions about the scaffold usage, customization, support
 
 CTA Section:
 
-- Bold headline encouraging action
-- Short supporting text
-- Large CTA button
+- Bold headline: "Ready to build something amazing?"
+- Supporting text: One line about getting started
+- Large CTA button: "Start Building" (gradient, full radius)
+- Background: Subtle gradient or pattern
 
 Footer:
 
 - Logo and tagline
-- Link groups: Product, Company, Legal
-- Social media icons
-- Copyright text
+- Link groups in columns: Product, Resources, Company, Legal
+- Social media icons: GitHub, Twitter/X, Discord
+- Copyright text with year
+- "Built with Bingo" badge (meta, since this is the scaffold itself)
 
 **States:**
 
-- Default: All content visible with smooth scroll
+- Default: All content visible, smooth scroll navigation
 - Loading: Skeleton placeholders for above-fold content
+- Mobile: Hamburger menu, stacked cards, simplified layout
 
-**Style:**
+**Responsive Behavior:**
 
-- Modern, clean SaaS aesthetic
-- Professional but approachable
-- Gradient accents on CTAs
-- Subtle animations on scroll (fade-in, slide-up)
-- Dark mode support
+- Desktop (1024px+): Full layout, 3-column grids
+- Tablet (768px-1023px): 2-column grids, slightly reduced spacing
+- Mobile (<768px): Single column, hamburger menu, stacked pricing cards
 
 **Constraints:**
 
-- Use HeroUI components (Button, Card, Accordion, Switch, Dropdown)
-- TailwindCSS for styling
-- Responsive: Desktop, Tablet, Mobile breakpoints
-- Accessible: WCAG 2.1 AA compliant
+- Use HeroUI components: Button, Card, Accordion, Switch, Dropdown, Chip, Avatar
+- TailwindCSS for styling with custom gradient utilities
+- Accessible: WCAG 2.1 AA compliant, proper heading hierarchy, keyboard navigation
+- Performance: Lazy load below-fold sections, optimize images
+- i18n: All text content via translation keys (e.g., `home.hero.title`)

@@ -1,6 +1,16 @@
 Design a payment failed page for a SaaS web application.
 
+**Design System:**
+
+- Style: Modern tech aesthetic - clean, minimal, gradient accents
+- Primary color: Purple-blue gradient (`#7C3AED` → `#2563EB`)
+- Danger color: `#EF4444` (red)
+- Buttons: Full radius (pill shape) for all buttons
+- Cards: 16px border radius, subtle shadow
+- Theme: Support both light and dark mode
+
 **Context:**
+
 A page shown when Stripe checkout fails, explaining what went wrong and providing options to resolve the issue.
 
 **Elements:**
@@ -25,8 +35,8 @@ Solutions Section:
 
 Action Area:
 
-- "Try again" button (primary CTA)
-- "Use different payment method" button (secondary)
+- "Try again" button (primary gradient, full radius)
+- "Use different payment method" button (outlined, full radius)
 - "Contact support" link
 
 Footer:
@@ -39,17 +49,12 @@ Footer:
 - Loading: Retry button shows spinner
 - Retry failed: Update error message
 
-**Style:**
-
-- Centered card layout
-- Failure icon in red/orange
-- Constructive tone, not overly negative
-- Clear path to resolution
-- Dark mode support
-
 **Constraints:**
 
 - Use HeroUI components (Card, Button)
 - TailwindCSS for styling
+- Constructive tone, not overly negative
+- Clear path to resolution
 - Responsive design
 - Accessible
+- i18n: All text via translation keys

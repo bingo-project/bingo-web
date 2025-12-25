@@ -1,6 +1,16 @@
 Design a login page for a SaaS web application.
 
+**Design System:**
+
+- Style: Modern tech aesthetic - clean, minimal, gradient accents
+- Primary color: Purple-blue gradient (`#7C3AED` → `#2563EB`)
+- Buttons: Full radius (pill shape) for all buttons
+- Cards: 16px border radius, subtle shadow
+- Inputs: 8px border radius
+- Theme: Support both light and dark mode
+
 **Context:**
+
 A clean login page that supports email/password login and OAuth (Google, GitHub). Should match the registration page style for consistency.
 
 **Elements:**
@@ -17,8 +27,8 @@ Login Card (centered):
 
 OAuth Section:
 
-- "Continue with Google" button with Google icon
-- "Continue with GitHub" button with GitHub icon
+- "Continue with Google" button with Google icon (outlined, full radius)
+- "Continue with GitHub" button with GitHub icon (outlined, full radius)
 
 Divider:
 
@@ -29,7 +39,7 @@ Email Login Form:
 - Email input field with email icon
 - Password input field with lock icon and show/hide toggle
 - Row with "Remember me" checkbox on left, "Forgot password?" link on right
-- "Sign in" button (primary, full width)
+- "Sign in" button (primary gradient, full width, full radius)
 
 Bottom Link:
 
@@ -49,13 +59,6 @@ Footer:
 - Error - Too many attempts: Toast with retry countdown
 - Error - Network: Toast notification for connection issues
 
-**Style:**
-
-- Centered card layout matching registration page
-- Clean, efficient design
-- OAuth buttons with brand colors
-- Dark mode support
-
 **Constraints:**
 
 - Use HeroUI components (Input, Button, Checkbox, Card)
@@ -63,3 +66,4 @@ Footer:
 - TailwindCSS for styling
 - Responsive design
 - Accessible: Proper labels, focus states
+- i18n: All text via translation keys

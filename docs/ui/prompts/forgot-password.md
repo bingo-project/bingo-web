@@ -1,6 +1,16 @@
 Design a forgot password page for a SaaS web application.
 
+**Design System:**
+
+- Style: Modern tech aesthetic - clean, minimal, gradient accents
+- Primary color: Purple-blue gradient (`#7C3AED` → `#2563EB`)
+- Buttons: Full radius (pill shape) for all buttons
+- Cards: 16px border radius, subtle shadow
+- Inputs: 8px border radius
+- Theme: Support both light and dark mode
+
 **Context:**
+
 A simple page where users can request a password reset link by entering their email address.
 
 **Elements:**
@@ -19,7 +29,7 @@ Reset Card (centered):
 Form:
 
 - Email input field with email icon
-- "Send reset link" button (primary, full width)
+- "Send reset link" button (primary gradient, full width, full radius)
 
 Bottom Link:
 
@@ -38,13 +48,6 @@ Footer:
 - Error - Rate limited: Toast with retry time
 - Error - Network: Toast notification
 
-**Style:**
-
-- Centered card layout matching login/register pages
-- Clean, reassuring design
-- Consistent with auth flow pages
-- Dark mode support
-
 **Constraints:**
 
 - Use HeroUI components (Input, Button, Card)
@@ -53,3 +56,4 @@ Footer:
 - Security: Always show success even if email doesn't exist (prevent enumeration)
 - Responsive design
 - Accessible
+- i18n: All text via translation keys

@@ -1,6 +1,15 @@
 Design an upgrade required page for a SaaS web application.
 
+**Design System:**
+
+- Style: Modern tech aesthetic - clean, minimal, gradient accents
+- Primary color: Purple-blue gradient (`#7C3AED` → `#2563EB`)
+- Buttons: Full radius (pill shape) for all buttons
+- Cards: 16px border radius, subtle shadow
+- Theme: Support both light and dark mode
+
 **Context:**
+
 A page shown when users try to access features beyond their current subscription tier. Goal is to encourage upgrade rather than frustrate users.
 
 **Elements:**
@@ -29,7 +38,7 @@ Plan Comparison Card:
 
 Action Area:
 
-- "Upgrade now" button (primary CTA)
+- "Upgrade now" button (primary gradient, full radius)
 - "View all plans" link (to Pricing page)
 - "Go back" link
 
@@ -39,17 +48,12 @@ Action Area:
 - Loading: Spinner when fetching plan info
 - Error: Toast if plan data fails to load
 
-**Style:**
-
-- Centered content layout
-- Prominent lock/upgrade icon
-- Emphasize value gained, not restriction
-- Positive, encouraging tone
-- Dark mode support
-
 **Constraints:**
 
 - Use HeroUI components (Card, Button)
 - TailwindCSS for styling
+- Emphasize value gained, not restriction
+- Positive, encouraging tone
 - Responsive design
 - Accessible
+- i18n: All text via translation keys

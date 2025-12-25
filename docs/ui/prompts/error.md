@@ -1,6 +1,15 @@
 Design an error page for a SaaS web application.
 
+**Design System:**
+
+- Style: Modern tech aesthetic - clean, minimal, gradient accents
+- Primary color: Purple-blue gradient (`#7C3AED` → `#2563EB`)
+- Buttons: Full radius (pill shape) for all buttons
+- Cards: 16px border radius, subtle shadow
+- Theme: Support both light and dark mode
+
 **Context:**
+
 A general error page handling 404, 500, and application crash scenarios. Should be friendly and guide users back to a working state.
 
 **Elements:**
@@ -32,9 +41,9 @@ For App Crash:
 
 Action Area:
 
-- "Go home" button (primary CTA)
-- "Go back" button (secondary)
-- "Refresh page" button (for 500/crash)
+- "Go home" button (primary gradient, full radius)
+- "Go back" button (outlined, full radius)
+- "Refresh page" button (outlined, full radius) - for 500/crash
 - "Report issue" link (optional)
 
 Footer:
@@ -47,19 +56,15 @@ Footer:
 - 500: Server error content
 - Crash: Application error content with optional stack trace
 
-**Style:**
-
-- Centered layout
-- Friendly, non-scary illustrations
-- Helpful, slightly humorous copy
-- Clear recovery paths
-- Dark mode support
-
 **Constraints:**
 
 - Use HeroUI components (Button)
 - TailwindCSS for styling
 - SVG illustrations or icons
+- Friendly, non-scary visual style
+- Helpful, slightly humorous copy
+- Clear recovery paths
 - Error boundary integration for crash state
 - Responsive design
 - Accessible
+- i18n: All text via translation keys
