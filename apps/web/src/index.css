@@ -1,4 +1,182 @@
 @import 'tailwindcss';
-@plugin './hero.ts';
-@source '../../node_modules/@heroui/theme/dist/**/*.{js,ts,jsx,tsx}';
+@import '@fontsource/inter/400.css';
+@import '@fontsource/inter/500.css';
+@import '@fontsource/inter/600.css';
+@import '@fontsource/inter/700.css';
+@import '@fontsource/inter/800.css';
+@import '@fontsource/inter/900.css';
+@plugin '../hero.ts';
+@source '../../../node_modules/@heroui/theme/dist/**/*.js';
 @custom-variant dark (&:is(.dark *));
+
+@theme {
+  --color-primary: #7238f0;
+  --color-primary-hover: #5b2cb3;
+  --color-surface-light: #ffffff;
+  --color-surface-dark: #171717;
+
+  --background-image-gradient-primary: linear-gradient(135deg, #7238f0 0%, #a855f7 100%);
+  --background-image-gradient-mesh: radial-gradient(
+    circle at 50% 50%,
+    rgba(114, 56, 240, 0.15) 0%,
+    rgba(10, 10, 10, 0) 50%
+  );
+
+  --font-family-display: 'Inter', sans-serif;
+
+  --radius-small: 8px;
+  --radius-medium: 12px;
+  --radius-large: 14px;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-family: 'Inter', sans-serif;
+}
+
+/* Scrollbar: always reserve space to prevent layout shift */
+html {
+  scrollbar-gutter: stable;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+.dark ::-webkit-scrollbar-track {
+  background: #0a0a0a;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 4px;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: #262626;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #7238f0;
+}
+
+/* HeroUI component styles for Tailwind CSS v4 compatibility */
+/* Checkbox: group-data-* selectors for checked state */
+[data-selected='true'] .group-data-\[selected\=true\]\:opacity-100,
+.group[data-selected='true'] .group-data-\[selected\=true\]\:opacity-100 {
+  opacity: 1;
+}
+
+[data-selected='true'] .group-data-\[selected\=true\]\:scale-100::after,
+.group[data-selected='true'] .group-data-\[selected\=true\]\:after\:scale-100::after {
+  transform: scale(1);
+}
+
+/* Input: bordered variant styles */
+[data-slot='input-wrapper'][data-focus='true'] {
+  border-color: hsl(var(--heroui-focus));
+}
+
+[data-slot='input-wrapper'][data-hover='true']:not([data-focus='true']) {
+  border-color: hsl(var(--heroui-default-400));
+}
+
+/* Checkbox wrapper proper sizing */
+[data-slot='wrapper'] {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+/* Checkbox checkmark icon visibility */
+[data-slot='icon'] {
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+
+[data-selected='true'] [data-slot='icon'] {
+  opacity: 1;
+}
+
+/* Input with bordered variant */
+.group\/input[data-variant='bordered'] [data-slot='input-wrapper'],
+[data-variant='bordered'][data-slot='input-wrapper'] {
+  border-width: 2px;
+  border-style: solid;
+  border-color: hsl(var(--heroui-default-200));
+  background-color: transparent;
+}
+
+.group\/input[data-variant='bordered'] [data-slot='input-wrapper']:hover,
+[data-variant='bordered'][data-slot='input-wrapper'][data-hover='true'] {
+  border-color: hsl(var(--heroui-default-400));
+}
+
+.group\/input[data-variant='bordered'] [data-slot='input-wrapper']:focus-within,
+[data-variant='bordered'][data-slot='input-wrapper'][data-focus='true'] {
+  border-color: hsl(var(--heroui-focus));
+}
+
+/* Checkbox label text selection */
+[data-slot='label'] {
+  user-select: none;
+}
+
+/* Accordion: Let Framer Motion handle animations, only provide layout hints */
+
+/* Switch component styles */
+[data-slot='wrapper'][data-selected='true'] {
+  background-color: hsl(var(--heroui-primary));
+}
+
+[data-slot='thumb'] {
+  background-color: white;
+}
+
+.rounded-small {
+  border-radius: var(--heroui-radius-small);
+}
+
+.rounded-medium {
+  border-radius: var(--heroui-radius-medium);
+}
+
+.rounded-large {
+  border-radius: var(--heroui-radius-large);
+}
+
+.rounded-t-small {
+  border-top-left-radius: var(--heroui-radius-small);
+  border-top-right-radius: var(--heroui-radius-small);
+}
+
+.rounded-t-medium {
+  border-top-left-radius: var(--heroui-radius-medium);
+  border-top-right-radius: var(--heroui-radius-medium);
+}
+
+.rounded-t-large {
+  border-top-left-radius: var(--heroui-radius-large);
+  border-top-right-radius: var(--heroui-radius-large);
+}
+
+.rounded-b-small {
+  border-bottom-left-radius: var(--heroui-radius-small);
+  border-bottom-right-radius: var(--heroui-radius-small);
+}
+
+.rounded-b-medium {
+  border-bottom-left-radius: var(--heroui-radius-medium);
+  border-bottom-right-radius: var(--heroui-radius-medium);
+}
+
+.rounded-b-large {
+  border-bottom-left-radius: var(--heroui-radius-large);
+  border-bottom-right-radius: var(--heroui-radius-large);
+}

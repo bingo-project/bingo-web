@@ -8,7 +8,7 @@ export function AboutPage() {
 
   return (
     <div className="py-8">
-      <h1 className="mb-4 text-2xl font-bold">{t('about.title')}</h1>
+      <h1 className="mb-4 text-2xl font-medium">{t('about.title')}</h1>
       <p className="text-gray-600">{t('about.description')}</p>
     </div>
   )
