@@ -1,0 +1,39 @@
+// ABOUTME: Authentication API endpoints
+// ABOUTME: Handles login, register, and user info requests
+
+import { request } from './request'
+
+export interface LoginRequest {
+  account: string
+  password: string
+}
+
+export interface LoginResponse {
+  accessToken: string
+  expiresAt: string
+}
+
+export interface RegisterRequest {
+  account: string
+  password: string
+  nickname?: string
+}
+
+export interface UserInfo {
+  uid: string
+  username: string
+  email: string
+  nickname: string
+  avatar: string
+  status: number
+  createdAt: string
+  updatedAt: string
+}
+
+export const authApi = {
+  login: (data: LoginRequest) => request.post<LoginResponse>('/v1/auth/login', data),
+
+  register: (data: RegisterRequest) => request.post<void>('/v1/auth/register', data),
+
+  getUserInfo: () => request.get<UserInfo>('/v1/auth/user-info'),
+}

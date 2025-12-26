@@ -3,3 +3,5 @@
 
 export { HomePage } from './Home'
 export { AboutPage } from './About'
+export { LoginPage } from './Login'
+export { RegisterPage } from './Register'

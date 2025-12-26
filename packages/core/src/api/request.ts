@@ -1,12 +1,12 @@
 // ABOUTME: Axios request wrapper with interceptors
 // ABOUTME: Provides typed HTTP methods and response handling
 
-import axios, { type AxiosInstance, type AxiosRequestConfig, type AxiosResponse } from 'axios'
+import axios, { type AxiosInstance, type AxiosRequestConfig } from 'axios'
 
-export interface ApiResponse<T = unknown> {
-  code: number
-  data: T
+export interface ErrResponse {
   message: string
+  reason?: string
+  metadata?: Record<string, string>
 }
 
 const instance: AxiosInstance = axios.create({
@@ -17,37 +17,42 @@ const instance: AxiosInstance = axios.create({
   },
 })
 
+const TOKEN_KEY = 'accessToken'
+
 instance.interceptors.request.use(
   (config) => {
-    // Add token or other headers here
+    const token = localStorage.getItem(TOKEN_KEY)
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`
+    }
     return config
   },
   (error) => Promise.reject(error)
 )
 
 instance.interceptors.response.use(
-  (response: AxiosResponse<ApiResponse>) => {
-    const { data } = response
-    if (data.code !== 0) {
-      return Promise.reject(new Error(data.message || 'Request failed'))
+  (response) => response,
+  (error) => {
+    if (error.response?.status === 401) {
+      localStorage.removeItem(TOKEN_KEY)
+      localStorage.removeItem('expiresAt')
+      window.location.href = '/login'
     }
-    return response
-  },
-  (error) => Promise.reject(error)
+    const errData = error.response?.data as ErrResponse | undefined
+    return Promise.reject(new Error(errData?.message || error.message || 'Request failed'))
+  }
 )
 
 export const request = {
-  get: <T>(url: string, config?: AxiosRequestConfig) =>
-    instance.get<ApiResponse<T>>(url, config).then((res) => res.data.data),
+  get: <T>(url: string, config?: AxiosRequestConfig) => instance.get<T>(url, config).then((res) => res.data),
 
   post: <T>(url: string, data?: unknown, config?: AxiosRequestConfig) =>
-    instance.post<ApiResponse<T>>(url, data, config).then((res) => res.data.data),
+    instance.post<T>(url, data, config).then((res) => res.data),
 
   put: <T>(url: string, data?: unknown, config?: AxiosRequestConfig) =>
-    instance.put<ApiResponse<T>>(url, data, config).then((res) => res.data.data),
+    instance.put<T>(url, data, config).then((res) => res.data),
 
-  delete: <T>(url: string, config?: AxiosRequestConfig) =>
-    instance.delete<ApiResponse<T>>(url, config).then((res) => res.data.data),
+  delete: <T>(url: string, config?: AxiosRequestConfig) => instance.delete<T>(url, config).then((res) => res.data),
 }
 
 export default request

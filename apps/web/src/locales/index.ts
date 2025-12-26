@@ -18,19 +18,12 @@ async function loadAppMessages(lang: SupportedLanguage): Promise<Record<string, 
     if (match && match[1] === lang) {
       const [, , fileName] = match
       const module = (await importFn()) as { default: Record<string, unknown> }
-      Object.assign(messages, { [fileName]: module.default })
+      // Use filename as namespace: auth.json -> { auth: { login: {...} } }
+      messages[fileName] = module.default
     }
   }
 
-  // Flatten nested structure: { page: { dashboard: ... } } -> { dashboard: ... }
-  const flattened: Record<string, unknown> = {}
-  for (const [, value] of Object.entries(messages)) {
-    if (typeof value === 'object' && value !== null) {
-      Object.assign(flattened, value)
-    }
-  }
-
-  return flattened
+  return messages
 }
 
 /**
