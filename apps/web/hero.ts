@@ -48,18 +48,18 @@ const plugin: any = heroui({
     },
     dark: {
       colors: {
-        background: '#161022', // custom dark purple
-        foreground: '#f8fafc', // slate-50
+        background: '#111111',
+        foreground: '#f8fafc',
         divider: 'rgba(255, 255, 255, 0.05)',
-        content1: '#1e162e', // custom card background
-        content2: '#251d38',
-        content3: '#2d2442',
-        content4: '#352b4c',
+        content1: '#1a1a1a',
+        content2: '#222222',
+        content3: '#2a2a2a',
+        content4: '#333333',
         default: {
-          50: '#1e162e',
-          100: '#251d38',
-          200: '#2d2442',
-          300: '#352b4c',
+          50: '#1a1a1a',
+          100: '#222222',
+          200: '#2a2a2a',
+          300: '#333333',
           400: '#64748b',
           500: '#94a3b8',
           600: '#cbd5e1',
