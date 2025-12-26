@@ -2,7 +2,7 @@
 
 ## 必读文档
 
-开发前必须阅读 [docs/guides/CONVENTIONS.md](docs/guides/CONVENTIONS.md)，了解：
+开发前必须阅读 [docs/guides/CONVENTIONS.md](../docs/guides/CONVENTIONS.md)，了解：
 
 - HeroUI 优先原则
 - 文件规范（ABOUTME 注释、目录结构）
