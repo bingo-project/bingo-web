@@ -8,6 +8,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { Button, Input } from '@heroui/react'
 import { Mail, ArrowRight, KeyRound, ShieldCheck } from 'lucide-react'
 import { toast } from 'sonner'
+import { authApi } from '@bingo/core'
 import { useTranslation } from '@/locales'
 import { forgotPasswordSchema, type ForgotPasswordFormData } from '@/schemas'
 import { AuthHeader, AuthFooter, AuthCard } from '@/components/auth'
@@ -32,9 +33,7 @@ export function ForgotPasswordPage() {
   const onSubmit = async (data: ForgotPasswordFormData) => {
     setIsLoading(true)
     try {
-      // TODO: Call API to send reset link
-      console.log('Sending reset link to:', data.email)
-      await new Promise((resolve) => setTimeout(resolve, 1000))
+      await authApi.sendCode({ account: data.email, scene: 'reset_password' })
       setIsSubmitted(true)
       toast.success(t('auth.forgotPassword.success'))
     } catch {

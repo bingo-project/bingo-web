@@ -3,4 +3,12 @@
 
 export { request, type ErrResponse } from './request'
 export { userApi, type User } from './example'
-export { authApi, type LoginRequest, type LoginResponse, type RegisterRequest, type UserInfo } from './auth'
+export {
+  authApi,
+  type LoginRequest,
+  type LoginResponse,
+  type RegisterRequest,
+  type UserInfo,
+  type SendCodeRequest,
+  type SendCodeScene,
+} from './auth'

@@ -30,10 +30,19 @@ export interface UserInfo {
   updatedAt: string
 }
 
+export type SendCodeScene = 'register' | 'reset_password' | 'bind'
+
+export interface SendCodeRequest {
+  account: string
+  scene: SendCodeScene
+}
+
 export const authApi = {
   login: (data: LoginRequest) => request.post<LoginResponse>('/v1/auth/login', data),
 
   register: (data: RegisterRequest) => request.post<void>('/v1/auth/register', data),
 
   getUserInfo: () => request.get<UserInfo>('/v1/auth/user-info'),
+
+  sendCode: (data: SendCodeRequest) => request.post<void>('/v1/auth/code', data),
 }
