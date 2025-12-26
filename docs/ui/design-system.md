@@ -114,27 +114,6 @@ Use Tailwind's default spacing scale (4px base):
 - Manual toggle: Available in header
 - Transition: Smooth color transition (150ms)
 
-### HeroUI Theme
-
-Configure in `hero.ts`:
-
-```typescript
-heroui({
-  themes: {
-    light: {
-      colors: {
-        primary: { DEFAULT: '#7C3AED' },
-      },
-    },
-    dark: {
-      colors: {
-        primary: { DEFAULT: '#8B5CF6' },
-      },
-    },
-  },
-})
-```
-
 ## Animations
 
 - **Scroll animations:** Fade-in + slide-up (staggered)

@@ -1,4 +1,4 @@
-Design a landing page for a developer-focused SaaS scaffold product.
+Design a landing page for Bingo Web Scaffold.
 
 **Product:**
 
@@ -8,10 +8,13 @@ Bingo Web Scaffold - an out-of-the-box Web2+Web3 frontend scaffold that lets dev
 
 - Style: Modern tech aesthetic - clean, minimal, gradient accents
 - Primary color: Purple-blue gradient (`#7C3AED` → `#2563EB`)
+- Background: Light `#FFFFFF` / Dark `#0A0A0A` (neutral gray, NOT purple)
+- Surface/Cards: Light `#F9FAFB` / Dark `#18181B` (zinc-900)
 - Buttons: Full radius (pill shape) for all buttons
 - Cards: 16px border radius, subtle shadow, hover lift effect
 - Theme: Support both light and dark mode (follow system preference, manual toggle available)
 - Animations: Fade-in + slide-up on scroll, smooth hover transitions
+- Hero glow: Subtle, low opacity (10%) purple/blue blur effect
 
 **Elements:**
 

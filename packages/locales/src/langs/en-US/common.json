@@ -1,49 +1,163 @@
 {
   "nav": {
     "home": "Home",
-    "about": "About"
+    "about": "About",
+    "features": "Features",
+    "pricing": "Pricing",
+    "faq": "FAQ",
+    "login": "Login",
+    "getStarted": "Get Started",
+    "profile": "Profile",
+    "settings": "Settings",
+    "logout": "Logout"
   },
-  "home": {
-    "title": "Bingo Web",
-    "welcome": "Welcome to Bingo Web",
-    "getStarted": "Get Started"
+  "hero": {
+    "titlePrefix": "Ship Web3",
+    "titleHighlight": "Fast",
+    "titleSuffix": "with Bingo",
+    "subtitle": "A comprehensive out-of-the-box Web2+Web3 frontend scaffold. Stop configuring build tools and start building modern decentralized apps instantly.",
+    "getStarted": "Get Started",
+    "viewOnGitHub": "View on GitHub"
+  },
+  "stats": {
+    "downloads": "Downloads",
+    "projects": "Projects",
+    "githubStars": "GitHub Stars"
+  },
+  "features": {
+    "title": "Everything you need to ship fast",
+    "subtitle": "Bingo comes batteries-included with the best modern practices for frontend development.",
+    "monorepo": {
+      "title": "Monorepo Ready",
+      "desc": "Structured for scale with Turborepo. Manage multiple apps and packages in a single codebase with ease."
+    },
+    "api": {
+      "title": "Type-Safe API",
+      "desc": "End-to-end type safety with tRPC or REST. Catch errors at compile time, not runtime."
+    },
+    "i18n": {
+      "title": "Internationalization",
+      "desc": "Built-in i18n support. Translate your app into multiple languages with zero configuration friction."
+    },
+    "darkMode": {
+      "title": "Dark Mode",
+      "desc": "Tailwind CSS dark mode configured out of the box with system preference detection and manual toggle."
+    },
+    "codeQuality": {
+      "title": "Code Quality",
+      "desc": "Pre-configured ESLint, Prettier, and Husky hooks to ensure your codebase stays clean and consistent."
+    },
+    "web3": {
+      "title": "Web3 Wallets",
+      "desc": "Integrated wagmi and RainbowKit hooks for seamless wallet connection and blockchain interactions."
+    }
+  },
+  "testimonials": {
+    "title": "Loved by developers",
+    "sarah": {
+      "name": "Sarah Chen",
+      "role": "CTO at DeFi Llama",
+      "quote": "Bingo saved us weeks of configuration hell. The Web3 integration worked flawlessly right out of the box."
+    },
+    "alex": {
+      "name": "Alex Morgan",
+      "role": "Frontend Lead",
+      "quote": "The type-safety throughout the entire stack is incredible. I can't imagine building a dApp without this scaffold anymore."
+    },
+    "michael": {
+      "name": "Michael Ross",
+      "role": "Indie Hacker",
+      "quote": "Clean code, great documentation, and the component library is beautiful. Highly recommended for any serious project."
+    }
+  },
+  "pricing": {
+    "title": "Simple, transparent pricing",
+    "monthly": "Monthly",
+    "yearly": "Yearly",
+    "save20": "Save 20%",
+    "mostPopular": "Most Popular",
+    "custom": "Custom",
+    "free": {
+      "name": "Free",
+      "description": "Perfect for side projects and learning.",
+      "cta": "Get Started"
+    },
+    "pro": {
+      "name": "Pro",
+      "description": "Everything you need to ship production apps.",
+      "cta": "Subscribe Now"
+    },
+    "enterprise": {
+      "name": "Enterprise",
+      "description": "For large teams with specific needs.",
+      "cta": "Contact Sales"
+    },
+    "features": {
+      "1Project": "1 Project",
+      "basicComponents": "Basic Components",
+      "communitySupport": "Community Support",
+      "unlimitedProjects": "Unlimited Projects",
+      "advancedComponents": "Advanced Components",
+      "prioritySupport": "Priority Support",
+      "privateDiscord": "Private Discord",
+      "everythingInPro": "Everything in Pro",
+      "customIntegrations": "Custom Integrations",
+      "dedicatedSupport": "Dedicated Support",
+      "sla": "SLA"
+    }
+  },
+  "faq": {
+    "title": "Frequently asked questions",
+    "techStack": {
+      "question": "What tech stack does Bingo use?",
+      "answer": "Bingo is built on React 19, Vite, TypeScript, and Tailwind CSS. It also includes configured setups for tRPC, Prisma, RainbowKit, and wagmi for Web3 interactions."
+    },
+    "commercial": {
+      "question": "Is it free to use for commercial projects?",
+      "answer": "Yes! The open-source version is MIT licensed and free for personal and commercial use. We offer a Pro plan for teams needing advanced components and priority support."
+    },
+    "removeWeb3": {
+      "question": "Can I remove the Web3 components?",
+      "answer": "Absolutely. Bingo is modular. If you're building a standard Web2 app, you can simply remove the web3 package folder from the monorepo or use our CLI to generate a Web2-only scaffold."
+    },
+    "deploy": {
+      "question": "How do I deploy my Bingo app?",
+      "answer": "Since it uses standard Vite and React build processes, you can deploy to Vercel, Netlify, Cloudflare Pages, or any container service with zero extra configuration."
+    }
+  },
+  "cta": {
+    "title": "Ready to build something amazing?",
+    "subtitle": "Join thousands of developers shipping faster with Bingo. Get started for free today.",
+    "button": "Start Building"
+  },
+  "footer": {
+    "description": "The ultimate frontend scaffold for modern Web2 and Web3 applications. Built for speed, scale, and developer experience.",
+    "copyright": "© 2024 Bingo Inc. All rights reserved.",
+    "builtWith": "Built with Bingo",
+    "product": {
+      "title": "Product",
+      "features": "Features",
+      "documentation": "Documentation",
+      "integrations": "Integrations",
+      "pricing": "Pricing"
+    },
+    "resources": {
+      "title": "Resources",
+      "blog": "Blog",
+      "community": "Community",
+      "showcase": "Showcase",
+      "helpCenter": "Help Center"
+    },
+    "company": {
+      "title": "Company",
+      "about": "About",
+      "careers": "Careers",
+      "privacy": "Privacy",
+      "terms": "Terms"
+    }
   },
   "about": {
     "title": "About",
     "description": "About Bingo Web"
-  },
-  "hero": {
-    "title": "Bingo Web",
-    "subtitle": "Modern Frontend Development Scaffold",
-    "getStarted": "Get Started"
-  },
-  "features": {
-    "monorepo": {
-      "title": "Monorepo Architecture",
-      "desc": "pnpm workspace for multi-package management"
-    },
-    "api": {
-      "title": "API Request",
-      "desc": "Axios with request/response interceptors out of the box"
-    },
-    "i18n": {
-      "title": "i18n Support",
-      "desc": "Built-in internationalization, easy multi-language support"
-    },
-    "darkMode": {
-      "title": "Dark Mode",
-      "desc": "One-click theme switch with auto persistence"
-    },
-    "typescript": {
-      "title": "Type Safety",
-      "desc": "Full TypeScript with smart type inference"
-    },
-    "lint": {
-      "title": "Code Standards",
-      "desc": "ESLint + Prettier + Husky all-in-one setup"
-    }
-  },
-  "footer": {
-    "copyright": "© 2025 Bingo Web"
   }
 }

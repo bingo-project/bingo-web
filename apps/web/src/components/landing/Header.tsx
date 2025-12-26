@@ -1,0 +1,152 @@
+// ABOUTME: Landing page header with navigation
+// ABOUTME: Fixed header with logo, nav links, theme toggle, and auth state
+
+import { Link, useNavigate } from 'react-router'
+import { Button, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Avatar } from '@heroui/react'
+import { Layers, Sun, Moon, Bell, User, Settings, LogOut } from 'lucide-react'
+import { useAuthStore } from '@bingo/core'
+import { useTheme } from '@/hooks'
+import { useTranslation, i18n, changeLanguage } from '@/locales'
+
+const NAV_LINKS = [
+  { href: '#features', labelKey: 'nav.features' },
+  { href: '#pricing', labelKey: 'nav.pricing' },
+  { href: '#faq', labelKey: 'nav.faq' },
+] as const
+
+export function Header() {
+  const { theme, toggleTheme } = useTheme()
+  const { t } = useTranslation()
+  const navigate = useNavigate()
+
+  const { isAuthenticated, user, logout } = useAuthStore()
+
+  const handleToggleLanguage = () => {
+    const newLang = i18n.language === 'zh-CN' ? 'en-US' : 'zh-CN'
+    changeLanguage(newLang)
+  }
+
+  const handleLogout = () => {
+    logout()
+    navigate('/')
+  }
+
+  return (
+    <header className="fixed top-0 right-0 left-0 z-50 border-b border-black/5 bg-white/80 backdrop-blur-md transition-all duration-300 dark:border-white/5 dark:bg-black/80">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="flex h-20 items-center justify-between">
+          {/* Logo */}
+          <Link to="/" className="flex items-center gap-2">
+            <div className="flex size-8 items-center justify-center rounded-lg bg-primary text-white">
+              <Layers size={20} />
+            </div>
+            <span className="text-xl font-medium tracking-tight">Bingo</span>
+          </Link>
+
+          {/* Navigation */}
+          <nav className="hidden items-center gap-8 md:flex">
+            {NAV_LINKS.map((link) => (
+              <a key={link.href} href={link.href} className="text-sm font-medium transition-colors hover:text-primary">
+                {t(link.labelKey)}
+              </a>
+            ))}
+          </nav>
+
+          {/* Actions */}
+          <div className="flex items-center gap-3">
+            <Button isIconOnly variant="light" radius="full" onPress={toggleTheme} aria-label="Toggle theme">
+              {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
+            </Button>
+
+            <Button
+              isIconOnly
+              variant="light"
+              radius="full"
+              onPress={handleToggleLanguage}
+              aria-label="Toggle language"
+              className="hidden w-10 sm:flex"
+            >
+              <span className="text-xs font-medium">{i18n.language === 'zh-CN' ? 'EN' : '中'}</span>
+            </Button>
+
+            <div className="mx-1 hidden h-6 w-px bg-slate-200 sm:block dark:bg-slate-700" />
+
+            {isAuthenticated ? (
+              /* Logged in state */
+              <div className="flex items-center gap-3">
+                {/* Notifications */}
+                <Button isIconOnly variant="light" radius="full" className="hidden sm:flex" aria-label="Notifications">
+                  <Bell size={20} />
+                </Button>
+
+                {/* User info & dropdown */}
+                <Dropdown placement="bottom-end">
+                  <DropdownTrigger>
+                    <div className="flex cursor-pointer items-center gap-3">
+                      <div className="hidden text-right sm:block">
+                        <p className="text-sm font-bold leading-none">{user?.nickname || 'User'}</p>
+                        <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">{user?.email}</p>
+                      </div>
+                      <div className="relative">
+                        <Avatar
+                          src={user?.avatar}
+                          name={user?.nickname || user?.email}
+                          size="sm"
+                          className="ring-2 ring-transparent transition-all hover:ring-primary"
+                        />
+                        <span className="absolute bottom-0 right-0 size-2.5 rounded-full border-2 border-white bg-green-500 dark:border-black" />
+                      </div>
+                    </div>
+                  </DropdownTrigger>
+                  <DropdownMenu aria-label="User menu">
+                    <DropdownItem key="profile" startContent={<User size={18} />} onPress={() => navigate('/profile')}>
+                      {t('nav.profile')}
+                    </DropdownItem>
+                    <DropdownItem
+                      key="settings"
+                      startContent={<Settings size={18} />}
+                      onPress={() => navigate('/settings')}
+                    >
+                      {t('nav.settings')}
+                    </DropdownItem>
+                    <DropdownItem
+                      key="logout"
+                      color="danger"
+                      startContent={<LogOut size={18} />}
+                      onPress={handleLogout}
+                    >
+                      {t('nav.logout')}
+                    </DropdownItem>
+                  </DropdownMenu>
+                </Dropdown>
+              </div>
+            ) : (
+              /* Logged out state */
+              <>
+                <Button
+                  as={Link}
+                  to="/login"
+                  variant="bordered"
+                  radius="full"
+                  className="hidden h-10 w-24 items-center justify-center border-slate-200 px-5 font-medium hover:bg-slate-100 sm:inline-flex dark:border-slate-700 dark:hover:bg-surface-dark"
+                >
+                  {t('nav.login')}
+                </Button>
+
+                <Button
+                  as={Link}
+                  to="/register"
+                  color="primary"
+                  radius="full"
+                  className="inline-flex h-10 w-32 items-center justify-center bg-gradient-primary px-5 font-medium text-white hover:shadow-lg hover:shadow-primary/25"
+                >
+                  {t('nav.getStarted')}
+                </Button>
+              </>
+            )}
+          </div>
+        </div>
+      </div>
+    </header>
+  )
+}
