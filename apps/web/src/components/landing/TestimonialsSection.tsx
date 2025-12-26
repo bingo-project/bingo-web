@@ -37,39 +37,28 @@ export function TestimonialsSection() {
   const { t } = useTranslation()
 
   return (
-    <section className="bg-slate-50 py-20 dark:bg-[#111111]">
+    <section className="bg-default-50 py-20">
       <div className="container mx-auto px-4">
         {/* Header */}
         <div className="mb-12 text-center">
-          <h2 className="mb-4 text-3xl font-medium text-slate-900 md:text-4xl dark:text-white">
-            {t('testimonials.title')}
-          </h2>
+          <h2 className="mb-4 text-3xl font-medium text-foreground md:text-4xl">{t('testimonials.title')}</h2>
         </div>
 
         {/* Testimonials Grid */}
         <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
           {TESTIMONIALS.map((testimonial) => (
-            <Card
-              key={testimonial.key}
-              radius="lg"
-              shadow="none"
-              className="border border-slate-200 bg-white dark:border-white/5 dark:bg-surface-dark"
-            >
+            <Card key={testimonial.key} radius="lg" shadow="none" className="border border-divider bg-content1">
               <CardBody className="flex flex-col gap-4 p-6">
                 <StarRating />
-                <p className="italic text-slate-700 dark:text-slate-300">
-                  "{t(`testimonials.${testimonial.key}.quote`)}"
-                </p>
-                <div className="mt-auto flex items-center gap-3 border-t border-slate-100 pt-4 dark:border-white/5">
+                <p className="italic text-default-600">"{t(`testimonials.${testimonial.key}.quote`)}"</p>
+                <div className="mt-auto flex items-center gap-3 border-t border-divider pt-4">
                   <div
                     className="h-10 w-10 rounded-full bg-gray-300 bg-cover bg-center"
                     style={{ backgroundImage: `url('${testimonial.avatar}')` }}
                   />
                   <div>
-                    <p className="text-sm font-medium text-slate-900 dark:text-white">
-                      {t(`testimonials.${testimonial.key}.name`)}
-                    </p>
-                    <p className="text-xs text-slate-500">{t(`testimonials.${testimonial.key}.role`)}</p>
+                    <p className="text-sm font-medium text-foreground">{t(`testimonials.${testimonial.key}.name`)}</p>
+                    <p className="text-xs text-default-500">{t(`testimonials.${testimonial.key}.role`)}</p>
                   </div>
                 </div>
               </CardBody>

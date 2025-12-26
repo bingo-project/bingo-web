@@ -11,11 +11,11 @@ export function FAQSection() {
   const { t } = useTranslation()
 
   return (
-    <section id="faq" className="bg-slate-50 py-24 dark:bg-[#111111]">
+    <section id="faq" className="bg-default-50 py-24">
       <div className="container mx-auto max-w-3xl px-4">
         {/* Header */}
         <div className="mb-16 text-center">
-          <h2 className="mb-4 text-3xl font-medium text-slate-900 md:text-4xl dark:text-white">{t('faq.title')}</h2>
+          <h2 className="mb-4 text-3xl font-medium text-foreground md:text-4xl">{t('faq.title')}</h2>
         </div>
 
         {/* FAQ Accordion */}
@@ -24,11 +24,11 @@ export function FAQSection() {
           selectionMode="multiple"
           className="flex flex-col gap-4"
           itemClasses={{
-            base: 'cursor-pointer bg-white dark:bg-surface-dark border border-slate-200 dark:border-white/5 rounded-lg transition-colors hover:bg-slate-50 dark:hover:bg-white/5 data-[open=true]:border-primary/50 dark:data-[open=true]:border-primary/50',
-            title: 'font-medium text-slate-900 dark:text-white text-lg',
-            content: 'text-slate-600 dark:text-slate-400 leading-relaxed pb-4',
+            base: 'cursor-pointer bg-content1 border border-divider rounded-lg transition-colors hover:bg-default-100 data-[open=true]:border-primary/50',
+            title: 'font-medium text-foreground text-lg',
+            content: 'text-default-500 leading-relaxed pb-4',
             trigger: 'p-6',
-            indicator: 'text-slate-900 dark:text-white data-[open=true]:rotate-180 transition-transform',
+            indicator: 'text-foreground data-[open=true]:rotate-180 transition-transform',
           }}
         >
           {FAQ_ITEMS.map((item) => (

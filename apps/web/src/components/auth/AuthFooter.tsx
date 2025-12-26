@@ -8,7 +8,7 @@ export function AuthFooter() {
   const { t } = useTranslation()
 
   return (
-    <footer className="mt-12 flex flex-col items-center gap-4 text-xs text-slate-500">
+    <footer className="mt-12 flex flex-col items-center gap-4 text-xs text-default-500">
       <div className="flex gap-6">
         <Link to="/terms" className="transition-colors hover:text-primary">
           {t('auth.register.termsOfService')}

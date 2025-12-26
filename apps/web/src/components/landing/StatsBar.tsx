@@ -22,28 +22,28 @@ export function StatsBar() {
   const { t } = useTranslation()
 
   return (
-    <section className="border-y border-slate-200 bg-slate-50 py-10 dark:border-white/5 dark:bg-[#111111]">
+    <section className="border-y border-divider bg-default-50 py-10">
       <div className="container mx-auto px-4">
         <div className="flex flex-col items-center justify-between gap-8 md:flex-row md:gap-16">
           {/* Stats */}
           <div className="flex shrink-0 gap-8 md:gap-12">
             {STATS.map((stat) => (
               <div key={stat.labelKey} className="flex flex-col">
-                <span className="text-3xl font-medium text-slate-900 dark:text-white">{stat.value}</span>
-                <span className="text-sm font-medium text-slate-500">{t(stat.labelKey)}</span>
+                <span className="text-3xl font-medium text-foreground">{stat.value}</span>
+                <span className="text-sm font-medium text-default-500">{t(stat.labelKey)}</span>
               </div>
             ))}
           </div>
 
           {/* Divider */}
-          <div className="h-px w-full bg-slate-200 md:hidden dark:bg-white/10" />
+          <div className="h-px w-full bg-divider md:hidden" />
 
           {/* Partners */}
           <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-6 opacity-60 transition-all duration-500 grayscale hover:grayscale-0 md:justify-end">
             {PARTNERS.map((partner) => (
               <div
                 key={partner.name}
-                className="flex items-center gap-1 font-display text-xl font-medium tracking-tight text-slate-900 dark:text-white"
+                className="flex items-center gap-1 font-display text-xl font-medium tracking-tight text-foreground"
               >
                 {partner.icon}
                 {partner.name}

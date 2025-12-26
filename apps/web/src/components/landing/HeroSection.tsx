@@ -49,7 +49,7 @@ export function HeroSection() {
         </div>
 
         {/* Title */}
-        <h1 className="mx-auto mb-6 max-w-4xl text-4xl leading-[1.15] font-medium tracking-tighter text-slate-900 sm:text-5xl md:text-6xl lg:text-7xl dark:text-white">
+        <h1 className="mx-auto mb-6 max-w-4xl text-4xl leading-[1.15] font-medium tracking-tighter text-foreground sm:text-5xl md:text-6xl lg:text-7xl">
           <span className="block sm:inline">{t('hero.titlePrefix')}</span>{' '}
           <span className="block bg-gradient-to-r from-primary to-purple-400 bg-clip-text text-transparent sm:inline">
             {t('hero.titleHighlight')}
@@ -58,7 +58,7 @@ export function HeroSection() {
         </h1>
 
         {/* Subtitle */}
-        <p className="mx-auto mb-10 max-w-2xl text-base leading-relaxed text-slate-600 sm:text-lg md:text-xl dark:text-slate-300">
+        <p className="mx-auto mb-10 max-w-2xl text-base leading-relaxed text-default-600 sm:text-lg md:text-xl">
           {t('hero.subtitle')}
         </p>
 
@@ -80,7 +80,7 @@ export function HeroSection() {
               variant="bordered"
               size="lg"
               radius="full"
-              className="inline-flex h-12 w-full shrink-0 items-center justify-center gap-2 border-slate-300 bg-white px-8 text-base font-medium text-slate-900 transition-all hover:border-slate-400 hover:bg-slate-50 sm:w-auto dark:border-slate-600 dark:bg-transparent dark:text-white dark:hover:border-slate-500 dark:hover:bg-white/5"
+              className="inline-flex h-12 w-full shrink-0 items-center justify-center gap-2 border-divider bg-content1 px-8 text-base font-medium text-foreground transition-all hover:bg-default-100 sm:w-auto"
             >
               <svg className="size-5 shrink-0" fill="currentColor" viewBox="0 0 24 24">
                 <path
@@ -93,7 +93,7 @@ export function HeroSection() {
             </Button>
 
             {/* Terminal Command */}
-            <div className="hidden h-12 items-center gap-3 rounded-full border border-white/10 bg-black/80 px-4 font-mono text-sm text-slate-400 lg:flex">
+            <div className="hidden h-12 items-center gap-3 rounded-full border border-white/10 bg-black/80 px-4 font-mono text-sm text-default-400 lg:flex">
               <span>$ {COMMAND}</span>
               <Button
                 isIconOnly

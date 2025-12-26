@@ -14,10 +14,8 @@ export function CTASection() {
       <div className="pointer-events-none absolute inset-0 bg-gradient-mesh opacity-50" />
 
       <div className="container relative z-10 mx-auto px-4">
-        <h2 className="mb-6 text-4xl font-medium tracking-tight text-slate-900 md:text-5xl dark:text-white">
-          {t('cta.title')}
-        </h2>
-        <p className="mx-auto mb-10 max-w-2xl text-xl text-slate-600 dark:text-slate-300">{t('cta.subtitle')}</p>
+        <h2 className="mb-6 text-4xl font-medium tracking-tight text-foreground md:text-5xl">{t('cta.title')}</h2>
+        <p className="mx-auto mb-10 max-w-2xl text-xl text-default-500">{t('cta.subtitle')}</p>
         <Button
           size="lg"
           radius="full"

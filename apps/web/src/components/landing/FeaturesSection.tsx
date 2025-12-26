@@ -58,10 +58,8 @@ export function FeaturesSection() {
       <div className="container mx-auto px-4">
         {/* Header */}
         <div className="mx-auto mb-16 max-w-3xl text-center">
-          <h2 className="mb-4 text-3xl font-medium text-slate-900 md:text-4xl dark:text-white">
-            {t('features.title')}
-          </h2>
-          <p className="text-lg text-slate-600 dark:text-slate-400">{t('features.subtitle')}</p>
+          <h2 className="mb-4 text-3xl font-medium text-foreground md:text-4xl">{t('features.title')}</h2>
+          <p className="text-lg text-default-500">{t('features.subtitle')}</p>
         </div>
 
         {/* Feature Grid */}
@@ -72,7 +70,7 @@ export function FeaturesSection() {
               isHoverable
               radius="lg"
               shadow="none"
-              className="group border border-slate-200 bg-white transition-all duration-300 hover:-translate-y-1 hover:border-primary/50 hover:shadow-xl hover:shadow-primary/5 dark:border-white/5 dark:bg-surface-dark dark:hover:border-primary/50"
+              className="group border border-divider bg-content1 transition-all duration-300 hover:-translate-y-1 hover:border-primary/50 hover:shadow-xl hover:shadow-primary/5"
             >
               <CardBody className="p-8">
                 <div
@@ -80,12 +78,8 @@ export function FeaturesSection() {
                 >
                   {feature.icon}
                 </div>
-                <h3 className="mb-2 text-xl font-medium text-slate-900 dark:text-white">
-                  {t(`features.${feature.key}.title`)}
-                </h3>
-                <p className="leading-relaxed text-slate-600 dark:text-slate-400">
-                  {t(`features.${feature.key}.desc`)}
-                </p>
+                <h3 className="mb-2 text-xl font-medium text-foreground">{t(`features.${feature.key}.title`)}</h3>
+                <p className="leading-relaxed text-default-500">{t(`features.${feature.key}.desc`)}</p>
               </CardBody>
             </Card>
           ))}

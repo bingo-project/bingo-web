@@ -50,19 +50,19 @@ export function LoginPage() {
   }
 
   return (
-    <div className="flex min-h-screen flex-col bg-slate-50 dark:bg-[#161022]">
+    <div className="flex min-h-screen flex-col bg-background">
       <AuthHeader />
 
       <main className="flex flex-1 flex-col items-center justify-center px-4 pt-16">
         {/* Background glow */}
-        <div className="pointer-events-none absolute left-1/2 top-1/2 h-[600px] w-[600px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary/5 blur-[100px] dark:bg-primary/10" />
+        <div className="pointer-events-none absolute left-1/2 top-1/2 h-[600px] w-[600px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary/5 blur-[100px]" />
 
         <div className="relative z-10 w-full max-w-[440px]">
           <AuthCard>
             {/* Header */}
             <div className="mb-8 text-center">
-              <h1 className="mb-2 text-2xl font-bold text-slate-900 dark:text-white">{t('auth.login.title')}</h1>
-              <p className="text-sm text-slate-500 dark:text-slate-400">{t('auth.login.subtitle')}</p>
+              <h1 className="mb-2 text-2xl font-bold text-foreground">{t('auth.login.title')}</h1>
+              <p className="text-sm text-default-500">{t('auth.login.subtitle')}</p>
             </div>
 
             {/* OAuth */}
@@ -80,7 +80,7 @@ export function LoginPage() {
                 placeholder={t('auth.login.accountPlaceholder')}
                 isInvalid={!!errors.account}
                 errorMessage={errors.account?.message}
-                startContent={<Mail size={18} className="shrink-0 text-slate-400" />}
+                startContent={<Mail size={18} className="shrink-0 text-default-400" />}
                 classNames={{
                   input: 'pl-1',
                   innerWrapper: 'gap-2',
@@ -96,7 +96,7 @@ export function LoginPage() {
                 placeholder={t('auth.login.passwordPlaceholder')}
                 isInvalid={!!errors.password}
                 errorMessage={errors.password?.message}
-                startContent={<Lock size={18} className="shrink-0 text-slate-400" />}
+                startContent={<Lock size={18} className="shrink-0 text-default-400" />}
                 classNames={{
                   inputWrapper: 'h-12',
                 }}
@@ -107,7 +107,7 @@ export function LoginPage() {
                   {...register('rememberMe')}
                   size="sm"
                   classNames={{
-                    label: 'text-sm text-slate-500 dark:text-slate-400',
+                    label: 'text-sm text-default-500',
                   }}
                 >
                   {t('auth.login.rememberMe')}
@@ -130,9 +130,9 @@ export function LoginPage() {
           </AuthCard>
 
           {/* Sign up link */}
-          <p className="mt-6 text-center text-sm text-slate-500 dark:text-slate-400">
+          <p className="mt-6 text-center text-sm text-default-500">
             {t('auth.login.noAccount')}{' '}
-            <Link to="/register" className="font-bold text-slate-900 hover:text-primary dark:text-white">
+            <Link to="/register" className="font-bold text-foreground hover:text-primary">
               {t('auth.login.signUp')}
             </Link>
           </p>

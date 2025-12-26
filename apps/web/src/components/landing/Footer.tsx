@@ -45,7 +45,7 @@ export function Footer() {
   const { t } = useTranslation()
 
   return (
-    <footer className="border-t border-slate-200 bg-slate-100 pt-16 pb-8 dark:border-white/10 dark:bg-[#050505]">
+    <footer className="border-t border-divider bg-default-50 pt-16 pb-8">
       <div className="container mx-auto px-4">
         <div className="mb-16 grid grid-cols-2 gap-8 md:grid-cols-4 lg:grid-cols-5">
           {/* Brand Column */}
@@ -54,16 +54,16 @@ export function Footer() {
               <div className="flex size-6 items-center justify-center rounded bg-primary text-white">
                 <Layers size={16} />
               </div>
-              <span className="text-lg font-medium tracking-tight text-slate-900 dark:text-white">Bingo</span>
+              <span className="text-lg font-medium tracking-tight text-foreground">Bingo</span>
             </Link>
-            <p className="mb-6 max-w-xs text-sm text-slate-600 dark:text-slate-400">{t('footer.description')}</p>
+            <p className="mb-6 max-w-xs text-sm text-default-500">{t('footer.description')}</p>
             <div className="flex gap-4">
               {SOCIAL_LINKS.map((social) => (
                 <a
                   key={social.name}
                   href={social.href}
                   aria-label={social.name}
-                  className="text-slate-500 transition-colors hover:text-slate-900 dark:text-slate-400 dark:hover:text-white"
+                  className="text-default-500 transition-colors hover:text-foreground"
                 >
                   {social.icon}
                 </a>
@@ -74,14 +74,11 @@ export function Footer() {
           {/* Link Columns */}
           {Object.entries(FOOTER_LINKS).map(([category, links]) => (
             <div key={category}>
-              <h4 className="mb-4 font-medium text-slate-900 dark:text-white">{t(`footer.${category}.title`)}</h4>
+              <h4 className="mb-4 font-medium text-foreground">{t(`footer.${category}.title`)}</h4>
               <ul className="flex flex-col gap-2">
                 {links.map((link) => (
                   <li key={link}>
-                    <a
-                      href="#"
-                      className="text-sm text-slate-600 transition-colors hover:text-slate-900 dark:text-slate-400 dark:hover:text-white"
-                    >
+                    <a href="#" className="text-sm text-default-500 transition-colors hover:text-foreground">
                       {t(`footer.${category}.${link}`)}
                     </a>
                   </li>
@@ -92,11 +89,11 @@ export function Footer() {
         </div>
 
         {/* Bottom Bar */}
-        <div className="flex flex-col items-center justify-between gap-4 border-t border-slate-200 pt-8 md:flex-row dark:border-white/5">
-          <p className="text-sm text-slate-500">{t('footer.copyright')}</p>
-          <div className="flex items-center gap-2 rounded-full border border-slate-300 bg-slate-200 px-3 py-1 dark:border-white/10 dark:bg-white/5">
+        <div className="flex flex-col items-center justify-between gap-4 border-t border-divider pt-8 md:flex-row">
+          <p className="text-sm text-default-500">{t('footer.copyright')}</p>
+          <div className="flex items-center gap-2 rounded-full border border-divider bg-default-100 px-3 py-1">
             <span className="size-2 animate-pulse rounded-full bg-primary" />
-            <span className="text-xs font-medium text-slate-600 dark:text-slate-300">{t('footer.builtWith')}</span>
+            <span className="text-xs font-medium text-default-600">{t('footer.builtWith')}</span>
           </div>
         </div>
       </div>

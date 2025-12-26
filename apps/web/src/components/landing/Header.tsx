@@ -32,7 +32,7 @@ export function Header() {
   }
 
   return (
-    <header className="fixed top-0 right-0 left-0 z-50 border-b border-black/5 bg-white/80 backdrop-blur-md transition-all duration-300 dark:border-white/5 dark:bg-black/80">
+    <header className="fixed top-0 right-0 left-0 z-50 border-b border-divider bg-background/80 backdrop-blur-md transition-all duration-300">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-20 items-center justify-between">
           {/* Logo */}
@@ -69,7 +69,7 @@ export function Header() {
               <span className="text-xs font-medium">{i18n.language === 'zh-CN' ? 'EN' : '中'}</span>
             </Button>
 
-            <div className="mx-1 hidden h-6 w-px bg-slate-200 sm:block dark:bg-slate-700" />
+            <div className="mx-1 hidden h-6 w-px bg-divider sm:block" />
 
             {isAuthenticated ? (
               /* Logged in state */
@@ -85,7 +85,7 @@ export function Header() {
                     <div className="flex cursor-pointer items-center gap-3">
                       <div className="hidden text-right sm:block">
                         <p className="text-sm font-bold leading-none">{user?.nickname || 'User'}</p>
-                        <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">{user?.email}</p>
+                        <p className="mt-1 text-xs text-default-500">{user?.email}</p>
                       </div>
                       <div className="relative">
                         <Avatar
@@ -94,7 +94,7 @@ export function Header() {
                           size="sm"
                           className="ring-2 ring-transparent transition-all hover:ring-primary"
                         />
-                        <span className="absolute bottom-0 right-0 size-2.5 rounded-full border-2 border-white bg-green-500 dark:border-black" />
+                        <span className="absolute bottom-0 right-0 size-2.5 rounded-full border-2 border-background bg-green-500" />
                       </div>
                     </div>
                   </DropdownTrigger>
@@ -128,7 +128,7 @@ export function Header() {
                   to="/login"
                   variant="bordered"
                   radius="full"
-                  className="hidden h-10 w-24 items-center justify-center border-slate-200 px-5 font-medium hover:bg-slate-100 sm:inline-flex dark:border-slate-700 dark:hover:bg-surface-dark"
+                  className="hidden h-10 w-24 items-center justify-center border-divider px-5 font-medium hover:bg-default-100 sm:inline-flex"
                 >
                   {t('nav.login')}
                 </Button>

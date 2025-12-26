@@ -52,9 +52,9 @@ export function PricingSection() {
       <div className="container relative z-10 mx-auto px-4">
         {/* Header */}
         <div className="mb-16 flex flex-col items-center text-center">
-          <h2 className="mb-4 text-3xl font-medium text-slate-900 md:text-4xl dark:text-white">{t('pricing.title')}</h2>
+          <h2 className="mb-4 text-3xl font-medium text-foreground md:text-4xl">{t('pricing.title')}</h2>
           <div className="mt-4 flex items-center justify-center gap-3">
-            <span className={`text-sm font-medium ${isYearly ? 'text-slate-500' : 'text-slate-900 dark:text-white'}`}>
+            <span className={`text-sm font-medium ${isYearly ? 'text-default-500' : 'text-foreground'}`}>
               {t('pricing.monthly')}
             </span>
             <Switch
@@ -64,10 +64,10 @@ export function PricingSection() {
               color="primary"
               aria-label="Toggle billing period"
             />
-            <span className={`text-sm font-medium ${isYearly ? 'text-slate-900 dark:text-white' : 'text-slate-500'}`}>
+            <span className={`text-sm font-medium ${isYearly ? 'text-foreground' : 'text-default-500'}`}>
               {t('pricing.yearly')}
             </span>
-            <span className="rounded-full bg-green-100 px-2 py-0.5 text-xs font-medium text-green-700 dark:bg-green-900 dark:text-green-300">
+            <span className="rounded-full bg-success-100 px-2 py-0.5 text-xs font-medium text-success-700">
               {t('pricing.save20')}
             </span>
           </div>
@@ -93,28 +93,22 @@ export function PricingSection() {
                   shadow="none"
                   className={`flex h-full flex-col transition-all duration-300 ${
                     isSelected
-                      ? 'border-2 border-primary bg-white shadow-2xl shadow-primary/20 dark:bg-neutral-800'
-                      : 'border border-slate-200 bg-white dark:border-white/5 dark:bg-surface-dark'
+                      ? 'border-2 border-primary bg-content1 shadow-2xl shadow-primary/20'
+                      : 'border border-divider bg-content1'
                   }`}
                 >
                   <CardBody className="flex flex-1 flex-col p-8">
-                    <h3 className="mb-2 text-xl font-medium text-slate-900 dark:text-white">
-                      {t(`pricing.${plan.key}.name`)}
-                    </h3>
+                    <h3 className="mb-2 text-xl font-medium text-foreground">{t(`pricing.${plan.key}.name`)}</h3>
                     <div className="mb-6 flex items-baseline gap-1">
-                      <span className="text-4xl font-medium text-slate-900 dark:text-white">
+                      <span className="text-4xl font-medium text-foreground">
                         {plan.price ? plan.price[billingPeriod] : t('pricing.custom')}
                       </span>
-                      {plan.period && (
-                        <span className="text-slate-500 dark:text-slate-400">{plan.period[billingPeriod]}</span>
-                      )}
+                      {plan.period && <span className="text-default-500">{plan.period[billingPeriod]}</span>}
                     </div>
-                    <p className="mb-6 text-sm text-slate-600 dark:text-slate-300">
-                      {t(`pricing.${plan.key}.description`)}
-                    </p>
+                    <p className="mb-6 text-sm text-default-500">{t(`pricing.${plan.key}.description`)}</p>
                     <ul className="mb-8 flex flex-1 flex-col gap-3">
                       {plan.features.map((feature) => (
-                        <li key={feature} className="flex items-center gap-2 text-sm text-slate-700 dark:text-white">
+                        <li key={feature} className="flex items-center gap-2 text-sm text-foreground">
                           {isSelected ? (
                             <CheckCircle size={18} className="text-primary" />
                           ) : (
