@@ -3,17 +3,19 @@
 
 import { createBrowserRouter } from 'react-router'
 import { RootLayout } from '@/layouts'
-import { HomePage, AboutPage, LoginPage, RegisterPage } from '@/pages'
+import { HomePage, AboutPage, LoginPage, RegisterPage, ErrorPage } from '@/pages'
 
 export const router = createBrowserRouter([
   {
     path: '/',
     element: <RootLayout />,
+    errorElement: <ErrorPage />,
     children: [
       { index: true, element: <HomePage /> },
       { path: 'about', element: <AboutPage /> },
     ],
   },
-  { path: '/login', element: <LoginPage /> },
-  { path: '/register', element: <RegisterPage /> },
+  { path: '/login', element: <LoginPage />, errorElement: <ErrorPage /> },
+  { path: '/register', element: <RegisterPage />, errorElement: <ErrorPage /> },
+  { path: '*', element: <ErrorPage /> },
 ])
