@@ -122,20 +122,14 @@ export function RegisterPage() {
                 control={control}
                 render={({ field }) => (
                   <div className="px-1">
-                    <div className="flex cursor-pointer items-start gap-3">
+                    <div className="flex cursor-pointer items-center gap-2">
                       <Checkbox
                         isSelected={field.value === true}
                         onValueChange={field.onChange}
                         size="sm"
                         isInvalid={!!errors.agreeTerms}
-                        classNames={{
-                          base: 'mt-0.5',
-                        }}
                       />
-                      <span
-                        className="text-xs leading-relaxed text-default-500"
-                        onClick={() => field.onChange(!field.value)}
-                      >
+                      <span className="text-xs text-default-500" onClick={() => field.onChange(!field.value)}>
                         {t('auth.register.agreeTerms')}{' '}
                         <Link to="/terms" className="text-primary hover:underline" onClick={(e) => e.stopPropagation()}>
                           {t('auth.register.termsOfService')}

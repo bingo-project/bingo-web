@@ -26,7 +26,7 @@ export const PasswordInput = forwardRef<HTMLInputElement, PasswordInputProps>((p
           onClick={() => setIsVisible(!isVisible)}
           className="shrink-0 text-default-400 transition-colors hover:text-default-600 focus:outline-none"
         >
-          {isVisible ? <EyeOff size={18} /> : <Eye size={18} />}
+          {isVisible ? <Eye size={18} /> : <EyeOff size={18} />}
         </button>
       }
     />
