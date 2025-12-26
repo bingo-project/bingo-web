@@ -1,4 +1,6 @@
-# HeroUI + Tailwind CSS v4 兼容性指南
+# HeroUI + Tailwind CSS v4 问题排查
+
+> 遇到样式问题时查阅本文档。规范请参考 [CONVENTIONS.md](../CONVENTIONS.md)。
 
 ## 背景
 

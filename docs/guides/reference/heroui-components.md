@@ -1,4 +1,10 @@
-# 常用组件配置参考
+# HeroUI 组件参考
+
+> 本文档仅包含组件使用示例。规范请参考 [CONVENTIONS.md](../CONVENTIONS.md)。
+>
+> 完整文档：https://heroui.com/docs/components
+
+---
 
 ## Button
 
@@ -6,14 +12,18 @@
 import { Button } from '@heroui/react'
 import { ArrowRight } from 'lucide-react'
 
-// 主要按钮
-<Button color="primary" radius="full">
-  提交
+// 主 CTA 按钮（渐变）
+<Button
+  color="primary"
+  radius="full"
+  className="bg-gradient-to-r from-primary to-blue-600 font-bold text-white"
+>
+  Get Started
 </Button>
 
 // 次要按钮
 <Button variant="bordered" radius="full">
-  取消
+  Learn More
 </Button>
 
 // 带图标
@@ -32,7 +42,8 @@ import { ArrowRight } from 'lucide-react'
 </Button>
 
 // 链接按钮
-import { Link as RouterLink } from 'react-router-dom'
+import { Link as RouterLink } from 'react-router'
+
 <Button as={RouterLink} to="/login" color="primary" radius="full">
   去登录
 </Button>
@@ -44,11 +55,10 @@ import { Link as RouterLink } from 'react-router-dom'
 
 ```tsx
 import { Input } from '@heroui/react'
-import { Mail, Eye, EyeOff } from 'lucide-react'
+import { Mail } from 'lucide-react'
 
 // 基础输入框
 <Input
-  type="email"
   variant="bordered"
   radius="full"
   label="邮箱"
@@ -60,26 +70,12 @@ import { Mail, Eye, EyeOff } from 'lucide-react'
   variant="bordered"
   radius="full"
   placeholder="请输入邮箱"
-  startContent={<Mail size={18} className="text-default-400" />}
-/>
-
-// 密码输入框（带切换可见性）
-const [isVisible, setIsVisible] = useState(false)
-
-<Input
-  type={isVisible ? 'text' : 'password'}
-  variant="bordered"
-  radius="full"
-  label="密码"
-  endContent={
-    <button
-      type="button"
-      onClick={() => setIsVisible(!isVisible)}
-      className="text-default-400 hover:text-default-600"
-    >
-      {isVisible ? <EyeOff size={18} /> : <Eye size={18} />}
-    </button>
-  }
+  startContent={<Mail size={18} className="shrink-0 text-default-400" />}
+  classNames={{
+    input: 'pl-1',
+    innerWrapper: 'gap-2',
+    inputWrapper: 'h-12',
+  }}
 />
 
 // 错误状态
@@ -93,6 +89,25 @@ const [isVisible, setIsVisible] = useState(false)
 
 ---
 
+## PasswordInput（项目封装）
+
+```tsx
+import { PasswordInput } from '@/components/auth'
+import { Lock } from 'lucide-react'
+
+;<PasswordInput
+  variant="bordered"
+  radius="full"
+  placeholder="请输入密码"
+  startContent={<Lock size={18} className="shrink-0 text-default-400" />}
+  classNames={{
+    inputWrapper: 'h-12',
+  }}
+/>
+```
+
+---
+
 ## Checkbox
 
 ```tsx
@@ -101,7 +116,6 @@ import { Checkbox } from '@heroui/react'
 // 基础复选框
 <Checkbox
   size="sm"
-  radius="full"
   classNames={{
     label: 'text-sm text-default-500',
   }}
@@ -110,7 +124,7 @@ import { Checkbox } from '@heroui/react'
 </Checkbox>
 
 // 带链接的复选框
-<Checkbox size="sm" radius="full">
+<Checkbox size="sm">
   <span className="text-sm text-default-500">
     我已阅读并同意
     <Link href="/terms" color="primary" size="sm">
@@ -126,7 +140,7 @@ import { Checkbox } from '@heroui/react'
 
 ```tsx
 import { Link } from '@heroui/react'
-import { Link as RouterLink } from 'react-router-dom'
+import { Link as RouterLink } from 'react-router'
 
 // 内部链接（配合 React Router）
 <Link as={RouterLink} to="/login" color="primary" size="sm">
@@ -166,12 +180,22 @@ import { Card, CardHeader, CardBody, CardFooter } from '@heroui/react'
   内容
 </Card>
 
-// 注意：Card 不要使用 radius="full"，保持默认圆角
+// 自定义样式
+<Card
+  className="border border-divider"
+  classNames={{
+    base: 'bg-content1',
+    header: 'pb-0',
+    body: 'py-4',
+  }}
+>
+  内容
+</Card>
 ```
 
 ---
 
-## Dropdown（用户菜单）
+## Dropdown
 
 ```tsx
 import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button } from '@heroui/react'
@@ -217,7 +241,7 @@ import { Divider } from '@heroui/react'
 
 ---
 
-## Accordion（FAQ 场景）
+## Accordion
 
 ```tsx
 import { Accordion, AccordionItem } from '@heroui/react'
@@ -234,7 +258,26 @@ import { Accordion, AccordionItem } from '@heroui/react'
 
 ---
 
-## 常见 Props 速查
+## Switch
+
+```tsx
+import { Switch } from '@heroui/react'
+import { Sun, Moon } from 'lucide-react'
+
+// 基础开关
+<Switch size="sm" />
+
+// 带图标的主题切换
+<Switch
+  size="lg"
+  startContent={<Sun size={16} />}
+  endContent={<Moon size={16} />}
+/>
+```
+
+---
+
+## 常用 Props 速查
 
 | Prop      | 可选值                                                                 | 说明     |
 | --------- | ---------------------------------------------------------------------- | -------- |
@@ -242,15 +285,3 @@ import { Accordion, AccordionItem } from '@heroui/react'
 | `variant` | `solid` / `bordered` / `light` / `flat` / `faded` / `ghost`            | 变体样式 |
 | `radius`  | `none` / `sm` / `md` / `lg` / `full`                                   | 圆角大小 |
 | `size`    | `sm` / `md` / `lg`                                                     | 尺寸     |
-
----
-
-## 项目约定
-
-| 组件     | 默认 radius | 默认 variant | 说明                       |
-| -------- | ----------- | ------------ | -------------------------- |
-| Button   | `full`      | `solid`      | 全圆角按钮                 |
-| Input    | `full`      | `bordered`   | 全圆角带边框输入框         |
-| Checkbox | `full`      | -            | 全圆角复选框               |
-| Card     | 默认        | -            | 保持 HeroUI 默认圆角       |
-| Link     | -           | -            | 主要使用 `color="primary"` |
