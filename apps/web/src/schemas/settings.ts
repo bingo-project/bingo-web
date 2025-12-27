@@ -30,7 +30,7 @@ export const createChangePasswordSchema = () =>
       path: ['passwordConfirm'],
     })
 
-export const createPayPasswordSchema = () =>
+export const createPayPasswordSchema = (totpEnabled: boolean = false) =>
   z
     .object({
       loginPassword: z
@@ -45,7 +45,12 @@ export const createPayPasswordSchema = () =>
         .string()
         .min(1, $t('ui.formRules.required', { field: $t('settings.fields.confirmPayPassword') })),
       code: z.string().min(1, $t('ui.formRules.required', { field: $t('settings.fields.verificationCode') })),
-      totpCode: z.string().optional(),
+      totpCode: totpEnabled
+        ? z
+            .string()
+            .length(6, $t('ui.formRules.length', { field: $t('settings.fields.totpCode'), len: '6' }))
+            .regex(/^\d+$/, $t('ui.formRules.digitsOnly', { field: $t('settings.fields.totpCode') }))
+        : z.string().optional(),
     })
     .refine((data) => data.payPassword === data.payPasswordConfirm, {
       message: $t('ui.formRules.mismatch', { field: $t('settings.fields.payPasswords') }),

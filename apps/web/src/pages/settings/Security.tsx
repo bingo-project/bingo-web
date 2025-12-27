@@ -538,28 +538,30 @@ function TOTPDisableModal({
         <ModalBody>
           <p className="mb-4 text-default-500">{t('settings.security.totp.disableModal.description')}</p>
           <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5">
-            <div className="flex items-end gap-2">
-              <Input
-                {...register('verifyCode')}
-                label={t('settings.security.totp.disableModal.emailCode')}
-                placeholder={t('settings.security.totp.disableModal.emailCodePlaceholder')}
-                labelPlacement="outside"
-                variant="bordered"
-                radius="full"
-                isInvalid={!!errors.verifyCode}
-                errorMessage={errors.verifyCode?.message}
-                classNames={{ inputWrapper: 'h-12' }}
-              />
-              <Button
-                className="h-12 min-w-28 shrink-0"
-                variant="bordered"
-                radius="full"
-                isLoading={isSendingCode}
-                isDisabled={countdown > 0}
-                onPress={handleSendCode}
-              >
-                {countdown > 0 ? `${countdown}s` : t('settings.security.totp.disableModal.sendCode')}
-              </Button>
+            <div>
+              <div className="flex items-end gap-2">
+                <Input
+                  {...register('verifyCode')}
+                  label={t('settings.security.totp.disableModal.emailCode')}
+                  placeholder={t('settings.security.totp.disableModal.emailCodePlaceholder')}
+                  labelPlacement="outside"
+                  variant="bordered"
+                  radius="full"
+                  isInvalid={!!errors.verifyCode}
+                  classNames={{ inputWrapper: 'h-12' }}
+                />
+                <Button
+                  className="h-12 min-w-28 shrink-0"
+                  variant="bordered"
+                  radius="full"
+                  isLoading={isSendingCode}
+                  isDisabled={countdown > 0}
+                  onPress={handleSendCode}
+                >
+                  {countdown > 0 ? `${countdown}s` : t('settings.security.totp.disableModal.sendCode')}
+                </Button>
+              </div>
+              {errors.verifyCode?.message && <p className="mt-1 text-xs text-danger">{errors.verifyCode.message}</p>}
             </div>
             <Input
               {...register('totpCode')}
@@ -617,7 +619,7 @@ function PayPasswordModal({
     reset,
     formState: { errors },
   } = useForm<PayPasswordFormData>({
-    resolver: zodResolver(createPayPasswordSchema()),
+    resolver: zodResolver(createPayPasswordSchema(totpEnabled)),
   })
 
   useEffect(() => {
@@ -678,7 +680,10 @@ function PayPasswordModal({
           {isReset ? t('settings.security.payPassword.resetTitle') : t('settings.security.payPassword.setup')}
         </ModalHeader>
         <ModalBody>
-          <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5">
+          <form onSubmit={handleSubmit(onSubmit)} autoComplete="off" className="flex flex-col gap-5">
+            {/* Hidden input to prevent Chrome from autofilling verification code */}
+            <input type="text" autoComplete="username" className="hidden" aria-hidden="true" />
+
             <PasswordInput
               {...register('loginPassword')}
               label={t('settings.security.payPassword.loginPassword')}
@@ -720,28 +725,31 @@ function PayPasswordModal({
               maxLength={6}
               classNames={{ inputWrapper: 'h-12' }}
             />
-            <div className="flex items-end gap-2">
-              <Input
-                {...register('code')}
-                label={t('settings.security.payPassword.verificationCode')}
-                placeholder={t('settings.security.payPassword.verificationCodePlaceholder')}
-                labelPlacement="outside"
-                variant="bordered"
-                radius="full"
-                isInvalid={!!errors.code}
-                errorMessage={errors.code?.message}
-                classNames={{ inputWrapper: 'h-12' }}
-              />
-              <Button
-                className="h-12 min-w-28 shrink-0"
-                variant="bordered"
-                radius="full"
-                isLoading={isSendingCode}
-                isDisabled={countdown > 0}
-                onPress={handleSendCode}
-              >
-                {countdown > 0 ? `${countdown}s` : t('settings.security.payPassword.sendCode')}
-              </Button>
+            <div>
+              <div className="flex items-end gap-2">
+                <Input
+                  {...register('code')}
+                  autoComplete="one-time-code"
+                  label={t('settings.security.payPassword.verificationCode')}
+                  placeholder={t('settings.security.payPassword.verificationCodePlaceholder')}
+                  labelPlacement="outside"
+                  variant="bordered"
+                  radius="full"
+                  isInvalid={!!errors.code}
+                  classNames={{ inputWrapper: 'h-12' }}
+                />
+                <Button
+                  className="h-12 min-w-28 shrink-0"
+                  variant="bordered"
+                  radius="full"
+                  isLoading={isSendingCode}
+                  isDisabled={countdown > 0}
+                  onPress={handleSendCode}
+                >
+                  {countdown > 0 ? `${countdown}s` : t('settings.security.payPassword.sendCode')}
+                </Button>
+              </div>
+              {errors.code?.message && <p className="mt-1 text-xs text-danger">{errors.code.message}</p>}
             </div>
             {totpEnabled && (
               <Input
