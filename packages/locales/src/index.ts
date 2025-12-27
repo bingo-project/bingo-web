@@ -17,6 +17,31 @@ import enUSSettings from './langs/en-US/settings.json'
 
 export type SupportedLanguage = 'zh-CN' | 'en-US'
 
+const LANGUAGE_KEY = 'bingo-language'
+const SUPPORTED_LANGUAGES: SupportedLanguage[] = ['zh-CN', 'en-US']
+
+function getStoredLanguage(): SupportedLanguage | null {
+  if (typeof window === 'undefined') return null
+  const stored = localStorage.getItem(LANGUAGE_KEY)
+  if (stored && SUPPORTED_LANGUAGES.includes(stored as SupportedLanguage)) {
+    return stored as SupportedLanguage
+  }
+  return null
+}
+
+function getBrowserLanguage(): SupportedLanguage | null {
+  if (typeof window === 'undefined') return null
+  const browserLang = navigator.language
+  if (browserLang.startsWith('zh')) return 'zh-CN'
+  if (browserLang.startsWith('en')) return 'en-US'
+  return null
+}
+
+function saveLanguage(lang: SupportedLanguage): void {
+  if (typeof window === 'undefined') return
+  localStorage.setItem(LANGUAGE_KEY, lang)
+}
+
 export interface LocaleSetupOptions {
   defaultLocale?: SupportedLanguage
   loadMessages?: (lang: SupportedLanguage) => Promise<Record<string, unknown>>
@@ -34,11 +59,12 @@ let isInitialized = false
  */
 export async function setupI18n(options: LocaleSetupOptions = {}) {
   const { defaultLocale = 'zh-CN', loadMessages } = options
+  const initialLocale = getStoredLanguage() ?? getBrowserLanguage() ?? defaultLocale
 
   if (!isInitialized) {
     await i18n.use(initReactI18next).init({
       resources: coreResources,
-      lng: defaultLocale,
+      lng: initialLocale,
       fallbackLng: 'en-US',
       interpolation: {
         escapeValue: false,
@@ -49,9 +75,9 @@ export async function setupI18n(options: LocaleSetupOptions = {}) {
 
   // Load and merge app-level messages
   if (loadMessages) {
-    const appMessages = await loadMessages(defaultLocale)
+    const appMessages = await loadMessages(initialLocale)
     if (appMessages) {
-      i18n.addResourceBundle(defaultLocale, 'translation', appMessages, true, true)
+      i18n.addResourceBundle(initialLocale, 'translation', appMessages, true, true)
     }
   }
 
@@ -77,6 +103,8 @@ export async function loadLocaleMessages(
   if (i18n.language !== lang) {
     await i18n.changeLanguage(lang)
   }
+
+  saveLanguage(lang)
 }
 
 // $t for non-component usage (e.g., in interceptors)
