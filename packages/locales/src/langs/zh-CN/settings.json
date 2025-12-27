@@ -136,6 +136,25 @@
         "disable": "关闭两步验证失败",
         "setup": "获取两步验证设置失败"
       }
+    },
+    "socialAccounts": {
+      "title": "社交账号",
+      "description": "绑定社交账号以快速登录。",
+      "linked": "已绑定",
+      "notLinked": "未绑定",
+      "link": "绑定",
+      "unlink": "解绑",
+      "unlinkConfirm": "确定要解绑 {{provider}} 吗？",
+      "unlinkSuccess": "{{provider}} 解绑成功",
+      "linkSuccess": "{{provider}} 绑定成功",
+      "providers": {
+        "google": "Google",
+        "github": "GitHub",
+        "apple": "Apple",
+        "microsoft": "Microsoft",
+        "discord": "Discord",
+        "twitter": "Twitter"
+      }
     }
   }
 }

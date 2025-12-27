@@ -136,6 +136,25 @@
         "disable": "Failed to disable 2FA",
         "setup": "Failed to get 2FA setup"
       }
+    },
+    "socialAccounts": {
+      "title": "Social Accounts",
+      "description": "Link social accounts for quick login.",
+      "linked": "Linked",
+      "notLinked": "Not Linked",
+      "link": "Link",
+      "unlink": "Unlink",
+      "unlinkConfirm": "Are you sure you want to unlink {{provider}}?",
+      "unlinkSuccess": "{{provider}} unlinked successfully",
+      "linkSuccess": "{{provider}} linked successfully",
+      "providers": {
+        "google": "Google",
+        "github": "GitHub",
+        "apple": "Apple",
+        "microsoft": "Microsoft",
+        "discord": "Discord",
+        "twitter": "Twitter"
+      }
     }
   }
 }
