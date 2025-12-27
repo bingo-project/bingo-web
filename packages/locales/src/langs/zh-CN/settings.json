@@ -1,4 +1,19 @@
 {
+  "fields": {
+    "nickname": "昵称",
+    "password": "密码",
+    "currentPassword": "当前密码",
+    "newPassword": "新密码",
+    "confirmPassword": "确认密码",
+    "loginPassword": "登录密码",
+    "payPassword": "支付密码",
+    "confirmPayPassword": "确认支付密码",
+    "verificationCode": "验证码",
+    "emailCode": "邮箱验证码",
+    "totpCode": "动态码",
+    "passwords": "密码",
+    "payPasswords": "支付密码"
+  },
   "nav": {
     "title": "设置",
     "profile": "个人资料",

@@ -12,8 +12,8 @@ import { authApi } from '@bingo/core'
 import { useTranslation } from '@/locales'
 import { showApiError } from '@/utils'
 import {
-  forgotPasswordSchema,
-  resetPasswordSchema,
+  createForgotPasswordSchema,
+  createResetPasswordSchema,
   type ForgotPasswordFormData,
   type ResetPasswordFormData,
 } from '@/schemas'
@@ -29,12 +29,12 @@ export function ForgotPasswordPage() {
   const [email, setEmail] = useState('')
 
   const emailForm = useForm<ForgotPasswordFormData>({
-    resolver: zodResolver(forgotPasswordSchema),
+    resolver: zodResolver(createForgotPasswordSchema()),
     defaultValues: { email: '' },
   })
 
   const resetForm = useForm<ResetPasswordFormData>({
-    resolver: zodResolver(resetPasswordSchema),
+    resolver: zodResolver(createResetPasswordSchema()),
     defaultValues: { code: '', password: '', confirmPassword: '' },
   })
 

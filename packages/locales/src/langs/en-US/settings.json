@@ -1,4 +1,19 @@
 {
+  "fields": {
+    "nickname": "Nickname",
+    "password": "Password",
+    "currentPassword": "Current password",
+    "newPassword": "New password",
+    "confirmPassword": "Confirm password",
+    "loginPassword": "Login password",
+    "payPassword": "Payment password",
+    "confirmPayPassword": "Confirm payment password",
+    "verificationCode": "Verification code",
+    "emailCode": "Email verification code",
+    "totpCode": "TOTP code",
+    "passwords": "Passwords",
+    "payPasswords": "Payment passwords"
+  },
   "nav": {
     "title": "Settings",
     "profile": "Profile",

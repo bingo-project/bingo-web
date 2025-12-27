@@ -4,54 +4,73 @@
 import { z } from 'zod'
 import { $t } from '@bingo/locales'
 
-export const profileSchema = z.object({
-  nickname: z.string().min(2, $t('errors.validation.nicknameMin')).max(255, $t('errors.validation.nicknameMax')),
-})
-
-export const changePasswordSchema = z
-  .object({
-    passwordOld: z.string().min(6, $t('errors.validation.passwordMin')).max(18, $t('errors.validation.passwordMax')),
-    passwordNew: z.string().min(6, $t('errors.validation.passwordMin')).max(18, $t('errors.validation.passwordMax')),
-    passwordConfirm: z.string().min(1, $t('errors.validation.confirmPasswordRequired')),
-  })
-  .refine((data) => data.passwordNew === data.passwordConfirm, {
-    message: $t('errors.validation.passwordMismatch'),
-    path: ['passwordConfirm'],
-  })
-
-export const payPasswordSchema = z
-  .object({
-    loginPassword: z.string().min(6, $t('errors.validation.passwordMin')).max(18, $t('errors.validation.passwordMax')),
-    payPassword: z
+export const createProfileSchema = () =>
+  z.object({
+    nickname: z
       .string()
-      .length(6, $t('errors.validation.payPasswordLength'))
-      .regex(/^\d+$/, $t('errors.validation.payPasswordDigits')),
-    payPasswordConfirm: z.string().min(1, $t('errors.validation.confirmPayPasswordRequired')),
-    code: z.string().min(1, $t('errors.validation.codeRequired')),
-    totpCode: z.string().optional(),
-  })
-  .refine((data) => data.payPassword === data.payPasswordConfirm, {
-    message: $t('errors.validation.payPasswordMismatch'),
-    path: ['payPasswordConfirm'],
+      .min(2, $t('ui.formRules.minLength', { field: $t('settings.fields.nickname'), min: '2' }))
+      .max(255, $t('ui.formRules.maxLength', { field: $t('settings.fields.nickname'), max: '255' })),
   })
 
-export const totpEnableSchema = z.object({
-  code: z
-    .string()
-    .length(6, $t('errors.validation.totpCodeLength'))
-    .regex(/^\d+$/, $t('errors.validation.totpCodeDigits')),
-})
+export const createChangePasswordSchema = () =>
+  z
+    .object({
+      passwordOld: z
+        .string()
+        .min(6, $t('ui.formRules.minLength', { field: $t('settings.fields.currentPassword'), min: '6' }))
+        .max(18, $t('ui.formRules.maxLength', { field: $t('settings.fields.currentPassword'), max: '18' })),
+      passwordNew: z
+        .string()
+        .min(6, $t('ui.formRules.minLength', { field: $t('settings.fields.newPassword'), min: '6' }))
+        .max(18, $t('ui.formRules.maxLength', { field: $t('settings.fields.newPassword'), max: '18' })),
+      passwordConfirm: z.string().min(1, $t('ui.formRules.required', { field: $t('settings.fields.confirmPassword') })),
+    })
+    .refine((data) => data.passwordNew === data.passwordConfirm, {
+      message: $t('ui.formRules.mismatch', { field: $t('settings.fields.passwords') }),
+      path: ['passwordConfirm'],
+    })
 
-export const totpDisableSchema = z.object({
-  verifyCode: z.string().min(1, $t('errors.validation.emailCodeRequired')),
-  totpCode: z
-    .string()
-    .length(6, $t('errors.validation.totpCodeLength'))
-    .regex(/^\d+$/, $t('errors.validation.totpCodeDigits')),
-})
+export const createPayPasswordSchema = () =>
+  z
+    .object({
+      loginPassword: z
+        .string()
+        .min(6, $t('ui.formRules.minLength', { field: $t('settings.fields.loginPassword'), min: '6' }))
+        .max(18, $t('ui.formRules.maxLength', { field: $t('settings.fields.loginPassword'), max: '18' })),
+      payPassword: z
+        .string()
+        .length(6, $t('ui.formRules.length', { field: $t('settings.fields.payPassword'), len: '6' }))
+        .regex(/^\d+$/, $t('ui.formRules.digitsOnly', { field: $t('settings.fields.payPassword') })),
+      payPasswordConfirm: z
+        .string()
+        .min(1, $t('ui.formRules.required', { field: $t('settings.fields.confirmPayPassword') })),
+      code: z.string().min(1, $t('ui.formRules.required', { field: $t('settings.fields.verificationCode') })),
+      totpCode: z.string().optional(),
+    })
+    .refine((data) => data.payPassword === data.payPasswordConfirm, {
+      message: $t('ui.formRules.mismatch', { field: $t('settings.fields.payPasswords') }),
+      path: ['payPasswordConfirm'],
+    })
 
-export type ProfileFormData = z.infer<typeof profileSchema>
-export type ChangePasswordFormData = z.infer<typeof changePasswordSchema>
-export type PayPasswordFormData = z.infer<typeof payPasswordSchema>
-export type TOTPEnableFormData = z.infer<typeof totpEnableSchema>
-export type TOTPDisableFormData = z.infer<typeof totpDisableSchema>
+export const createTotpEnableSchema = () =>
+  z.object({
+    code: z
+      .string()
+      .length(6, $t('ui.formRules.length', { field: $t('settings.fields.totpCode'), len: '6' }))
+      .regex(/^\d+$/, $t('ui.formRules.digitsOnly', { field: $t('settings.fields.totpCode') })),
+  })
+
+export const createTotpDisableSchema = () =>
+  z.object({
+    verifyCode: z.string().min(1, $t('ui.formRules.required', { field: $t('settings.fields.emailCode') })),
+    totpCode: z
+      .string()
+      .length(6, $t('ui.formRules.length', { field: $t('settings.fields.totpCode'), len: '6' }))
+      .regex(/^\d+$/, $t('ui.formRules.digitsOnly', { field: $t('settings.fields.totpCode') })),
+  })
+
+export type ProfileFormData = z.infer<ReturnType<typeof createProfileSchema>>
+export type ChangePasswordFormData = z.infer<ReturnType<typeof createChangePasswordSchema>>
+export type PayPasswordFormData = z.infer<ReturnType<typeof createPayPasswordSchema>>
+export type TOTPEnableFormData = z.infer<ReturnType<typeof createTotpEnableSchema>>
+export type TOTPDisableFormData = z.infer<ReturnType<typeof createTotpDisableSchema>>

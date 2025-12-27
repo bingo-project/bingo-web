@@ -9,7 +9,7 @@ import { Upload, Trash2, CheckCircle } from 'lucide-react'
 import { toast } from 'sonner'
 import { useAuthStore, authApi } from '@bingo/core'
 import { useTranslation } from '@/locales'
-import { profileSchema, type ProfileFormData } from '@/schemas'
+import { createProfileSchema, type ProfileFormData } from '@/schemas'
 
 export function ProfileSettingsPage() {
   const { t } = useTranslation()
@@ -24,7 +24,7 @@ export function ProfileSettingsPage() {
     handleSubmit,
     formState: { errors, isDirty },
   } = useForm<ProfileFormData>({
-    resolver: zodResolver(profileSchema),
+    resolver: zodResolver(createProfileSchema()),
     defaultValues: {
       nickname: user?.nickname || '',
     },

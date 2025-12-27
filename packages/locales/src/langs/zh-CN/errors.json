@@ -17,24 +17,7 @@
   },
 
   "validation": {
-    "emailRequired": "请输入邮箱",
-    "emailInvalid": "邮箱格式不正确",
-    "passwordRequired": "请输入密码",
-    "passwordMin": "密码至少 6 位",
-    "passwordMax": "密码最多 18 位",
-    "passwordMismatch": "两次密码不一致",
-    "confirmPasswordRequired": "请确认密码",
-    "agreeTermsRequired": "请同意服务条款",
-    "nicknameMin": "昵称至少 2 个字符",
-    "nicknameMax": "昵称最多 255 个字符",
-    "payPasswordLength": "支付密码必须是 6 位数字",
-    "payPasswordDigits": "支付密码只能是数字",
-    "payPasswordMismatch": "两次支付密码不一致",
-    "confirmPayPasswordRequired": "请确认支付密码",
-    "codeRequired": "请输入验证码",
-    "emailCodeRequired": "请输入邮箱验证码",
-    "totpCodeLength": "动态码必须是 6 位",
-    "totpCodeDigits": "动态码只能是数字"
+    "agreeTermsRequired": "请同意服务条款"
   },
 
   "InvalidArgument.InvalidCode": "验证码无效",

@@ -1,4 +1,14 @@
 {
+  "formRules": {
+    "required": "请输入{{field}}",
+    "selectRequired": "请选择{{field}}",
+    "minLength": "{{field}}至少{{min}}个字符",
+    "maxLength": "{{field}}最多{{max}}个字符",
+    "length": "{{field}}长度必须为{{len}}个字符",
+    "digitsOnly": "{{field}}只能是数字",
+    "mismatch": "{{field}}不一致",
+    "invalidEmail": "请输入有效的邮箱地址"
+  },
   "fallback": {
     "404": {
       "title": "页面未找到",

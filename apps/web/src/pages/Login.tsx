@@ -10,7 +10,7 @@ import { Mail, Lock } from 'lucide-react'
 import { toast } from 'sonner'
 import { useAuthStore } from '@bingo/core'
 import { useTranslation } from '@/locales'
-import { loginSchema, type LoginFormData } from '@/schemas'
+import { createLoginSchema, type LoginFormData } from '@/schemas'
 import { AuthHeader, AuthFooter, AuthCard, Divider, PasswordInput, OAuthButtons } from '@/components/auth'
 
 export function LoginPage() {
@@ -26,7 +26,7 @@ export function LoginPage() {
     handleSubmit,
     formState: { errors },
   } = useForm<LoginFormData>({
-    resolver: zodResolver(loginSchema),
+    resolver: zodResolver(createLoginSchema()),
     defaultValues: {
       account: '',
       password: '',

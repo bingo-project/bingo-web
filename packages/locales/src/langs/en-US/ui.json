@@ -1,4 +1,14 @@
 {
+  "formRules": {
+    "required": "Please enter {{field}}",
+    "selectRequired": "Please select {{field}}",
+    "minLength": "{{field}} must be at least {{min}} characters",
+    "maxLength": "{{field}} can be at most {{max}} characters",
+    "length": "{{field}} must be {{len}} characters long",
+    "digitsOnly": "{{field}} must be digits only",
+    "mismatch": "{{field}} do not match",
+    "invalidEmail": "Please enter a valid email address"
+  },
   "fallback": {
     "404": {
       "title": "Page Not Found",

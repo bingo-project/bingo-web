@@ -2,46 +2,67 @@
 // ABOUTME: Defines login and register form validation rules
 
 import { z } from 'zod'
+import { $t } from '@bingo/locales'
 
-export const loginSchema = z.object({
-  account: z.string().min(1, '请输入账号'),
-  password: z.string().min(6, '密码至少 6 位').max(18, '密码最多 18 位'),
-  rememberMe: z.boolean().optional(),
-})
-
-export const registerEmailSchema = z.object({
-  email: z.string().min(1, '请输入邮箱').email('邮箱格式不正确'),
-})
-
-export const registerFormSchema = z
-  .object({
-    code: z.string().min(1, '请输入验证码'),
-    password: z.string().min(6, '密码至少 6 位').max(18, '密码最多 18 位'),
-    confirmPassword: z.string().min(1, '请确认密码'),
-    agreeTerms: z.literal(true, { message: '请同意服务条款' }),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: '两次密码不一致',
-    path: ['confirmPassword'],
+export const createLoginSchema = () =>
+  z.object({
+    account: z.string().min(1, $t('ui.formRules.required', { field: $t('auth.fields.account') })),
+    password: z
+      .string()
+      .min(6, $t('ui.formRules.minLength', { field: $t('auth.fields.password'), min: '6' }))
+      .max(18, $t('ui.formRules.maxLength', { field: $t('auth.fields.password'), max: '18' })),
+    rememberMe: z.boolean().optional(),
   })
 
-export const forgotPasswordSchema = z.object({
-  email: z.string().min(1, '请输入邮箱').email('邮箱格式不正确'),
-})
-
-export const resetPasswordSchema = z
-  .object({
-    code: z.string().min(1, '请输入验证码'),
-    password: z.string().min(6, '密码至少 6 位').max(18, '密码最多 18 位'),
-    confirmPassword: z.string().min(1, '请确认密码'),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: '两次密码不一致',
-    path: ['confirmPassword'],
+export const createRegisterEmailSchema = () =>
+  z.object({
+    email: z
+      .string()
+      .min(1, $t('ui.formRules.required', { field: $t('auth.fields.email') }))
+      .email($t('ui.formRules.invalidEmail')),
   })
 
-export type LoginFormData = z.infer<typeof loginSchema>
-export type RegisterEmailFormData = z.infer<typeof registerEmailSchema>
-export type RegisterFormData = z.infer<typeof registerFormSchema>
-export type ForgotPasswordFormData = z.infer<typeof forgotPasswordSchema>
-export type ResetPasswordFormData = z.infer<typeof resetPasswordSchema>
+export const createRegisterFormSchema = () =>
+  z
+    .object({
+      code: z.string().min(1, $t('ui.formRules.required', { field: $t('auth.fields.verificationCode') })),
+      password: z
+        .string()
+        .min(6, $t('ui.formRules.minLength', { field: $t('auth.fields.password'), min: '6' }))
+        .max(18, $t('ui.formRules.maxLength', { field: $t('auth.fields.password'), max: '18' })),
+      confirmPassword: z.string().min(1, $t('ui.formRules.required', { field: $t('auth.fields.confirmPassword') })),
+      agreeTerms: z.literal(true, { message: $t('errors.validation.agreeTermsRequired') }),
+    })
+    .refine((data) => data.password === data.confirmPassword, {
+      message: $t('ui.formRules.mismatch', { field: $t('auth.fields.passwords') }),
+      path: ['confirmPassword'],
+    })
+
+export const createForgotPasswordSchema = () =>
+  z.object({
+    email: z
+      .string()
+      .min(1, $t('ui.formRules.required', { field: $t('auth.fields.email') }))
+      .email($t('ui.formRules.invalidEmail')),
+  })
+
+export const createResetPasswordSchema = () =>
+  z
+    .object({
+      code: z.string().min(1, $t('ui.formRules.required', { field: $t('auth.fields.verificationCode') })),
+      password: z
+        .string()
+        .min(6, $t('ui.formRules.minLength', { field: $t('auth.fields.password'), min: '6' }))
+        .max(18, $t('ui.formRules.maxLength', { field: $t('auth.fields.password'), max: '18' })),
+      confirmPassword: z.string().min(1, $t('ui.formRules.required', { field: $t('auth.fields.confirmPassword') })),
+    })
+    .refine((data) => data.password === data.confirmPassword, {
+      message: $t('ui.formRules.mismatch', { field: $t('auth.fields.passwords') }),
+      path: ['confirmPassword'],
+    })
+
+export type LoginFormData = z.infer<ReturnType<typeof createLoginSchema>>
+export type RegisterEmailFormData = z.infer<ReturnType<typeof createRegisterEmailSchema>>
+export type RegisterFormData = z.infer<ReturnType<typeof createRegisterFormSchema>>
+export type ForgotPasswordFormData = z.infer<ReturnType<typeof createForgotPasswordSchema>>
+export type ResetPasswordFormData = z.infer<ReturnType<typeof createResetPasswordSchema>>

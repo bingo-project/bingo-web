@@ -25,10 +25,10 @@ import { useTranslation } from '@/locales'
 import { showApiError } from '@/utils'
 import { PasswordInput } from '@/components/auth'
 import {
-  changePasswordSchema,
-  payPasswordSchema,
-  totpEnableSchema,
-  totpDisableSchema,
+  createChangePasswordSchema,
+  createPayPasswordSchema,
+  createTotpEnableSchema,
+  createTotpDisableSchema,
   type ChangePasswordFormData,
   type PayPasswordFormData,
   type TOTPEnableFormData,
@@ -193,7 +193,7 @@ function ChangePasswordModal({
     reset,
     formState: { errors },
   } = useForm<ChangePasswordFormData>({
-    resolver: zodResolver(changePasswordSchema),
+    resolver: zodResolver(createChangePasswordSchema()),
   })
 
   const onSubmit = async (data: ChangePasswordFormData) => {
@@ -390,7 +390,7 @@ function TOTPEnableModal({
     reset,
     formState: { errors },
   } = useForm<TOTPEnableFormData>({
-    resolver: zodResolver(totpEnableSchema),
+    resolver: zodResolver(createTotpEnableSchema()),
   })
 
   const onSubmit = async (data: TOTPEnableFormData) => {
@@ -492,7 +492,7 @@ function TOTPDisableModal({
     reset,
     formState: { errors },
   } = useForm<TOTPDisableFormData>({
-    resolver: zodResolver(totpDisableSchema),
+    resolver: zodResolver(createTotpDisableSchema()),
   })
 
   useEffect(() => {
@@ -617,7 +617,7 @@ function PayPasswordModal({
     reset,
     formState: { errors },
   } = useForm<PayPasswordFormData>({
-    resolver: zodResolver(payPasswordSchema),
+    resolver: zodResolver(createPayPasswordSchema()),
   })
 
   useEffect(() => {

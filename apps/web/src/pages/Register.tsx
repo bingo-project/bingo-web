@@ -11,7 +11,12 @@ import { toast } from 'sonner'
 import { useAuthStore, authApi } from '@bingo/core'
 import { useTranslation } from '@/locales'
 import { showApiError } from '@/utils'
-import { registerEmailSchema, registerFormSchema, type RegisterEmailFormData, type RegisterFormData } from '@/schemas'
+import {
+  createRegisterEmailSchema,
+  createRegisterFormSchema,
+  type RegisterEmailFormData,
+  type RegisterFormData,
+} from '@/schemas'
 import { AuthHeader, AuthFooter, AuthCard, Divider, PasswordInput, OAuthButtons } from '@/components/auth'
 
 type Step = 'email' | 'register'
@@ -26,12 +31,12 @@ export function RegisterPage() {
   const { register: registerUser, isAuthenticated } = useAuthStore()
 
   const emailForm = useForm<RegisterEmailFormData>({
-    resolver: zodResolver(registerEmailSchema),
+    resolver: zodResolver(createRegisterEmailSchema()),
     defaultValues: { email: '' },
   })
 
   const registerForm = useForm<RegisterFormData>({
-    resolver: zodResolver(registerFormSchema),
+    resolver: zodResolver(createRegisterFormSchema()),
     defaultValues: {
       code: '',
       password: '',
