@@ -15,7 +15,7 @@ interface AuthState {
   isLoading: boolean
 
   login: (account: string, password: string) => Promise<void>
-  register: (account: string, password: string) => Promise<void>
+  register: (account: string, password: string, code: string) => Promise<void>
   logout: () => void
   fetchUserInfo: () => Promise<void>
   initAuth: () => Promise<void>
@@ -49,10 +49,10 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     }
   },
 
-  register: async (account: string, password: string) => {
+  register: async (account: string, password: string, code: string) => {
     set({ isLoading: true })
     try {
-      const data: RegisterRequest = { account, password }
+      const data: RegisterRequest = { account, password, code }
       await authApi.register(data)
     } finally {
       set({ isLoading: false })
