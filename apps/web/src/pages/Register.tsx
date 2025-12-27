@@ -128,7 +128,7 @@ export function RegisterPage() {
                 {/* OAuth */}
                 <OAuthButtons />
 
-                <Divider text={t('auth.login.orContinueWith')} />
+                <Divider text={t('auth.register.orContinueWith')} />
 
                 {/* Step 1: Email form */}
                 <form onSubmit={emailForm.handleSubmit(onSendCode)} className="flex flex-col gap-4">
