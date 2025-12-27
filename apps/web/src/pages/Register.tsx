@@ -70,8 +70,15 @@ export function RegisterPage() {
       toast.success(t('auth.register.success'))
       navigate('/login', { replace: true })
     } catch (error) {
-      if (error instanceof ApiError && error.status === 429) {
-        toast.error(t('auth.register.tooManyRequests'))
+      if (error instanceof ApiError) {
+        const errorKey = `auth.register.errors.${error.reason}`
+        const errorMessage = t(errorKey)
+        // If translation exists for this reason, use it; otherwise use generic error
+        if (errorMessage !== errorKey) {
+          toast.error(errorMessage)
+        } else {
+          toast.error(t('auth.register.error'))
+        }
       } else {
         toast.error(t('auth.register.error'))
       }
