@@ -1,0 +1,116 @@
+{
+  "nav": {
+    "title": "Settings",
+    "profile": "Profile",
+    "security": "Security",
+    "notifications": "Notifications",
+    "subscription": "Subscription",
+    "logout": "Log Out"
+  },
+  "profile": {
+    "title": "Profile Settings",
+    "subtitle": "Manage your personal information and account details.",
+    "avatar": {
+      "title": "Profile Picture",
+      "description": "Supports JPG, PNG or GIF. Max size 2MB.",
+      "change": "Change Avatar",
+      "remove": "Remove"
+    },
+    "form": {
+      "personalInfo": "Personal Information",
+      "nickname": "Nickname",
+      "nicknamePlaceholder": "Enter your nickname",
+      "uid": "User ID",
+      "email": "Email Address",
+      "verified": "Verified",
+      "lastUpdated": "Last updated on {{date}}"
+    },
+    "actions": {
+      "save": "Save Changes",
+      "saving": "Saving..."
+    },
+    "success": "Profile updated successfully",
+    "error": "Failed to update profile"
+  },
+  "security": {
+    "title": "Security",
+    "changePassword": {
+      "title": "Change Password",
+      "description": "Update your password regularly to keep your account secure.",
+      "button": "Change Password",
+      "currentPassword": "Current Password",
+      "currentPasswordPlaceholder": "Enter current password",
+      "newPassword": "New Password",
+      "newPasswordPlaceholder": "Enter new password",
+      "confirmPassword": "Confirm New Password",
+      "confirmPasswordPlaceholder": "Confirm new password",
+      "submit": "Update Password",
+      "submitting": "Updating...",
+      "cancel": "Cancel",
+      "success": "Password changed successfully",
+      "error": "Failed to change password"
+    },
+    "payPassword": {
+      "title": "Payment Password",
+      "description": "Set a 6-digit payment password for secure transactions.",
+      "notSet": "Not Set",
+      "set": "Set",
+      "setup": "Set Payment Password",
+      "loginPassword": "Login Password",
+      "loginPasswordPlaceholder": "Enter your login password",
+      "payPassword": "Payment Password",
+      "payPasswordPlaceholder": "Enter 6-digit payment password",
+      "confirmPayPassword": "Confirm Payment Password",
+      "confirmPayPasswordPlaceholder": "Confirm payment password",
+      "verificationCode": "Email Verification Code",
+      "verificationCodePlaceholder": "Enter verification code",
+      "sendCode": "Send Code",
+      "codeSent": "Code sent",
+      "submit": "Set Payment Password",
+      "submitting": "Setting...",
+      "success": "Payment password set successfully",
+      "error": "Failed to set payment password"
+    },
+    "totp": {
+      "title": "Two-Factor Authentication",
+      "description": "Add an extra layer of security using Google Authenticator.",
+      "enabled": "Enabled",
+      "disabled": "Disabled",
+      "enable": "Enable 2FA",
+      "disable": "Disable 2FA",
+      "setup": {
+        "title": "Set Up Two-Factor Authentication",
+        "step1": "1. Download Google Authenticator",
+        "step1Desc": "Install Google Authenticator on your mobile device.",
+        "step2": "2. Scan QR Code",
+        "step2Desc": "Open the app and scan the QR code below.",
+        "step3": "3. Enter Verification Code",
+        "step3Desc": "Enter the 6-digit code from the app.",
+        "secretKey": "Or enter this key manually:",
+        "verificationCode": "Verification Code",
+        "verificationCodePlaceholder": "Enter 6-digit code",
+        "submit": "Enable 2FA",
+        "submitting": "Enabling...",
+        "cancel": "Cancel"
+      },
+      "disableModal": {
+        "title": "Disable Two-Factor Authentication",
+        "description": "Enter the 6-digit code from Google Authenticator to disable 2FA.",
+        "verificationCode": "Verification Code",
+        "verificationCodePlaceholder": "Enter 6-digit code",
+        "submit": "Disable 2FA",
+        "submitting": "Disabling...",
+        "cancel": "Cancel"
+      },
+      "success": {
+        "enabled": "Two-factor authentication enabled",
+        "disabled": "Two-factor authentication disabled"
+      },
+      "error": {
+        "enable": "Failed to enable 2FA",
+        "disable": "Failed to disable 2FA",
+        "setup": "Failed to get 2FA setup"
+      }
+    }
+  }
+}

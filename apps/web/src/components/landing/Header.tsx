@@ -14,7 +14,11 @@ const NAV_LINKS = [
   { href: '#faq', labelKey: 'nav.faq' },
 ] as const
 
-export function Header() {
+interface HeaderProps {
+  showNavLinks?: boolean
+}
+
+export function Header({ showNavLinks = true }: HeaderProps) {
   const { theme, toggleTheme } = useTheme()
   const { t } = useTranslation()
   const navigate = useNavigate()
@@ -44,13 +48,19 @@ export function Header() {
           </Link>
 
           {/* Navigation */}
-          <nav className="hidden items-center gap-8 md:flex">
-            {NAV_LINKS.map((link) => (
-              <a key={link.href} href={link.href} className="text-sm font-medium transition-colors hover:text-primary">
-                {t(link.labelKey)}
-              </a>
-            ))}
-          </nav>
+          {showNavLinks && (
+            <nav className="hidden items-center gap-8 md:flex">
+              {NAV_LINKS.map((link) => (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  className="text-sm font-medium transition-colors hover:text-primary"
+                >
+                  {t(link.labelKey)}
+                </a>
+              ))}
+            </nav>
+          )}
 
           {/* Actions */}
           <div className="flex items-center gap-3">
@@ -112,13 +122,17 @@ export function Header() {
                     </div>
                   </DropdownTrigger>
                   <DropdownMenu aria-label="User menu">
-                    <DropdownItem key="profile" startContent={<User size={18} />} onPress={() => navigate('/profile')}>
+                    <DropdownItem
+                      key="profile"
+                      startContent={<User size={18} />}
+                      onPress={() => navigate('/settings/profile')}
+                    >
                       {t('nav.profile')}
                     </DropdownItem>
                     <DropdownItem
                       key="settings"
                       startContent={<Settings size={18} />}
-                      onPress={() => navigate('/settings')}
+                      onPress={() => navigate('/settings/security')}
                     >
                       {t('nav.settings')}
                     </DropdownItem>

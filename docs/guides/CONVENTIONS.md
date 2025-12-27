@@ -121,7 +121,6 @@ components / auth / AuthCard.tsx
 
 // ✅ 必须：使用 HeroUI 组件
 import { Button } from '@heroui/react'
-
 ;<Button color="primary" radius="full">
   提交
 </Button>
@@ -187,7 +186,6 @@ import { FaEye } from 'react-icons/fa'
 
 // ✅ 必须：Lucide React
 import { Eye, Mail, Lock, ArrowRight } from 'lucide-react'
-
 ;<Button endContent={<ArrowRight size={16} />}>下一步</Button>
 ```
 
@@ -394,7 +392,76 @@ export type LoginFormData = z.infer<typeof loginSchema>
 
 ---
 
-## 6. 生成代码检查清单
+## 6. 页面一致性规则
+
+### 6.1 表单样式统一
+
+项目中所有表单必须保持一致的设计语言：
+
+| 元素           | 规范                  |
+| -------------- | --------------------- |
+| Input radius   | `full`                |
+| Button radius  | `full`                |
+| 表单间距       | `gap-5` 或 `gap-6`    |
+| labelPlacement | `outside`（Modal 内） |
+
+```tsx
+// ✅ 标准 Input
+<Input variant="bordered" radius="full" labelPlacement="outside" classNames={{ inputWrapper: 'h-12' }} />
+```
+
+### 6.2 Header 使用规范
+
+根据页面类型使用不同的 Header 配置：
+
+| 页面类型     | Header 配置                          |
+| ------------ | ------------------------------------ |
+| Landing Page | 显示导航链接（功能、定价、常见问题） |
+| 功能页面     | 简洁 Header，隐藏 Landing 导航链接   |
+
+```tsx
+// Landing Page Header
+<Header showNavLinks={true} />
+
+// 功能页面 Header
+<Header showNavLinks={false} />
+```
+
+### 6.3 卡片 + Modal 模式
+
+需要用户操作的功能项统一使用「卡片 + Modal」模式：
+
+1. **默认显示**：功能卡片，显示状态和操作按钮
+2. **点击按钮**：弹出 Modal 进行设置
+3. **完成后**：关闭 Modal，刷新状态
+
+```tsx
+// ✅ 卡片展示
+<Card>
+  <div className="flex items-center justify-between">
+    <div>
+      <h3>{title}</h3>
+      <p>{description}</p>
+    </div>
+    <Button onPress={openModal}>{actionText}</Button>
+  </div>
+</Card>
+
+// ✅ Modal 设置
+<Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+  <ModalContent>
+    <ModalHeader>{title}</ModalHeader>
+    <ModalBody>
+      <form>...</form>
+    </ModalBody>
+    <ModalFooter>...</ModalFooter>
+  </ModalContent>
+</Modal>
+```
+
+---
+
+## 7. 生成代码检查清单
 
 **生成任何代码前，必须逐条确认**：
 

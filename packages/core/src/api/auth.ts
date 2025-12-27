@@ -44,6 +44,47 @@ export interface ResetPasswordRequest {
   password: string
 }
 
+// Settings - Profile
+export interface UpdateProfileRequest {
+  nickname?: string
+  avatar?: string
+  email?: string
+  phone?: string
+  code?: string
+}
+
+// Settings - Security
+export interface ChangePasswordRequest {
+  passwordOld: string
+  passwordNew: string
+}
+
+export interface SecurityStatus {
+  payPasswordSet: boolean
+  totpEnabled: boolean
+}
+
+export interface SetPayPasswordRequest {
+  code: string
+  loginPassword: string
+  payPassword: string
+}
+
+// TOTP (Google Authenticator)
+export interface TOTPSetupResponse {
+  secret: string
+  otpauthUrl: string
+}
+
+export interface TOTPEnableRequest {
+  code: string
+  secret: string
+}
+
+export interface TOTPDisableRequest {
+  code: string
+}
+
 export const authApi = {
   login: (data: LoginRequest) => request.post<LoginResponse>('/v1/auth/login', data),
 
@@ -54,4 +95,30 @@ export const authApi = {
   sendCode: (data: SendCodeRequest) => request.post<void>('/v1/auth/code', data),
 
   resetPassword: (data: ResetPasswordRequest) => request.post<void>('/v1/auth/reset-password', data),
+
+  // Settings - Profile
+  updateProfile: (data: UpdateProfileRequest) => request.put<void>('/v1/auth/user', data),
+
+  // Settings - Security
+  changePassword: (data: ChangePasswordRequest) => request.put<void>('/v1/auth/change-password', data),
+
+  getSecurityStatus: () => request.get<SecurityStatus>('/v1/auth/security/status'),
+
+  setPayPassword: (data: SetPayPasswordRequest) => request.put<void>('/v1/auth/security/pay-password', data),
+
+  // TOTP (Google Authenticator)
+  getTOTPSetup: () => request.post<TOTPSetupResponse>('/v1/auth/security/totp/setup'),
+
+  enableTOTP: (data: TOTPEnableRequest) => request.post<void>('/v1/auth/security/totp/enable', data),
+
+  disableTOTP: (data: TOTPDisableRequest) => request.post<void>('/v1/auth/security/totp/disable', data),
+
+  // File upload (returns the file URL as string)
+  uploadFile: (file: File) => {
+    const formData = new FormData()
+    formData.append('file', file)
+    return request.post<string>('/v1/file/upload', formData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    })
+  },
 }

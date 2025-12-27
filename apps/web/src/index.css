@@ -180,3 +180,24 @@ html {
   border-bottom-left-radius: var(--heroui-radius-large);
   border-bottom-right-radius: var(--heroui-radius-large);
 }
+
+/* Modal: Fix positioning for Tailwind CSS v4 */
+[data-slot='wrapper'] {
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: 50 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  overflow: auto !important;
+}
+
+[data-slot='backdrop'] {
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: 40 !important;
+}
+
+section[role='dialog'] {
+  margin: auto !important;
+}

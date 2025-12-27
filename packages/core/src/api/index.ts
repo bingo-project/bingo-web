@@ -12,4 +12,11 @@ export {
   type SendCodeRequest,
   type SendCodeScene,
   type ResetPasswordRequest,
+  type UpdateProfileRequest,
+  type ChangePasswordRequest,
+  type SecurityStatus,
+  type SetPayPasswordRequest,
+  type TOTPSetupResponse,
+  type TOTPEnableRequest,
+  type TOTPDisableRequest,
 } from './auth'

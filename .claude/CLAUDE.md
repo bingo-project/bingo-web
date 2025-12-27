@@ -1,5 +1,10 @@
 # Bingo Web 项目指南
 
+## 执行偏好
+
+- 使用 Subagent-Driven 方式执行计划
+- 不需要每个 task 都 review，仅在每个阶段（如 API 层、UI 层、路由层）完成后 review
+
 ## 必读文档
 
 开发前必须阅读 [docs/guides/CONVENTIONS.md](../docs/guides/CONVENTIONS.md)，了解：
@@ -20,23 +25,6 @@
 - React Hook Form + Zod
 - i18next
 
-## 快速参考
+## 后端 API
 
-```tsx
-// 文件头（必须）
-// ABOUTME: [组件描述]
-// ABOUTME: [功能说明]
-
-// HeroUI 组件
-import { Button, Input, Card } from '@heroui/react'
-
-// 图标
-import { Mail, Lock } from 'lucide-react'
-
-// 国际化
-import { useTranslation } from '@/locales'
-const { t } = useTranslation()
-
-// 语义化颜色
-<div className="bg-background text-foreground">
-```
+API 文档地址：`http://localhost:8080/api/docs/doc.json`
