@@ -40,11 +40,20 @@ export function SecuritySettingsPage() {
   const [securityStatus, setSecurityStatus] = useState<SecurityStatus | null>(null)
   const [totpSetup, setTotpSetup] = useState<TOTPSetupResponse | null>(null)
   const [isLoadingStatus, setIsLoadingStatus] = useState(true)
+  // Shared countdown for security scene verification code (used by TOTP disable and pay password)
+  const [securityCodeCountdown, setSecurityCodeCountdown] = useState(0)
 
   const changePasswordModal = useDisclosure()
   const totpEnableModal = useDisclosure()
   const totpDisableModal = useDisclosure()
   const payPasswordModal = useDisclosure()
+
+  useEffect(() => {
+    if (securityCodeCountdown > 0) {
+      const timer = setTimeout(() => setSecurityCodeCountdown(securityCodeCountdown - 1), 1000)
+      return () => clearTimeout(timer)
+    }
+  }, [securityCodeCountdown])
 
   useEffect(() => {
     loadSecurityStatus()
@@ -118,6 +127,8 @@ export function SecuritySettingsPage() {
         isOpen={totpDisableModal.isOpen}
         onClose={totpDisableModal.onClose}
         userEmail={user?.email || ''}
+        countdown={securityCodeCountdown}
+        onCountdownChange={setSecurityCodeCountdown}
         onSuccess={() => {
           loadSecurityStatus()
           totpDisableModal.onClose()
@@ -131,6 +142,8 @@ export function SecuritySettingsPage() {
         userEmail={user?.email || ''}
         totpEnabled={securityStatus?.totpEnabled || false}
         isReset={securityStatus?.payPasswordSet || false}
+        countdown={securityCodeCountdown}
+        onCountdownChange={setSecurityCodeCountdown}
         onSuccess={() => {
           loadSecurityStatus()
           payPasswordModal.onClose()
@@ -473,17 +486,20 @@ function TOTPDisableModal({
   isOpen,
   onClose,
   userEmail,
+  countdown,
+  onCountdownChange,
   onSuccess,
 }: {
   isOpen: boolean
   onClose: () => void
   userEmail: string
+  countdown: number
+  onCountdownChange: (value: number) => void
   onSuccess: () => void
 }) {
   const { t } = useTranslation()
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSendingCode, setIsSendingCode] = useState(false)
-  const [countdown, setCountdown] = useState(0)
 
   const {
     register,
@@ -494,18 +510,11 @@ function TOTPDisableModal({
     resolver: zodResolver(createTotpDisableSchema()),
   })
 
-  useEffect(() => {
-    if (countdown > 0) {
-      const timer = setTimeout(() => setCountdown(countdown - 1), 1000)
-      return () => clearTimeout(timer)
-    }
-  }, [countdown])
-
   const handleSendCode = async () => {
     setIsSendingCode(true)
     try {
       await authApi.sendCode({ account: userEmail, scene: 'security' })
-      setCountdown(60)
+      onCountdownChange(60)
       toast.success(t('settings.security.totp.disableModal.codeSent'))
     } catch {
       // Error toast handled by request interceptor
@@ -598,6 +607,8 @@ function PayPasswordModal({
   userEmail,
   totpEnabled,
   isReset,
+  countdown,
+  onCountdownChange,
   onSuccess,
 }: {
   isOpen: boolean
@@ -605,12 +616,13 @@ function PayPasswordModal({
   userEmail: string
   totpEnabled: boolean
   isReset: boolean
+  countdown: number
+  onCountdownChange: (value: number) => void
   onSuccess: () => void
 }) {
   const { t } = useTranslation()
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSendingCode, setIsSendingCode] = useState(false)
-  const [countdown, setCountdown] = useState(0)
 
   const {
     register,
@@ -621,18 +633,11 @@ function PayPasswordModal({
     resolver: zodResolver(createPayPasswordSchema(totpEnabled)),
   })
 
-  useEffect(() => {
-    if (countdown > 0) {
-      const timer = setTimeout(() => setCountdown(countdown - 1), 1000)
-      return () => clearTimeout(timer)
-    }
-  }, [countdown])
-
   const handleSendCode = async () => {
     setIsSendingCode(true)
     try {
       await authApi.sendCode({ account: userEmail, scene: 'security' })
-      setCountdown(60)
+      onCountdownChange(60)
       toast.success(t('settings.security.payPassword.codeSent'))
     } catch {
       // Error toast handled by request interceptor

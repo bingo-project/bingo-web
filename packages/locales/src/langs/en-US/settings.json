@@ -10,7 +10,7 @@
     "confirmPayPassword": "Confirm payment password",
     "verificationCode": "Verification code",
     "emailCode": "Email verification code",
-    "totpCode": "TOTP code",
+    "totpCode": "2FA code",
     "passwords": "Passwords",
     "payPasswords": "Payment passwords"
   },

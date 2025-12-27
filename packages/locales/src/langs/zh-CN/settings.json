@@ -10,7 +10,7 @@
     "confirmPayPassword": "确认支付密码",
     "verificationCode": "验证码",
     "emailCode": "邮箱验证码",
-    "totpCode": "动态码",
+    "totpCode": "两步验证码",
     "passwords": "密码",
     "payPasswords": "支付密码"
   },
