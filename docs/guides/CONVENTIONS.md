@@ -303,49 +303,131 @@ className="!bg-purple-600"
 
 ## 4. 国际化规范
 
-### 4.1 所有用户可见文案必须国际化
+### 4.1 分层架构
+
+翻译文件分为**核心层**和**应用层**：
+
+```
+packages/locales/src/langs/          # 核心层：跨应用共享
+├── en-US/
+│   ├── common.json                  # 通用 UI（nav、action、status、placeholder）
+│   ├── errors.json                  # 错误消息（HTTP、验证、业务错误）
+│   ├── auth.json                    # 认证（login、register、forgotPassword）
+│   ├── settings.json                # 设置页面
+│   └── ui.json                      # UI 回退页（404、403、500）
+└── zh-CN/
+    └── ...
+
+apps/web/src/locales/langs/          # 应用层：应用特有内容
+├── en-US/
+│   └── landing.json                 # Landing page 专用
+└── zh-CN/
+    └── landing.json
+```
+
+**放置原则**：
+
+| 内容类型     | 位置                           | 示例                          |
+| ------------ | ------------------------------ | ----------------------------- |
+| 通用 UI 元素 | `packages/locales`             | 按钮文案、状态提示、导航项    |
+| 错误消息     | `packages/locales/errors.json` | HTTP 错误、表单验证、业务错误 |
+| 功能模块     | `packages/locales`             | auth、settings                |
+| 应用特有内容 | `apps/web/src/locales`         | landing page、营销文案        |
+
+### 4.2 所有用户可见文案必须国际化
 
 ```tsx
 // ❌ 禁止：硬编码文案
 <h1>Welcome to Bingo</h1>
 <Button>Submit</Button>
 
-// ✅ 必须：使用 t() 函数
+// ✅ 必须：使用 useTranslation hook
 import { useTranslation } from '@/locales'
 
 const { t } = useTranslation()
 
-<h1>{t('home.hero.title')}</h1>
-<Button>{t('common.submit')}</Button>
+<h1>{t('hero.title')}</h1>
+<Button>{t('action.submit')}</Button>
 ```
 
-### 4.2 Key 命名规范
+### 4.3 使用方式
 
-```
-格式：{namespace}.{section}.{element}
+**React 组件内**：使用 `useTranslation` hook
 
-页面级别：
-  auth.login.title
-  auth.login.subtitle
-  auth.login.submit
-  auth.login.error
+```tsx
+import { useTranslation } from '@/locales'
 
-通用元素：
-  common.submit
-  common.cancel
-  common.loading
+function MyComponent() {
+  const { t } = useTranslation()
+  return <Button>{t('action.submit')}</Button>
+}
 ```
 
-### 4.3 翻译文件位置
+**非组件上下文**（interceptors、工具函数）：使用 `$t`
+
+```tsx
+import { $t } from '@bingo/locales'
+
+// 在 axios interceptor 中
+toast.error($t('errors.http.unauthorized'))
+```
+
+### 4.4 Key 命名规范
 
 ```
-apps/web/src/locales/langs/
-├── en-US/
-│   ├── common.json    # 通用文案
-│   └── page.json      # 页面文案
-└── zh-CN/
-    ├── common.json
-    └── page.json
+格式：{domain}.{section}.{element}
+
+核心层 key 结构：
+├── nav.*                    # 导航项
+├── action.*                 # 操作按钮（submit、cancel、save...）
+├── status.*                 # 状态提示（loading、success、error...）
+├── placeholder.*            # 输入占位符
+├── errors.http.*            # HTTP 错误（unauthorized、forbidden...）
+├── errors.validation.*      # 表单验证错误
+├── errors.{BusinessCode}    # 业务错误（如 InvalidArgument.UserNotFound）
+├── auth.login.*             # 登录页
+├── auth.register.*          # 注册页
+├── auth.forgotPassword.*    # 忘记密码
+├── settings.profile.*       # 个人资料设置
+├── settings.security.*      # 安全设置
+└── ui.fallback.*            # 错误页（404、403、500）
+
+应用层 key 结构：
+├── hero.*                   # 首页 hero 区域
+├── features.*               # 功能介绍
+├── pricing.*                # 定价
+├── faq.*                    # 常见问题
+└── footer.*                 # 页脚
+```
+
+### 4.5 错误处理
+
+**HTTP 错误**：由 `request.ts` interceptor 自动处理，使用 `errors.http.*`
+
+**业务错误**：使用 `showApiError()` 工具函数
+
+```tsx
+import { showApiError } from '@/utils'
+
+try {
+  await api.someAction()
+} catch (error) {
+  showApiError(error, t('someAction.error')) // 提供 fallback 消息
+}
+```
+
+`showApiError` 会：
+
+1. 检查 `error.reason`（业务错误码）
+2. 尝试翻译 `errors.{reason}`
+3. 找不到翻译时使用 fallback 消息
+
+**添加新业务错误**：在 `packages/locales/src/langs/*/errors.json` 添加：
+
+```json
+{
+  "InvalidArgument.NewErrorCode": "错误描述"
+}
 ```
 
 ---
@@ -374,10 +456,11 @@ const {
 ```tsx
 // schemas/login.ts
 import { z } from 'zod'
+import { $t } from '@bingo/locales'
 
 export const loginSchema = z.object({
-  account: z.string().min(1, '请输入账号'),
-  password: z.string().min(6, '密码至少 6 位'),
+  account: z.string().min(1, $t('errors.validation.emailRequired')),
+  password: z.string().min(6, $t('errors.validation.passwordMin')),
   rememberMe: z.boolean().optional(),
 })
 
@@ -496,7 +579,8 @@ export type LoginFormData = z.infer<typeof loginSchema>
 
 - [ ] 所有用户可见文案使用 `t()` 函数
 - [ ] i18n key 符合命名规范
-- [ ] 已添加对应的翻译条目
+- [ ] 翻译条目放在正确位置（核心层 vs 应用层）
+- [ ] 业务错误已添加到 `errors.json`
 
 ### 表单（如适用）
 
@@ -517,8 +601,14 @@ import { Button, Input, Card, Checkbox, Link } from '@heroui/react'
 // 图标
 import { Mail, Lock, Eye, EyeOff, ArrowRight } from 'lucide-react'
 
-// 国际化
+// 国际化（组件内）
 import { useTranslation } from '@/locales'
+
+// 国际化（非组件上下文）
+import { $t } from '@bingo/locales'
+
+// 错误处理
+import { showApiError } from '@/utils'
 
 // 表单
 import { useForm } from 'react-hook-form'
