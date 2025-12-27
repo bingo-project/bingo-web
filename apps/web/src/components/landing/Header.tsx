@@ -3,10 +3,10 @@
 
 import { Link, useNavigate } from 'react-router'
 import { Button, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Avatar } from '@heroui/react'
-import { Layers, Sun, Moon, Bell, User, Settings, LogOut } from 'lucide-react'
+import { Layers, Sun, Moon, Bell, User, Settings, LogOut, Globe } from 'lucide-react'
 import { useAuthStore } from '@bingo/core'
 import { useTheme } from '@/hooks'
-import { useTranslation, i18n, changeLanguage } from '@/locales'
+import { useTranslation, i18n, changeLanguage, type SupportedLanguage } from '@/locales'
 
 const NAV_LINKS = [
   { href: '#features', labelKey: 'nav.features' },
@@ -21,10 +21,10 @@ export function Header() {
 
   const { isAuthenticated, user, logout } = useAuthStore()
 
-  const handleToggleLanguage = () => {
-    const newLang = i18n.language === 'zh-CN' ? 'en-US' : 'zh-CN'
-    changeLanguage(newLang)
-  }
+  const languages: { key: SupportedLanguage; label: string }[] = [
+    { key: 'en-US', label: 'English' },
+    { key: 'zh-CN', label: '简体中文' },
+  ]
 
   const handleLogout = () => {
     logout()
@@ -58,16 +58,29 @@ export function Header() {
               {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
             </Button>
 
-            <Button
-              isIconOnly
-              variant="light"
-              radius="full"
-              onPress={handleToggleLanguage}
-              aria-label="Toggle language"
-              className="hidden w-10 sm:flex"
-            >
-              <span className="text-xs font-medium">{i18n.language === 'zh-CN' ? 'EN' : '中'}</span>
-            </Button>
+            <Dropdown>
+              <DropdownTrigger>
+                <Button
+                  isIconOnly
+                  variant="light"
+                  radius="full"
+                  aria-label="Switch language"
+                  className="hidden sm:flex"
+                >
+                  <Globe size={20} />
+                </Button>
+              </DropdownTrigger>
+              <DropdownMenu
+                aria-label="Language selection"
+                selectedKeys={[i18n.language]}
+                selectionMode="single"
+                onAction={(key) => changeLanguage(key as SupportedLanguage)}
+              >
+                {languages.map((lang) => (
+                  <DropdownItem key={lang.key}>{lang.label}</DropdownItem>
+                ))}
+              </DropdownMenu>
+            </Dropdown>
 
             <div className="mx-1 hidden h-6 w-px bg-divider sm:block" />
 

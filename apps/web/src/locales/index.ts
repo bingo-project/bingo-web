@@ -43,4 +43,4 @@ export async function changeLanguage(lang: SupportedLanguage) {
   await loadLocaleMessages(lang, loadAppMessages)
 }
 
-export { useTranslation, i18n } from '@bingo/locales'
+export { useTranslation, i18n, type SupportedLanguage } from '@bingo/locales'
