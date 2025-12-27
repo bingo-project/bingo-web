@@ -1,43 +1,88 @@
 // ABOUTME: Forgot password page
-// ABOUTME: Allows users to request a password reset link via email
+// ABOUTME: Two-step flow: send code then reset password with code
 
 import { useState } from 'react'
-import { Link } from 'react-router'
+import { Link, useNavigate } from 'react-router'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Button, Input } from '@heroui/react'
-import { Mail, ArrowRight, KeyRound, ShieldCheck } from 'lucide-react'
+import { Mail, ArrowRight, KeyRound, ShieldCheck, Lock } from 'lucide-react'
 import { toast } from 'sonner'
-import { authApi } from '@bingo/core'
+import { authApi, ApiError } from '@bingo/core'
 import { useTranslation } from '@/locales'
-import { forgotPasswordSchema, type ForgotPasswordFormData } from '@/schemas'
-import { AuthHeader, AuthFooter, AuthCard } from '@/components/auth'
+import {
+  forgotPasswordSchema,
+  resetPasswordSchema,
+  type ForgotPasswordFormData,
+  type ResetPasswordFormData,
+} from '@/schemas'
+import { AuthHeader, AuthFooter, AuthCard, PasswordInput } from '@/components/auth'
+
+type Step = 'email' | 'reset'
 
 export function ForgotPasswordPage() {
   const { t } = useTranslation()
+  const navigate = useNavigate()
+  const [step, setStep] = useState<Step>('email')
   const [isLoading, setIsLoading] = useState(false)
-  const [isSubmitted, setIsSubmitted] = useState(false)
+  const [email, setEmail] = useState('')
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    getValues,
-  } = useForm<ForgotPasswordFormData>({
+  const emailForm = useForm<ForgotPasswordFormData>({
     resolver: zodResolver(forgotPasswordSchema),
-    defaultValues: {
-      email: '',
-    },
+    defaultValues: { email: '' },
   })
 
-  const onSubmit = async (data: ForgotPasswordFormData) => {
+  const resetForm = useForm<ResetPasswordFormData>({
+    resolver: zodResolver(resetPasswordSchema),
+    defaultValues: { code: '', password: '', confirmPassword: '' },
+  })
+
+  const onSendCode = async (data: ForgotPasswordFormData) => {
     setIsLoading(true)
     try {
       await authApi.sendCode({ account: data.email, scene: 'reset_password' })
-      setIsSubmitted(true)
-      toast.success(t('auth.forgotPassword.success'))
-    } catch {
-      toast.error(t('auth.forgotPassword.error'))
+      setEmail(data.email)
+      setStep('reset')
+      toast.success(t('auth.forgotPassword.codeSent'))
+    } catch (error) {
+      if (error instanceof ApiError && error.status === 429) {
+        toast.error(t('auth.forgotPassword.tooManyRequests'))
+      } else {
+        toast.error(t('auth.forgotPassword.error'))
+      }
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  const onResetPassword = async (data: ResetPasswordFormData) => {
+    setIsLoading(true)
+    try {
+      await authApi.resetPassword({ account: email, code: data.code, password: data.password })
+      toast.success(t('auth.forgotPassword.resetSuccess'))
+      navigate('/login')
+    } catch (error) {
+      if (error instanceof ApiError && error.status === 429) {
+        toast.error(t('auth.forgotPassword.tooManyRequests'))
+      } else {
+        toast.error(t('auth.forgotPassword.resetError'))
+      }
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  const handleResendCode = async () => {
+    setIsLoading(true)
+    try {
+      await authApi.sendCode({ account: email, scene: 'reset_password' })
+      toast.success(t('auth.forgotPassword.codeSent'))
+    } catch (error) {
+      if (error instanceof ApiError && error.status === 429) {
+        toast.error(t('auth.forgotPassword.tooManyRequests'))
+      } else {
+        toast.error(t('auth.forgotPassword.error'))
+      }
     } finally {
       setIsLoading(false)
     }
@@ -63,20 +108,20 @@ export function ForgotPasswordPage() {
             {/* Header */}
             <div className="mb-8 text-center">
               <h1 className="mb-2 text-2xl font-bold text-foreground">
-                {isSubmitted ? t('auth.forgotPassword.sentTitle') : t('auth.forgotPassword.title')}
+                {step === 'email' ? t('auth.forgotPassword.title') : t('auth.forgotPassword.resetTitle')}
               </h1>
               <p className="text-sm text-default-500">
-                {isSubmitted
-                  ? t('auth.forgotPassword.sentSubtitle', { email: getValues('email') })
-                  : t('auth.forgotPassword.subtitle')}
+                {step === 'email'
+                  ? t('auth.forgotPassword.subtitle')
+                  : t('auth.forgotPassword.resetSubtitle', { email })}
               </p>
             </div>
 
-            {!isSubmitted ? (
-              /* Form */
-              <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
+            {step === 'email' ? (
+              /* Step 1: Email form */
+              <form onSubmit={emailForm.handleSubmit(onSendCode)} className="flex flex-col gap-4">
                 <Input
-                  {...register('email')}
+                  {...emailForm.register('email')}
                   type="email"
                   variant="bordered"
                   radius="full"
@@ -84,8 +129,8 @@ export function ForgotPasswordPage() {
                   label={t('auth.forgotPassword.emailLabel')}
                   labelPlacement="outside"
                   placeholder={t('auth.forgotPassword.emailPlaceholder')}
-                  isInvalid={!!errors.email}
-                  errorMessage={errors.email?.message}
+                  isInvalid={!!emailForm.formState.errors.email}
+                  errorMessage={emailForm.formState.errors.email?.message}
                   startContent={<Mail size={18} className="shrink-0 text-default-400" />}
                   classNames={{
                     input: 'pl-1',
@@ -107,26 +152,90 @@ export function ForgotPasswordPage() {
                 </Button>
               </form>
             ) : (
-              /* Success state */
-              <div className="flex flex-col gap-4">
-                <Button
-                  as={Link}
-                  to="/login"
-                  color="primary"
-                  radius="full"
-                  className="h-12 bg-gradient-to-r from-primary to-blue-600 text-base font-bold text-white"
-                >
-                  {t('auth.forgotPassword.backToLogin')}
-                </Button>
-                <Button
+              /* Step 2: Reset password form */
+              <form
+                onSubmit={resetForm.handleSubmit(onResetPassword)}
+                autoComplete="off"
+                className="flex flex-col gap-4"
+              >
+                {/* Hidden input to prevent Chrome from autofilling verification code */}
+                <input type="text" autoComplete="username" className="hidden" aria-hidden="true" />
+                <Input
+                  key="verification-code-input"
+                  {...resetForm.register('code')}
+                  autoComplete="one-time-code"
                   variant="bordered"
                   radius="full"
-                  className="h-12 border-divider text-foreground"
-                  onPress={() => setIsSubmitted(false)}
+                  fullWidth
+                  label={t('auth.forgotPassword.codeLabel')}
+                  labelPlacement="outside"
+                  placeholder={t('auth.forgotPassword.codePlaceholder')}
+                  isInvalid={!!resetForm.formState.errors.code}
+                  errorMessage={resetForm.formState.errors.code?.message}
+                  classNames={{
+                    inputWrapper: 'h-12',
+                    label: 'text-default-600 font-medium',
+                  }}
+                />
+
+                <PasswordInput
+                  {...resetForm.register('password')}
+                  autoComplete="new-password"
+                  variant="bordered"
+                  radius="full"
+                  fullWidth
+                  label={t('auth.forgotPassword.newPasswordLabel')}
+                  labelPlacement="outside"
+                  placeholder={t('auth.forgotPassword.newPasswordPlaceholder')}
+                  isInvalid={!!resetForm.formState.errors.password}
+                  errorMessage={resetForm.formState.errors.password?.message}
+                  startContent={<Lock size={18} className="shrink-0 text-default-400" />}
+                  classNames={{
+                    inputWrapper: 'h-12',
+                    label: 'text-default-600 font-medium',
+                  }}
+                />
+
+                <PasswordInput
+                  {...resetForm.register('confirmPassword')}
+                  autoComplete="new-password"
+                  variant="bordered"
+                  radius="full"
+                  fullWidth
+                  label={t('auth.forgotPassword.confirmPasswordLabel')}
+                  labelPlacement="outside"
+                  placeholder={t('auth.forgotPassword.confirmPasswordPlaceholder')}
+                  isInvalid={!!resetForm.formState.errors.confirmPassword}
+                  errorMessage={resetForm.formState.errors.confirmPassword?.message}
+                  startContent={<Lock size={18} className="shrink-0 text-default-400" />}
+                  classNames={{
+                    inputWrapper: 'h-12',
+                    label: 'text-default-600 font-medium',
+                  }}
+                />
+
+                <Button
+                  type="submit"
+                  color="primary"
+                  radius="full"
+                  className="mt-2 h-12 bg-gradient-to-r from-primary to-blue-600 text-base font-bold text-white"
+                  isLoading={isLoading}
                 >
-                  {t('auth.forgotPassword.tryAnotherEmail')}
+                  {isLoading ? t('auth.forgotPassword.resetting') : t('auth.forgotPassword.resetSubmit')}
                 </Button>
-              </div>
+
+                <div className="flex items-center justify-center gap-1 text-sm">
+                  <span className="text-default-500">{t('auth.forgotPassword.noCode')}</span>
+                  <button
+                    type="button"
+                    onClick={handleResendCode}
+                    disabled={isLoading}
+                    className="font-medium text-primary hover:underline disabled:opacity-50"
+                  >
+                    {t('auth.forgotPassword.resend')}
+                  </button>
+                </div>
+              </form>
             )}
 
             {/* Security notice */}
@@ -137,14 +246,12 @@ export function ForgotPasswordPage() {
           </AuthCard>
 
           {/* Back to login link */}
-          {!isSubmitted && (
-            <p className="mt-6 text-center text-sm text-default-500">
-              {t('auth.forgotPassword.rememberPassword')}{' '}
-              <Link to="/login" className="font-bold text-foreground hover:text-primary">
-                {t('auth.forgotPassword.signIn')}
-              </Link>
-            </p>
-          )}
+          <p className="mt-6 text-center text-sm text-default-500">
+            {t('auth.forgotPassword.rememberPassword')}{' '}
+            <Link to="/login" className="font-bold text-foreground hover:text-primary">
+              {t('auth.forgotPassword.signIn')}
+            </Link>
+          </p>
 
           <AuthFooter />
         </div>

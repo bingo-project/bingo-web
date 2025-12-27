@@ -37,6 +37,12 @@ export interface SendCodeRequest {
   scene: SendCodeScene
 }
 
+export interface ResetPasswordRequest {
+  account: string
+  code: string
+  password: string
+}
+
 export const authApi = {
   login: (data: LoginRequest) => request.post<LoginResponse>('/v1/auth/login', data),
 
@@ -45,4 +51,6 @@ export const authApi = {
   getUserInfo: () => request.get<UserInfo>('/v1/auth/user-info'),
 
   sendCode: (data: SendCodeRequest) => request.post<void>('/v1/auth/code', data),
+
+  resetPassword: (data: ResetPasswordRequest) => request.post<void>('/v1/auth/reset-password', data),
 }

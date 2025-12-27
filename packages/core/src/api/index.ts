@@ -1,7 +1,7 @@
 // ABOUTME: API module barrel export
 // ABOUTME: Re-exports request wrapper and API modules
 
-export { request, type ErrResponse } from './request'
+export { request, ApiError, type ErrResponse } from './request'
 export { userApi, type User } from './example'
 export {
   authApi,
@@ -11,4 +11,5 @@ export {
   type UserInfo,
   type SendCodeRequest,
   type SendCodeScene,
+  type ResetPasswordRequest,
 } from './auth'

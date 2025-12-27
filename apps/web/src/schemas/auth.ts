@@ -25,6 +25,18 @@ export const forgotPasswordSchema = z.object({
   email: z.string().min(1, '请输入邮箱').email('邮箱格式不正确'),
 })
 
+export const resetPasswordSchema = z
+  .object({
+    code: z.string().min(1, '请输入验证码'),
+    password: z.string().min(6, '密码至少 6 位').max(18, '密码最多 18 位'),
+    confirmPassword: z.string().min(1, '请确认密码'),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: '两次密码不一致',
+    path: ['confirmPassword'],
+  })
+
 export type LoginFormData = z.infer<typeof loginSchema>
 export type RegisterFormData = z.infer<typeof registerSchema>
 export type ForgotPasswordFormData = z.infer<typeof forgotPasswordSchema>
+export type ResetPasswordFormData = z.infer<typeof resetPasswordSchema>
