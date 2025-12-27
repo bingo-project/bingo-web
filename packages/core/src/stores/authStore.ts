@@ -16,6 +16,7 @@ interface AuthState {
 
   login: (account: string, password: string) => Promise<void>
   register: (account: string, password: string, code: string) => Promise<void>
+  setAuth: (accessToken: string, expiresAt: string) => Promise<void>
   logout: () => void
   fetchUserInfo: () => Promise<void>
   initAuth: () => Promise<void>
@@ -57,6 +58,19 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     } finally {
       set({ isLoading: false })
     }
+  },
+
+  setAuth: async (accessToken: string, expiresAt: string) => {
+    localStorage.setItem(TOKEN_KEY, accessToken)
+    localStorage.setItem(EXPIRES_KEY, expiresAt)
+
+    set({
+      accessToken,
+      expiresAt,
+      isAuthenticated: true,
+    })
+
+    await get().fetchUserInfo()
   },
 
   logout: () => {

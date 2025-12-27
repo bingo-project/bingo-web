@@ -12,6 +12,7 @@ import {
   ErrorPage,
   ProfileSettingsPage,
   SecuritySettingsPage,
+  OAuthCallbackPage,
 } from '@/pages'
 
 export const router = createBrowserRouter([
@@ -27,6 +28,7 @@ export const router = createBrowserRouter([
   { path: '/login', element: <LoginPage />, errorElement: <ErrorPage /> },
   { path: '/register', element: <RegisterPage />, errorElement: <ErrorPage /> },
   { path: '/forgot-password', element: <ForgotPasswordPage />, errorElement: <ErrorPage /> },
+  { path: '/auth/callback/:provider', element: <OAuthCallbackPage />, errorElement: <ErrorPage /> },
   {
     path: '/settings',
     element: <SettingsLayout />,
