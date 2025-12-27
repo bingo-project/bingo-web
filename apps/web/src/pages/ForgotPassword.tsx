@@ -16,7 +16,7 @@ import {
   type ForgotPasswordFormData,
   type ResetPasswordFormData,
 } from '@/schemas'
-import { AuthHeader, AuthFooter, AuthCard, PasswordInput } from '@/components/auth'
+import { AuthHeader, AuthFooter, AuthCard, PasswordInput, PasswordStrengthIndicator } from '@/components/auth'
 
 type Step = 'email' | 'reset'
 
@@ -201,6 +201,8 @@ export function ForgotPasswordPage() {
                     label: 'text-default-600 font-medium',
                   }}
                 />
+
+                <PasswordStrengthIndicator password={resetForm.watch('password') || ''} />
 
                 <Button
                   type="submit"

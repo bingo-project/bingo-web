@@ -22,7 +22,7 @@ import { toast } from 'sonner'
 import { authApi, type SecurityStatus, type TOTPSetupResponse } from '@bingo/core'
 import { useAuthStore } from '@bingo/core'
 import { useTranslation } from '@/locales'
-import { PasswordInput } from '@/components/auth'
+import { PasswordInput, PasswordStrengthIndicator } from '@/components/auth'
 import {
   createChangePasswordSchema,
   createPayPasswordSchema,
@@ -203,10 +203,13 @@ function ChangePasswordModal({
     register,
     handleSubmit,
     reset,
+    watch,
     formState: { errors },
   } = useForm<ChangePasswordFormData>({
     resolver: zodResolver(createChangePasswordSchema()),
   })
+
+  const passwordNew = watch('passwordNew') || ''
 
   const onSubmit = async (data: ChangePasswordFormData) => {
     setIsSubmitting(true)
@@ -266,6 +269,7 @@ function ChangePasswordModal({
               errorMessage={errors.passwordConfirm?.message}
               classNames={{ inputWrapper: 'h-12' }}
             />
+            <PasswordStrengthIndicator password={passwordNew} />
           </form>
         </ModalBody>
         <ModalFooter>
