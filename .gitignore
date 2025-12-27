@@ -35,3 +35,6 @@ pnpm-debug.log*
 coverage
 apps/web/tsconfig.tsbuildinfo
 docs/ui/generated/
+
+# Worktrees
+.worktrees/
