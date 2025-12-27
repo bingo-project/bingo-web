@@ -53,8 +53,14 @@ export function RegisterPage() {
       setStep('register')
       toast.success(t('auth.register.codeSent'))
     } catch (error) {
-      if (error instanceof ApiError && error.status === 429) {
-        toast.error(t('auth.register.tooManyRequests'))
+      if (error instanceof ApiError) {
+        const errorKey = `auth.register.errors.${error.reason}`
+        const errorMessage = t(errorKey)
+        if (errorMessage !== errorKey) {
+          toast.error(errorMessage)
+        } else {
+          toast.error(t('auth.register.sendCodeError'))
+        }
       } else {
         toast.error(t('auth.register.sendCodeError'))
       }
