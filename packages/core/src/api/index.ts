@@ -19,4 +19,8 @@ export {
   type TOTPSetupResponse,
   type TOTPEnableRequest,
   type TOTPDisableRequest,
+  type AuthProvider,
+  type OAuthUrlResponse,
+  type OAuthLoginRequest,
+  type SocialBinding,
 } from './auth'
