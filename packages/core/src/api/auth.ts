@@ -87,6 +87,31 @@ export interface TOTPDisableRequest {
   totpCode: string
 }
 
+// OAuth
+export interface AuthProvider {
+  name: string
+  authUrl: string
+  redirectUrl: string
+  isDefault: number
+}
+
+export interface OAuthUrlResponse {
+  authUrl: string
+  state: string
+  codeVerifier: string
+}
+
+export interface OAuthLoginRequest {
+  code: string
+  state: string
+  codeVerifier: string
+}
+
+export interface SocialBinding {
+  provider: string
+  boundAt: string
+}
+
 export const authApi = {
   login: (data: LoginRequest) => request.post<LoginResponse>('/v1/auth/login', data),
 
@@ -123,4 +148,20 @@ export const authApi = {
       headers: { 'Content-Type': 'multipart/form-data' },
     })
   },
+
+  // OAuth
+  getProviders: () => request.get<AuthProvider[]>('/v1/auth/providers'),
+
+  getOAuthUrl: (provider: string) => request.get<OAuthUrlResponse>(`/v1/auth/login/${provider}`),
+
+  oauthLogin: (provider: string, params: OAuthLoginRequest) =>
+    request.post<LoginResponse>(`/v1/auth/login/${provider}`, null, { params }),
+
+  // Social Account Bindings
+  getBindings: () => request.get<SocialBinding[]>('/v1/auth/bindings'),
+
+  bindProvider: (provider: string, params: OAuthLoginRequest) =>
+    request.post<LoginResponse>(`/v1/auth/bindings/${provider}`, null, { params }),
+
+  unbindProvider: (provider: string) => request.delete<void>(`/v1/auth/bindings/${provider}`),
 }
