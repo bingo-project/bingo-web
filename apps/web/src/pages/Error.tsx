@@ -92,10 +92,10 @@ export function ErrorPage({ errorType: propErrorType }: ErrorPageProps = {}) {
           {/* Error text */}
           <div className="mb-10 space-y-4">
             <h1 className="text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl">
-              {t(`page.error.${errorType}.title`)}
+              {t(`ui.fallback.${errorType}.title`)}
             </h1>
             <p className="mx-auto max-w-md text-base leading-relaxed text-default-500 sm:text-lg">
-              {t(`page.error.${errorType}.description`)}
+              {t(`ui.fallback.${errorType}.description`)}
             </p>
           </div>
 
@@ -109,7 +109,7 @@ export function ErrorPage({ errorType: propErrorType }: ErrorPageProps = {}) {
               className="w-full bg-gradient-to-r from-primary to-blue-600 font-bold text-white sm:w-auto"
               startContent={<Home size={18} />}
             >
-              {t('page.error.actions.goHome')}
+              {t('ui.fallback.actions.goHome')}
             </Button>
             <Button
               variant="bordered"
@@ -118,7 +118,7 @@ export function ErrorPage({ errorType: propErrorType }: ErrorPageProps = {}) {
               startContent={<RefreshCw size={18} />}
               onPress={handleRetry}
             >
-              {t('page.error.actions.tryAgain')}
+              {t('ui.fallback.actions.tryAgain')}
             </Button>
           </div>
         </div>

@@ -1,0 +1,151 @@
+{
+  "hero": {
+    "titlePrefix": "用 Bingo",
+    "titleHighlight": "快速",
+    "titleSuffix": "构建 Web3",
+    "subtitle": "一个开箱即用的 Web2+Web3 前端脚手架。告别繁琐的构建配置，立即开始构建现代去中心化应用。",
+    "getStarted": "开始使用",
+    "viewOnGitHub": "在 GitHub 上查看"
+  },
+  "stats": {
+    "downloads": "下载量",
+    "projects": "项目",
+    "githubStars": "GitHub Stars"
+  },
+  "features": {
+    "title": "快速开发所需的一切",
+    "subtitle": "Bingo 内置了现代前端开发的最佳实践，开箱即用。",
+    "monorepo": {
+      "title": "Monorepo 架构",
+      "desc": "基于 Turborepo 的可扩展架构，轻松管理多个应用和包。"
+    },
+    "api": {
+      "title": "类型安全 API",
+      "desc": "使用 tRPC 或 REST 实现端到端类型安全，在编译时捕获错误。"
+    },
+    "i18n": {
+      "title": "国际化",
+      "desc": "内置 i18n 支持，零配置摩擦实现多语言翻译。"
+    },
+    "darkMode": {
+      "title": "暗黑模式",
+      "desc": "Tailwind CSS 暗黑模式开箱即用，支持系统偏好检测和手动切换。"
+    },
+    "codeQuality": {
+      "title": "代码质量",
+      "desc": "预配置 ESLint、Prettier 和 Husky hooks，确保代码整洁一致。"
+    },
+    "web3": {
+      "title": "Web3 钱包",
+      "desc": "集成 wagmi 和 RainbowKit，实现无缝钱包连接和区块链交互。"
+    }
+  },
+  "testimonials": {
+    "title": "深受开发者喜爱",
+    "sarah": {
+      "name": "Sarah Chen",
+      "role": "DeFi Llama CTO",
+      "quote": "Bingo 让我们节省了数周的配置时间。Web3 集成开箱即用，完美运行。"
+    },
+    "alex": {
+      "name": "Alex Morgan",
+      "role": "前端负责人",
+      "quote": "整个技术栈的类型安全令人难以置信。现在无法想象不用这个脚手架来构建 dApp。"
+    },
+    "michael": {
+      "name": "Michael Ross",
+      "role": "独立开发者",
+      "quote": "代码整洁，文档完善，组件库设计精美。强烈推荐给任何认真的项目。"
+    }
+  },
+  "pricing": {
+    "title": "简单透明的定价",
+    "monthly": "月付",
+    "yearly": "年付",
+    "save20": "节省 20%",
+    "mostPopular": "最受欢迎",
+    "custom": "定制",
+    "free": {
+      "name": "免费版",
+      "description": "适合个人项目和学习使用。",
+      "cta": "开始使用"
+    },
+    "pro": {
+      "name": "专业版",
+      "description": "构建生产级应用所需的一切。",
+      "cta": "立即订阅"
+    },
+    "enterprise": {
+      "name": "企业版",
+      "description": "适合有特定需求的大型团队。",
+      "cta": "联系销售"
+    },
+    "features": {
+      "1Project": "1 个项目",
+      "basicComponents": "基础组件",
+      "communitySupport": "社区支持",
+      "unlimitedProjects": "无限项目",
+      "advancedComponents": "高级组件",
+      "prioritySupport": "优先支持",
+      "privateDiscord": "私有 Discord",
+      "everythingInPro": "专业版所有功能",
+      "customIntegrations": "定制集成",
+      "dedicatedSupport": "专属支持",
+      "sla": "SLA 保障"
+    }
+  },
+  "faq": {
+    "title": "常见问题",
+    "techStack": {
+      "question": "Bingo 使用什么技术栈？",
+      "answer": "Bingo 基于 React 19、Vite、TypeScript 和 Tailwind CSS 构建。还包含 tRPC、Prisma、RainbowKit 和 wagmi 的配置，用于 Web3 交互。"
+    },
+    "commercial": {
+      "question": "可以用于商业项目吗？",
+      "answer": "当然可以！开源版本采用 MIT 许可，可免费用于个人和商业项目。我们还提供专业版，为需要高级组件和优先支持的团队服务。"
+    },
+    "removeWeb3": {
+      "question": "可以移除 Web3 组件吗？",
+      "answer": "完全可以。Bingo 是模块化的。如果你在构建标准的 Web2 应用，可以直接从 monorepo 中删除 web3 包文件夹，或使用我们的 CLI 生成纯 Web2 脚手架。"
+    },
+    "deploy": {
+      "question": "如何部署 Bingo 应用？",
+      "answer": "由于使用标准的 Vite 和 React 构建流程，你可以零额外配置部署到 Vercel、Netlify、Cloudflare Pages 或任何容器服务。"
+    }
+  },
+  "cta": {
+    "title": "准备好构建令人惊叹的产品了吗？",
+    "subtitle": "加入数千名使用 Bingo 更快发布产品的开发者。今天就免费开始。",
+    "button": "开始构建"
+  },
+  "footer": {
+    "description": "现代 Web2 和 Web3 应用的终极前端脚手架。专为速度、规模和开发者体验而构建。",
+    "copyright": "© 2024 Bingo Inc. 保留所有权利。",
+    "builtWith": "由 Bingo 构建",
+    "product": {
+      "title": "产品",
+      "features": "功能",
+      "documentation": "文档",
+      "integrations": "集成",
+      "pricing": "定价"
+    },
+    "resources": {
+      "title": "资源",
+      "blog": "博客",
+      "community": "社区",
+      "showcase": "案例展示",
+      "helpCenter": "帮助中心"
+    },
+    "company": {
+      "title": "公司",
+      "about": "关于我们",
+      "careers": "加入我们",
+      "privacy": "隐私政策",
+      "terms": "服务条款"
+    }
+  },
+  "about": {
+    "title": "关于",
+    "description": "关于 Bingo Web"
+  }
+}

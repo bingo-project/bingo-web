@@ -8,8 +8,9 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { Button, Input, Checkbox } from '@heroui/react'
 import { Mail, Lock, KeyRound, ArrowRight, UserPlus, ShieldCheck } from 'lucide-react'
 import { toast } from 'sonner'
-import { useAuthStore, authApi, ApiError } from '@bingo/core'
+import { useAuthStore, authApi } from '@bingo/core'
 import { useTranslation } from '@/locales'
+import { showApiError } from '@/utils'
 import { registerEmailSchema, registerFormSchema, type RegisterEmailFormData, type RegisterFormData } from '@/schemas'
 import { AuthHeader, AuthFooter, AuthCard, Divider, PasswordInput, OAuthButtons } from '@/components/auth'
 
@@ -53,17 +54,7 @@ export function RegisterPage() {
       setStep('register')
       toast.success(t('auth.register.codeSent'))
     } catch (error) {
-      if (error instanceof ApiError) {
-        const errorKey = `auth.register.errors.${error.reason}`
-        const errorMessage = t(errorKey)
-        if (errorMessage !== errorKey) {
-          toast.error(errorMessage)
-        } else {
-          toast.error(t('auth.register.sendCodeError'))
-        }
-      } else {
-        toast.error(t('auth.register.sendCodeError'))
-      }
+      showApiError(error, t('auth.register.sendCodeError'))
     } finally {
       setIsLoading(false)
     }
@@ -76,18 +67,7 @@ export function RegisterPage() {
       toast.success(t('auth.register.success'))
       navigate('/login', { replace: true })
     } catch (error) {
-      if (error instanceof ApiError) {
-        const errorKey = `auth.register.errors.${error.reason}`
-        const errorMessage = t(errorKey)
-        // If translation exists for this reason, use it; otherwise use generic error
-        if (errorMessage !== errorKey) {
-          toast.error(errorMessage)
-        } else {
-          toast.error(t('auth.register.error'))
-        }
-      } else {
-        toast.error(t('auth.register.error'))
-      }
+      showApiError(error, t('auth.register.error'))
     } finally {
       setIsLoading(false)
     }
@@ -99,11 +79,7 @@ export function RegisterPage() {
       await authApi.sendCode({ account: email, scene: 'register' })
       toast.success(t('auth.register.codeSent'))
     } catch (error) {
-      if (error instanceof ApiError && error.status === 429) {
-        toast.error(t('auth.register.tooManyRequests'))
-      } else {
-        toast.error(t('auth.register.sendCodeError'))
-      }
+      showApiError(error, t('auth.register.sendCodeError'))
     } finally {
       setIsLoading(false)
     }

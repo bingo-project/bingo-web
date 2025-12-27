@@ -8,8 +8,9 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { Button, Input } from '@heroui/react'
 import { Mail, ArrowRight, KeyRound, ShieldCheck, Lock } from 'lucide-react'
 import { toast } from 'sonner'
-import { authApi, ApiError } from '@bingo/core'
+import { authApi } from '@bingo/core'
 import { useTranslation } from '@/locales'
+import { showApiError } from '@/utils'
 import {
   forgotPasswordSchema,
   resetPasswordSchema,
@@ -45,11 +46,7 @@ export function ForgotPasswordPage() {
       setStep('reset')
       toast.success(t('auth.forgotPassword.codeSent'))
     } catch (error) {
-      if (error instanceof ApiError && error.status === 429) {
-        toast.error(t('auth.forgotPassword.tooManyRequests'))
-      } else {
-        toast.error(t('auth.forgotPassword.error'))
-      }
+      showApiError(error, t('auth.forgotPassword.error'))
     } finally {
       setIsLoading(false)
     }
@@ -62,11 +59,7 @@ export function ForgotPasswordPage() {
       toast.success(t('auth.forgotPassword.resetSuccess'))
       navigate('/login')
     } catch (error) {
-      if (error instanceof ApiError && error.status === 429) {
-        toast.error(t('auth.forgotPassword.tooManyRequests'))
-      } else {
-        toast.error(t('auth.forgotPassword.resetError'))
-      }
+      showApiError(error, t('auth.forgotPassword.resetError'))
     } finally {
       setIsLoading(false)
     }
@@ -78,11 +71,7 @@ export function ForgotPasswordPage() {
       await authApi.sendCode({ account: email, scene: 'reset_password' })
       toast.success(t('auth.forgotPassword.codeSent'))
     } catch (error) {
-      if (error instanceof ApiError && error.status === 429) {
-        toast.error(t('auth.forgotPassword.tooManyRequests'))
-      } else {
-        toast.error(t('auth.forgotPassword.error'))
-      }
+      showApiError(error, t('auth.forgotPassword.error'))
     } finally {
       setIsLoading(false)
     }

@@ -4,8 +4,16 @@
 import i18n from 'i18next'
 import { initReactI18next, useTranslation } from 'react-i18next'
 
-import zhCN from './langs/zh-CN/common.json'
-import enUS from './langs/en-US/common.json'
+import zhCNCommon from './langs/zh-CN/common.json'
+import enUSCommon from './langs/en-US/common.json'
+import zhCNErrors from './langs/zh-CN/errors.json'
+import enUSErrors from './langs/en-US/errors.json'
+import zhCNAuth from './langs/zh-CN/auth.json'
+import enUSAuth from './langs/en-US/auth.json'
+import zhCNUI from './langs/zh-CN/ui.json'
+import enUSUI from './langs/en-US/ui.json'
+import zhCNSettings from './langs/zh-CN/settings.json'
+import enUSSettings from './langs/en-US/settings.json'
 
 export type SupportedLanguage = 'zh-CN' | 'en-US'
 
@@ -15,8 +23,8 @@ export interface LocaleSetupOptions {
 }
 
 const coreResources = {
-  'zh-CN': { translation: zhCN },
-  'en-US': { translation: enUS },
+  'zh-CN': { translation: { ...zhCNCommon, errors: zhCNErrors, auth: zhCNAuth, ui: zhCNUI, settings: zhCNSettings } },
+  'en-US': { translation: { ...enUSCommon, errors: enUSErrors, auth: enUSAuth, ui: enUSUI, settings: enUSSettings } },
 }
 
 let isInitialized = false
@@ -57,17 +65,22 @@ export async function loadLocaleMessages(
   lang: SupportedLanguage,
   loadMessages?: (lang: SupportedLanguage) => Promise<Record<string, unknown>>
 ) {
-  if (i18n.language === lang) return
-
-  await i18n.changeLanguage(lang)
-
+  // Load app messages first (before changing language)
   if (loadMessages) {
     const appMessages = await loadMessages(lang)
     if (appMessages) {
       i18n.addResourceBundle(lang, 'translation', appMessages, true, true)
     }
   }
+
+  // Then change language if needed
+  if (i18n.language !== lang) {
+    await i18n.changeLanguage(lang)
+  }
 }
 
-export { i18n, useTranslation }
+// $t for non-component usage (e.g., in interceptors)
+const $t = i18n.t.bind(i18n)
+
+export { i18n, useTranslation, $t }
 export default i18n

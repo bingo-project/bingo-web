@@ -1,0 +1,42 @@
+{
+  "default": "Operation failed, please try again",
+  "NetworkError": "Network error, please check your connection",
+  "RequestTimeout": "Request timeout, please try again",
+
+  "http": {
+    "badRequest": "Bad request",
+    "unauthorized": "Unauthorized, please login again",
+    "forbidden": "Access denied",
+    "notFound": "Resource not found",
+    "requestTimeout": "Request timeout",
+    "tooManyRequests": "Too many requests, please try again later",
+    "internalServerError": "Server error, please try again later",
+    "badGateway": "Bad gateway",
+    "serviceUnavailable": "Service unavailable",
+    "gatewayTimeout": "Gateway timeout"
+  },
+
+  "validation": {
+    "emailRequired": "Please enter email",
+    "emailInvalid": "Invalid email format",
+    "passwordRequired": "Please enter password",
+    "passwordMin": "Password must be at least 6 characters",
+    "passwordMax": "Password must be at most 18 characters",
+    "passwordMismatch": "Passwords do not match",
+    "confirmPasswordRequired": "Please confirm password",
+    "agreeTermsRequired": "Please agree to the terms"
+  },
+
+  "InvalidArgument.InvalidCode": "Invalid verification code",
+  "InvalidArgument.CodeExpired": "Verification code has expired",
+  "InvalidArgument.PasswordInvalid": "Password is incorrect",
+  "InvalidArgument.PasswordRequired": "Login password is required",
+  "InvalidArgument.UserAlreadyExist": "User already exists",
+  "InvalidArgument.UserNotFound": "User not found",
+  "InvalidArgument.TOTPInvalid": "Invalid TOTP code",
+  "InvalidArgument.TOTPCodeRequired": "TOTP code is required",
+  "InvalidArgument.TOTPNotEnabled": "TOTP is not enabled",
+  "InvalidArgument.TOTPAlreadyEnabled": "TOTP is already enabled",
+  "InvalidArgument.PayPasswordInvalid": "Payment password is incorrect",
+  "InvalidArgument.PayPasswordNotSet": "Payment password is not set"
+}

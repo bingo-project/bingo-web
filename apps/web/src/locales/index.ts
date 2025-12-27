@@ -10,16 +10,15 @@ const modules = import.meta.glob('./langs/**/*.json')
  * Load app-level messages for a language
  */
 async function loadAppMessages(lang: SupportedLanguage): Promise<Record<string, unknown>> {
-  const messages: Record<string, unknown> = {}
+  let messages: Record<string, unknown> = {}
 
   for (const [path, importFn] of Object.entries(modules)) {
-    // Match pattern: ./langs/zh-CN/page.json -> lang=zh-CN, name=page
+    // Match pattern: ./langs/zh-CN/landing.json -> lang=zh-CN
     const match = path.match(/\.\/langs\/([^/]+)\/(.*)\.json$/)
     if (match && match[1] === lang) {
-      const [, , fileName] = match
       const module = (await importFn()) as { default: Record<string, unknown> }
-      // Use filename as namespace: auth.json -> { auth: { login: {...} } }
-      messages[fileName] = module.default
+      // Spread content directly (no namespace prefix)
+      messages = { ...messages, ...module.default }
     }
   }
 
