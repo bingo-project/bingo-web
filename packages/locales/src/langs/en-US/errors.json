@@ -24,7 +24,17 @@
     "passwordMax": "Password must be at most 18 characters",
     "passwordMismatch": "Passwords do not match",
     "confirmPasswordRequired": "Please confirm password",
-    "agreeTermsRequired": "Please agree to the terms"
+    "agreeTermsRequired": "Please agree to the terms",
+    "nicknameMin": "Nickname must be at least 2 characters",
+    "nicknameMax": "Nickname must be at most 255 characters",
+    "payPasswordLength": "Payment password must be 6 digits",
+    "payPasswordDigits": "Payment password must be digits only",
+    "payPasswordMismatch": "Payment passwords do not match",
+    "confirmPayPasswordRequired": "Please confirm payment password",
+    "codeRequired": "Please enter verification code",
+    "emailCodeRequired": "Please enter email verification code",
+    "totpCodeLength": "TOTP code must be 6 digits",
+    "totpCodeDigits": "TOTP code must be digits only"
   },
 
   "InvalidArgument.InvalidCode": "Invalid verification code",

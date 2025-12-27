@@ -91,6 +91,7 @@ export function SecuritySettingsPage() {
           isSet={securityStatus?.payPasswordSet || false}
           isLoading={isLoadingStatus}
           onSetup={payPasswordModal.onOpen}
+          onReset={payPasswordModal.onOpen}
         />
 
         {/* TOTP */}
@@ -117,6 +118,7 @@ export function SecuritySettingsPage() {
       <TOTPDisableModal
         isOpen={totpDisableModal.isOpen}
         onClose={totpDisableModal.onClose}
+        userEmail={user?.email || ''}
         onSuccess={() => {
           loadSecurityStatus()
           totpDisableModal.onClose()
@@ -128,6 +130,8 @@ export function SecuritySettingsPage() {
         isOpen={payPasswordModal.isOpen}
         onClose={payPasswordModal.onClose}
         userEmail={user?.email || ''}
+        totpEnabled={securityStatus?.totpEnabled || false}
+        isReset={securityStatus?.payPasswordSet || false}
         onSuccess={() => {
           loadSecurityStatus()
           payPasswordModal.onClose()
@@ -272,10 +276,12 @@ function PaymentPasswordSection({
   isSet,
   isLoading,
   onSetup,
+  onReset,
 }: {
   isSet: boolean
   isLoading: boolean
   onSetup: () => void
+  onReset: () => void
 }) {
   const { t } = useTranslation()
 
@@ -299,7 +305,11 @@ function PaymentPasswordSection({
           >
             {isSet ? t('settings.security.payPassword.set') : t('settings.security.payPassword.notSet')}
           </Chip>
-          {!isSet && (
+          {isSet ? (
+            <Button color="primary" variant="bordered" radius="full" isLoading={isLoading} onPress={onReset}>
+              {t('settings.security.payPassword.reset')}
+            </Button>
+          ) : (
             <Button color="primary" radius="full" isLoading={isLoading} onPress={onSetup}>
               {t('settings.security.payPassword.setup')}
             </Button>
@@ -463,14 +473,18 @@ function TOTPEnableModal({
 function TOTPDisableModal({
   isOpen,
   onClose,
+  userEmail,
   onSuccess,
 }: {
   isOpen: boolean
   onClose: () => void
+  userEmail: string
   onSuccess: () => void
 }) {
   const { t } = useTranslation()
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [isSendingCode, setIsSendingCode] = useState(false)
+  const [countdown, setCountdown] = useState(0)
 
   const {
     register,
@@ -481,10 +495,30 @@ function TOTPDisableModal({
     resolver: zodResolver(totpDisableSchema),
   })
 
+  useEffect(() => {
+    if (countdown > 0) {
+      const timer = setTimeout(() => setCountdown(countdown - 1), 1000)
+      return () => clearTimeout(timer)
+    }
+  }, [countdown])
+
+  const handleSendCode = async () => {
+    setIsSendingCode(true)
+    try {
+      await authApi.sendCode({ account: userEmail, scene: 'security' })
+      setCountdown(60)
+      toast.success(t('settings.security.totp.disableModal.codeSent'))
+    } catch {
+      toast.error('Failed to send code')
+    } finally {
+      setIsSendingCode(false)
+    }
+  }
+
   const onSubmit = async (data: TOTPDisableFormData) => {
     setIsSubmitting(true)
     try {
-      await authApi.disableTOTP({ code: data.code })
+      await authApi.disableTOTP({ verifyCode: data.verifyCode, totpCode: data.totpCode })
       toast.success(t('settings.security.totp.success.disabled'))
       reset()
       onSuccess()
@@ -498,20 +532,44 @@ function TOTPDisableModal({
   if (!isOpen) return null
 
   return (
-    <Modal isOpen={isOpen} onOpenChange={(open) => !open && onClose()} placement="center">
+    <Modal isOpen={isOpen} onOpenChange={(open) => !open && onClose()} size="lg" placement="center">
       <ModalContent>
         <ModalHeader>{t('settings.security.totp.disableModal.title')}</ModalHeader>
         <ModalBody>
           <p className="mb-4 text-default-500">{t('settings.security.totp.disableModal.description')}</p>
-          <form onSubmit={handleSubmit(onSubmit)}>
+          <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5">
+            <div className="flex items-end gap-2">
+              <Input
+                {...register('verifyCode')}
+                label={t('settings.security.totp.disableModal.emailCode')}
+                placeholder={t('settings.security.totp.disableModal.emailCodePlaceholder')}
+                labelPlacement="outside"
+                variant="bordered"
+                radius="full"
+                isInvalid={!!errors.verifyCode}
+                errorMessage={errors.verifyCode?.message}
+                classNames={{ inputWrapper: 'h-12' }}
+              />
+              <Button
+                className="h-12 min-w-28 shrink-0"
+                variant="bordered"
+                radius="full"
+                isLoading={isSendingCode}
+                isDisabled={countdown > 0}
+                onPress={handleSendCode}
+              >
+                {countdown > 0 ? `${countdown}s` : t('settings.security.totp.disableModal.sendCode')}
+              </Button>
+            </div>
             <Input
-              {...register('code')}
-              label={t('settings.security.totp.disableModal.verificationCode')}
-              placeholder={t('settings.security.totp.disableModal.verificationCodePlaceholder')}
+              {...register('totpCode')}
+              label={t('settings.security.totp.disableModal.totpCode')}
+              placeholder={t('settings.security.totp.disableModal.totpCodePlaceholder')}
+              labelPlacement="outside"
               variant="bordered"
               radius="full"
-              isInvalid={!!errors.code}
-              errorMessage={errors.code?.message}
+              isInvalid={!!errors.totpCode}
+              errorMessage={errors.totpCode?.message}
               maxLength={6}
               classNames={{ inputWrapper: 'h-12' }}
             />
@@ -537,11 +595,15 @@ function PayPasswordModal({
   isOpen,
   onClose,
   userEmail,
+  totpEnabled,
+  isReset,
   onSuccess,
 }: {
   isOpen: boolean
   onClose: () => void
   userEmail: string
+  totpEnabled: boolean
+  isReset: boolean
   onSuccess: () => void
 }) {
   const { t } = useTranslation()
@@ -585,8 +647,11 @@ function PayPasswordModal({
         code: data.code,
         loginPassword: data.loginPassword,
         payPassword: data.payPassword,
+        totpCode: totpEnabled ? data.totpCode : undefined,
       })
-      toast.success(t('settings.security.payPassword.success'))
+      toast.success(
+        isReset ? t('settings.security.payPassword.resetSuccess') : t('settings.security.payPassword.success')
+      )
       reset()
       onSuccess()
     } catch (error) {
@@ -609,7 +674,9 @@ function PayPasswordModal({
       }}
     >
       <ModalContent>
-        <ModalHeader>{t('settings.security.payPassword.setup')}</ModalHeader>
+        <ModalHeader>
+          {isReset ? t('settings.security.payPassword.resetTitle') : t('settings.security.payPassword.setup')}
+        </ModalHeader>
         <ModalBody>
           <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5">
             <PasswordInput
@@ -626,7 +693,11 @@ function PayPasswordModal({
             <Input
               {...register('payPassword')}
               type="password"
-              label={t('settings.security.payPassword.payPassword')}
+              label={
+                isReset
+                  ? t('settings.security.payPassword.newPayPassword')
+                  : t('settings.security.payPassword.payPassword')
+              }
               placeholder={t('settings.security.payPassword.payPasswordPlaceholder')}
               labelPlacement="outside"
               variant="bordered"
@@ -672,11 +743,25 @@ function PayPasswordModal({
                 {countdown > 0 ? `${countdown}s` : t('settings.security.payPassword.sendCode')}
               </Button>
             </div>
+            {totpEnabled && (
+              <Input
+                {...register('totpCode')}
+                label={t('settings.security.payPassword.totpCode')}
+                placeholder={t('settings.security.payPassword.totpCodePlaceholder')}
+                labelPlacement="outside"
+                variant="bordered"
+                radius="full"
+                isInvalid={!!errors.totpCode}
+                errorMessage={errors.totpCode?.message}
+                maxLength={6}
+                classNames={{ inputWrapper: 'h-12' }}
+              />
+            )}
           </form>
         </ModalBody>
         <ModalFooter>
           <Button variant="light" radius="full" onPress={onClose}>
-            Cancel
+            {t('action.cancel')}
           </Button>
           <Button color="primary" radius="full" isLoading={isSubmitting} onPress={() => handleSubmit(onSubmit)()}>
             {isSubmitting ? t('settings.security.payPassword.submitting') : t('settings.security.payPassword.submit')}

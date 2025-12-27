@@ -68,6 +68,7 @@ export interface SetPayPasswordRequest {
   code: string
   loginPassword: string
   payPassword: string
+  totpCode?: string
 }
 
 // TOTP (Google Authenticator)
@@ -82,7 +83,8 @@ export interface TOTPEnableRequest {
 }
 
 export interface TOTPDisableRequest {
-  code: string
+  verifyCode: string
+  totpCode: string
 }
 
 export const authApi = {

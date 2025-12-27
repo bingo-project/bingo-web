@@ -2,40 +2,52 @@
 // ABOUTME: Defines profile, password, and security form validation rules
 
 import { z } from 'zod'
+import { $t } from '@bingo/locales'
 
 export const profileSchema = z.object({
-  nickname: z.string().min(2, '昵称至少 2 个字符').max(255, '昵称最多 255 个字符'),
+  nickname: z.string().min(2, $t('errors.validation.nicknameMin')).max(255, $t('errors.validation.nicknameMax')),
 })
 
 export const changePasswordSchema = z
   .object({
-    passwordOld: z.string().min(6, '密码至少 6 位').max(18, '密码最多 18 位'),
-    passwordNew: z.string().min(6, '密码至少 6 位').max(18, '密码最多 18 位'),
-    passwordConfirm: z.string().min(1, '请确认密码'),
+    passwordOld: z.string().min(6, $t('errors.validation.passwordMin')).max(18, $t('errors.validation.passwordMax')),
+    passwordNew: z.string().min(6, $t('errors.validation.passwordMin')).max(18, $t('errors.validation.passwordMax')),
+    passwordConfirm: z.string().min(1, $t('errors.validation.confirmPasswordRequired')),
   })
   .refine((data) => data.passwordNew === data.passwordConfirm, {
-    message: '两次密码不一致',
+    message: $t('errors.validation.passwordMismatch'),
     path: ['passwordConfirm'],
   })
 
 export const payPasswordSchema = z
   .object({
-    loginPassword: z.string().min(6, '请输入登录密码').max(18),
-    payPassword: z.string().length(6, '支付密码必须是 6 位数字').regex(/^\d+$/, '支付密码只能是数字'),
-    payPasswordConfirm: z.string().min(1, '请确认支付密码'),
-    code: z.string().min(1, '请输入验证码'),
+    loginPassword: z.string().min(6, $t('errors.validation.passwordMin')).max(18, $t('errors.validation.passwordMax')),
+    payPassword: z
+      .string()
+      .length(6, $t('errors.validation.payPasswordLength'))
+      .regex(/^\d+$/, $t('errors.validation.payPasswordDigits')),
+    payPasswordConfirm: z.string().min(1, $t('errors.validation.confirmPayPasswordRequired')),
+    code: z.string().min(1, $t('errors.validation.codeRequired')),
+    totpCode: z.string().optional(),
   })
   .refine((data) => data.payPassword === data.payPasswordConfirm, {
-    message: '两次支付密码不一致',
+    message: $t('errors.validation.payPasswordMismatch'),
     path: ['payPasswordConfirm'],
   })
 
 export const totpEnableSchema = z.object({
-  code: z.string().length(6, '验证码必须是 6 位').regex(/^\d+$/, '验证码只能是数字'),
+  code: z
+    .string()
+    .length(6, $t('errors.validation.totpCodeLength'))
+    .regex(/^\d+$/, $t('errors.validation.totpCodeDigits')),
 })
 
 export const totpDisableSchema = z.object({
-  code: z.string().length(6, '验证码必须是 6 位').regex(/^\d+$/, '验证码只能是数字'),
+  verifyCode: z.string().min(1, $t('errors.validation.emailCodeRequired')),
+  totpCode: z
+    .string()
+    .length(6, $t('errors.validation.totpCodeLength'))
+    .regex(/^\d+$/, $t('errors.validation.totpCodeDigits')),
 })
 
 export type ProfileFormData = z.infer<typeof profileSchema>
