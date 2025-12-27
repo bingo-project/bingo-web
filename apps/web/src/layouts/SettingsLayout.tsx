@@ -71,31 +71,34 @@ export function SettingsLayout() {
           </div>
         </aside>
 
-        {/* Mobile Navigation */}
-        <div className="sticky top-20 z-40 flex w-full items-center gap-2 overflow-x-auto border-b border-divider bg-background px-4 py-3 md:hidden">
-          {navItems.map((item) => (
-            <NavLink
-              key={item.key}
-              to={item.path}
-              className={({ isActive }) =>
-                `flex shrink-0 items-center gap-2 whitespace-nowrap rounded-full px-4 py-2 text-sm font-medium ${
-                  item.disabled
-                    ? 'pointer-events-none opacity-50'
-                    : isActive
-                      ? 'bg-primary text-white'
-                      : 'border border-divider bg-content1 text-default-500'
-                }`
-              }
-            >
-              {t(`settings.nav.${item.key}`)}
-            </NavLink>
-          ))}
-        </div>
+        {/* Main Content Area */}
+        <div className="flex-1">
+          {/* Mobile Navigation */}
+          <div className="flex w-full items-center gap-2 overflow-x-auto border-b border-divider bg-background px-4 py-3 md:hidden">
+            {navItems.map((item) => (
+              <NavLink
+                key={item.key}
+                to={item.path}
+                className={({ isActive }) =>
+                  `flex shrink-0 items-center gap-2 whitespace-nowrap rounded-full px-4 py-2 text-sm font-medium ${
+                    item.disabled
+                      ? 'pointer-events-none opacity-50'
+                      : isActive
+                        ? 'bg-primary text-white'
+                        : 'border border-divider bg-content1 text-default-500'
+                  }`
+                }
+              >
+                {t(`settings.nav.${item.key}`)}
+              </NavLink>
+            ))}
+          </div>
 
-        {/* Main Content */}
-        <main className="flex-1 p-4 md:p-10 lg:pr-20">
-          <Outlet />
-        </main>
+          {/* Page Content */}
+          <main className="p-4 md:p-10 lg:pr-20">
+            <Outlet />
+          </main>
+        </div>
       </div>
     </div>
   )

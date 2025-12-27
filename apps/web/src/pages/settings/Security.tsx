@@ -73,8 +73,8 @@ export function SecuritySettingsPage() {
 
   return (
     <div className="max-w-3xl">
-      {/* Page Title */}
-      <div className="mb-10">
+      {/* Page Title - Hidden on mobile since nav tabs show current page */}
+      <div className="mb-10 hidden md:block">
         <h1 className="mb-3 flex items-center gap-3 text-3xl font-black leading-tight tracking-tight text-foreground md:text-4xl">
           <Shield className="text-primary" />
           {t('settings.security.title')}

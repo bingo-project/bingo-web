@@ -86,8 +86,8 @@ export function ProfileSettingsPage() {
 
   return (
     <div className="max-w-3xl">
-      {/* Page Title */}
-      <div className="mb-10">
+      {/* Page Title - Hidden on mobile since nav tabs show current page */}
+      <div className="mb-10 hidden md:block">
         <h1 className="mb-3 text-3xl font-black leading-tight tracking-tight text-foreground md:text-4xl">
           {t('settings.profile.title')}
         </h1>
@@ -97,16 +97,16 @@ export function ProfileSettingsPage() {
       <div className="flex flex-col gap-10">
         {/* Avatar Section */}
         <Card className="border border-divider bg-content1">
-          <CardBody className="flex flex-col gap-6 p-6 sm:flex-row sm:items-center">
-            <div className="group relative cursor-pointer" onClick={handleAvatarClick}>
+          <CardBody className="flex flex-row items-center gap-4 p-4 sm:gap-6 sm:p-6">
+            <div className="group relative shrink-0 cursor-pointer" onClick={handleAvatarClick}>
               {user?.avatar ? (
                 <img
                   src={user.avatar}
                   alt="Avatar"
-                  className="size-24 rounded-full object-cover shadow-2xl shadow-black/20 md:size-32"
+                  className="size-16 rounded-full object-cover shadow-2xl shadow-black/20 sm:size-24 md:size-32"
                 />
               ) : (
-                <div className="flex size-24 items-center justify-center rounded-full bg-primary text-3xl font-bold text-white shadow-2xl shadow-black/20 md:size-32">
+                <div className="flex size-16 items-center justify-center rounded-full bg-primary text-2xl font-bold text-white shadow-2xl shadow-black/20 sm:size-24 sm:text-3xl md:size-32">
                   {(user?.nickname || user?.username || 'U').charAt(0).toUpperCase()}
                 </div>
               )}
@@ -116,12 +116,14 @@ export function ProfileSettingsPage() {
               <input ref={fileInputRef} type="file" accept="image/*" className="hidden" onChange={handleAvatarChange} />
             </div>
 
-            <div className="flex flex-1 flex-col gap-4">
+            <div className="flex min-w-0 flex-1 flex-col gap-2 sm:gap-4">
               <div>
-                <h3 className="mb-1 text-xl font-bold text-foreground">{t('settings.profile.avatar.title')}</h3>
-                <p className="text-sm text-default-500">{t('settings.profile.avatar.description')}</p>
+                <h3 className="mb-1 text-base font-bold text-foreground sm:text-xl">
+                  {t('settings.profile.avatar.title')}
+                </h3>
+                <p className="text-xs text-default-500 sm:text-sm">{t('settings.profile.avatar.description')}</p>
               </div>
-              <div className="flex gap-3">
+              <div className="flex flex-wrap gap-2 sm:gap-3">
                 <Button
                   variant="bordered"
                   radius="full"
