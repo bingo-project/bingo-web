@@ -279,8 +279,16 @@ export function RegisterPage() {
                   {isLoading ? t('auth.register.submitting') : t('auth.register.submit')}
                 </Button>
 
-                <div className="flex items-center justify-center gap-1 text-sm">
-                  <span className="text-default-500">{t('auth.register.noCode')}</span>
+                <div className="flex items-center justify-center gap-4 text-sm">
+                  <button
+                    type="button"
+                    onClick={() => setStep('email')}
+                    disabled={isLoading}
+                    className="font-medium text-default-500 hover:text-foreground disabled:opacity-50"
+                  >
+                    {t('auth.register.changeEmail')}
+                  </button>
+                  <span className="text-default-300">|</span>
                   <button
                     type="button"
                     onClick={handleResendCode}
