@@ -55,7 +55,7 @@ export function Header() {
           {/* Actions */}
           <div className="flex items-center gap-3">
             <Button isIconOnly variant="light" radius="full" onPress={toggleTheme} aria-label="Toggle theme">
-              {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
+              {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} className="text-default-700 dark:text-inherit" />}
             </Button>
 
             <Dropdown>
@@ -67,7 +67,7 @@ export function Header() {
                   aria-label="Switch language"
                   className="hidden sm:flex"
                 >
-                  <Globe size={20} />
+                  <Globe size={20} className="text-default-700 dark:text-inherit" />
                 </Button>
               </DropdownTrigger>
               <DropdownMenu
@@ -89,7 +89,7 @@ export function Header() {
               <div className="flex items-center gap-3">
                 {/* Notifications */}
                 <Button isIconOnly variant="light" radius="full" className="hidden sm:flex" aria-label="Notifications">
-                  <Bell size={20} />
+                  <Bell size={20} className="text-default-700 dark:text-inherit" />
                 </Button>
 
                 {/* User info & dropdown */}
