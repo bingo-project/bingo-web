@@ -6,7 +6,7 @@ import { Button } from '@heroui/react'
 import { User, Shield, Bell, CreditCard, LogOut } from 'lucide-react'
 import { useAuthStore } from '@bingo/core'
 import { useTranslation } from '@/locales'
-import { Header } from '@/components/landing'
+import { Header } from '@/components/layout'
 
 const navItems = [
   { key: 'profile', path: '/settings/profile', icon: User },

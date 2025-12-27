@@ -1,8 +1,8 @@
 // ABOUTME: Home page component
 // ABOUTME: Landing page with all sections
 
+import { Header } from '@/components/layout'
 import {
-  Header,
   HeroSection,
   StatsBar,
   FeaturesSection,
