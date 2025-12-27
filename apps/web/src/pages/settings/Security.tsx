@@ -19,7 +19,7 @@ import {
 } from '@heroui/react'
 import { Shield, Key, Lock, Smartphone, CheckCircle, XCircle } from 'lucide-react'
 import { toast } from 'sonner'
-import { authApi, type SecurityStatus, type TOTPSetupResponse } from '@bingo/core'
+import { authApi, ApiError, type SecurityStatus, type TOTPSetupResponse } from '@bingo/core'
 import { useAuthStore } from '@bingo/core'
 import { useTranslation } from '@/locales'
 import { PasswordInput } from '@/components/auth'
@@ -201,8 +201,18 @@ function ChangePasswordModal({
       toast.success(t('settings.security.changePassword.success'))
       reset()
       onSuccess()
-    } catch {
-      toast.error(t('settings.security.changePassword.error'))
+    } catch (error) {
+      if (error instanceof ApiError) {
+        const errorKey = `settings.security.changePassword.errors.${error.reason}`
+        const errorMessage = t(errorKey)
+        if (errorMessage !== errorKey) {
+          toast.error(errorMessage)
+        } else {
+          toast.error(t('settings.security.changePassword.error'))
+        }
+      } else {
+        toast.error(t('settings.security.changePassword.error'))
+      }
     } finally {
       setIsSubmitting(false)
     }
@@ -390,8 +400,18 @@ function TOTPEnableModal({
       toast.success(t('settings.security.totp.success.enabled'))
       reset()
       onSuccess()
-    } catch {
-      toast.error(t('settings.security.totp.error.enable'))
+    } catch (error) {
+      if (error instanceof ApiError) {
+        const errorKey = `settings.security.totp.errors.${error.reason}`
+        const errorMessage = t(errorKey)
+        if (errorMessage !== errorKey) {
+          toast.error(errorMessage)
+        } else {
+          toast.error(t('settings.security.totp.error.enable'))
+        }
+      } else {
+        toast.error(t('settings.security.totp.error.enable'))
+      }
     } finally {
       setIsSubmitting(false)
     }
@@ -487,8 +507,18 @@ function TOTPDisableModal({
       toast.success(t('settings.security.totp.success.disabled'))
       reset()
       onSuccess()
-    } catch {
-      toast.error(t('settings.security.totp.error.disable'))
+    } catch (error) {
+      if (error instanceof ApiError) {
+        const errorKey = `settings.security.totp.errors.${error.reason}`
+        const errorMessage = t(errorKey)
+        if (errorMessage !== errorKey) {
+          toast.error(errorMessage)
+        } else {
+          toast.error(t('settings.security.totp.error.disable'))
+        }
+      } else {
+        toast.error(t('settings.security.totp.error.disable'))
+      }
     } finally {
       setIsSubmitting(false)
     }
@@ -567,7 +597,7 @@ function PayPasswordModal({
   const handleSendCode = async () => {
     setIsSendingCode(true)
     try {
-      await authApi.sendCode({ account: userEmail, scene: 'bind' })
+      await authApi.sendCode({ account: userEmail, scene: 'security' })
       setCountdown(60)
       toast.success(t('settings.security.payPassword.codeSent'))
     } catch {
@@ -588,8 +618,18 @@ function PayPasswordModal({
       toast.success(t('settings.security.payPassword.success'))
       reset()
       onSuccess()
-    } catch {
-      toast.error(t('settings.security.payPassword.error'))
+    } catch (error) {
+      if (error instanceof ApiError) {
+        const errorKey = `settings.security.payPassword.errors.${error.reason}`
+        const errorMessage = t(errorKey)
+        if (errorMessage !== errorKey) {
+          toast.error(errorMessage)
+        } else {
+          toast.error(t('settings.security.payPassword.error'))
+        }
+      } else {
+        toast.error(t('settings.security.payPassword.error'))
+      }
     } finally {
       setIsSubmitting(false)
     }

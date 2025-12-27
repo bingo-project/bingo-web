@@ -31,7 +31,7 @@ export interface UserInfo {
   updatedAt: string
 }
 
-export type SendCodeScene = 'register' | 'reset_password' | 'bind'
+export type SendCodeScene = 'register' | 'reset_password' | 'bind' | 'security'
 
 export interface SendCodeRequest {
   account: string

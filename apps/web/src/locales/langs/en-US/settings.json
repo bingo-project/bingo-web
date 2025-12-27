@@ -48,7 +48,10 @@
       "submitting": "Updating...",
       "cancel": "Cancel",
       "success": "Password changed successfully",
-      "error": "Failed to change password"
+      "error": "Failed to change password",
+      "errors": {
+        "InvalidArgument.PasswordInvalid": "Current password is incorrect"
+      }
     },
     "payPassword": {
       "title": "Payment Password",
@@ -69,7 +72,12 @@
       "submit": "Set Payment Password",
       "submitting": "Setting...",
       "success": "Payment password set successfully",
-      "error": "Failed to set payment password"
+      "error": "Failed to set payment password",
+      "errors": {
+        "InvalidArgument.InvalidCode": "Invalid verification code",
+        "InvalidArgument.CodeExpired": "Verification code has expired",
+        "InvalidArgument.PasswordInvalid": "Invalid login password"
+      }
     },
     "totp": {
       "title": "Two-Factor Authentication",
@@ -110,6 +118,9 @@
         "enable": "Failed to enable 2FA",
         "disable": "Failed to disable 2FA",
         "setup": "Failed to get 2FA setup"
+      },
+      "errors": {
+        "InvalidArgument.InvalidCode": "Invalid verification code"
       }
     }
   }
