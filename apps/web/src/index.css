@@ -10,11 +10,10 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme {
-  --color-primary: #7238f0;
-  --color-primary-hover: #5b2cb3;
-  --color-surface-light: #ffffff;
+  /* Custom colors not covered by HeroUI theme */
   --color-surface-dark: #171717;
 
+  /* Custom gradients for landing page */
   --background-image-gradient-primary: linear-gradient(135deg, #7238f0 0%, #a855f7 100%);
   --background-image-gradient-mesh: radial-gradient(
     circle at 50% 50%,
@@ -22,11 +21,8 @@
     rgba(10, 10, 10, 0) 50%
   );
 
+  /* Font family for display text */
   --font-family-display: 'Inter', sans-serif;
-
-  --radius-small: 8px;
-  --radius-medium: 12px;
-  --radius-large: 14px;
 }
 
 html {
