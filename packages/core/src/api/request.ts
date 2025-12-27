@@ -87,9 +87,19 @@ instance.interceptors.response.use(
       return Promise.reject(new ApiError($t('errors.http.unauthorized'), status))
     }
 
-    // For business errors with reason, let showApiError handle the toast
-    // For HTTP errors without reason, show toast here
-    if (!errData?.reason) {
+    // Show error toast: try reason translation first, then HTTP status message
+    if (errData?.reason) {
+      const errorKey = `errors.${errData.reason}`
+      const translated = $t(errorKey)
+      if (translated !== errorKey) {
+        toast.error(translated)
+      } else {
+        // No translation for reason, fall back to HTTP status message
+        const httpErrorMsg = getHttpErrorMessage(status)
+        toast.error(httpErrorMsg || errData.message || $t('errors.default'))
+      }
+    } else {
+      // No reason, use HTTP status message
       const httpErrorMsg = getHttpErrorMessage(status)
       if (httpErrorMsg) {
         toast.error(httpErrorMsg)

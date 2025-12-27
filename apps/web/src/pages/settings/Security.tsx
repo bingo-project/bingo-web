@@ -22,7 +22,6 @@ import { toast } from 'sonner'
 import { authApi, type SecurityStatus, type TOTPSetupResponse } from '@bingo/core'
 import { useAuthStore } from '@bingo/core'
 import { useTranslation } from '@/locales'
-import { showApiError } from '@/utils'
 import { PasswordInput } from '@/components/auth'
 import {
   createChangePasswordSchema,
@@ -56,7 +55,7 @@ export function SecuritySettingsPage() {
       const status = await authApi.getSecurityStatus()
       setSecurityStatus(status)
     } catch {
-      toast.error('Failed to load security status')
+      // Error toast handled by request interceptor
     } finally {
       setIsLoadingStatus(false)
     }
@@ -68,7 +67,7 @@ export function SecuritySettingsPage() {
       setTotpSetup(setup)
       totpEnableModal.onOpen()
     } catch {
-      toast.error(t('settings.security.totp.error.setup'))
+      // Error toast handled by request interceptor
     }
   }
 
@@ -206,8 +205,8 @@ function ChangePasswordModal({
       toast.success(t('settings.security.changePassword.success'))
       reset()
       onSuccess()
-    } catch (error) {
-      showApiError(error, t('settings.security.changePassword.error'))
+    } catch {
+      // Error toast handled by request interceptor
     } finally {
       setIsSubmitting(false)
     }
@@ -401,8 +400,8 @@ function TOTPEnableModal({
       toast.success(t('settings.security.totp.success.enabled'))
       reset()
       onSuccess()
-    } catch (error) {
-      showApiError(error, t('settings.security.totp.error.enable'))
+    } catch {
+      // Error toast handled by request interceptor
     } finally {
       setIsSubmitting(false)
     }
@@ -509,7 +508,7 @@ function TOTPDisableModal({
       setCountdown(60)
       toast.success(t('settings.security.totp.disableModal.codeSent'))
     } catch {
-      toast.error('Failed to send code')
+      // Error toast handled by request interceptor
     } finally {
       setIsSendingCode(false)
     }
@@ -522,8 +521,8 @@ function TOTPDisableModal({
       toast.success(t('settings.security.totp.success.disabled'))
       reset()
       onSuccess()
-    } catch (error) {
-      showApiError(error, t('settings.security.totp.error.disable'))
+    } catch {
+      // Error toast handled by request interceptor
     } finally {
       setIsSubmitting(false)
     }
@@ -636,7 +635,7 @@ function PayPasswordModal({
       setCountdown(60)
       toast.success(t('settings.security.payPassword.codeSent'))
     } catch {
-      toast.error('Failed to send code')
+      // Error toast handled by request interceptor
     } finally {
       setIsSendingCode(false)
     }
@@ -656,8 +655,8 @@ function PayPasswordModal({
       )
       reset()
       onSuccess()
-    } catch (error) {
-      showApiError(error, t('settings.security.payPassword.error'))
+    } catch {
+      // Error toast handled by request interceptor
     } finally {
       setIsSubmitting(false)
     }

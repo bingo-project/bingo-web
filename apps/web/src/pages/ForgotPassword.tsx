@@ -10,7 +10,6 @@ import { Mail, ArrowRight, KeyRound, ShieldCheck, Lock } from 'lucide-react'
 import { toast } from 'sonner'
 import { authApi } from '@bingo/core'
 import { useTranslation } from '@/locales'
-import { showApiError } from '@/utils'
 import {
   createForgotPasswordSchema,
   createResetPasswordSchema,
@@ -45,8 +44,8 @@ export function ForgotPasswordPage() {
       setEmail(data.email)
       setStep('reset')
       toast.success(t('auth.forgotPassword.codeSent'))
-    } catch (error) {
-      showApiError(error, t('auth.forgotPassword.error'))
+    } catch {
+      // Error toast handled by request interceptor
     } finally {
       setIsLoading(false)
     }
@@ -58,8 +57,8 @@ export function ForgotPasswordPage() {
       await authApi.resetPassword({ account: email, code: data.code, password: data.password })
       toast.success(t('auth.forgotPassword.resetSuccess'))
       navigate('/login')
-    } catch (error) {
-      showApiError(error, t('auth.forgotPassword.resetError'))
+    } catch {
+      // Error toast handled by request interceptor
     } finally {
       setIsLoading(false)
     }
@@ -70,8 +69,8 @@ export function ForgotPasswordPage() {
     try {
       await authApi.sendCode({ account: email, scene: 'reset_password' })
       toast.success(t('auth.forgotPassword.codeSent'))
-    } catch (error) {
-      showApiError(error, t('auth.forgotPassword.error'))
+    } catch {
+      // Error toast handled by request interceptor
     } finally {
       setIsLoading(false)
     }

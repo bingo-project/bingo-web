@@ -31,5 +31,7 @@
   "InvalidArgument.TOTPNotEnabled": "TOTP is not enabled",
   "InvalidArgument.TOTPAlreadyEnabled": "TOTP is already enabled",
   "InvalidArgument.PayPasswordInvalid": "Payment password is incorrect",
-  "InvalidArgument.PayPasswordNotSet": "Payment password is not set"
+  "InvalidArgument.PayPasswordNotSet": "Payment password is not set",
+
+  "TooManyRequests": "Too many requests, please try again later"
 }

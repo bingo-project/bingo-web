@@ -402,31 +402,30 @@ toast.error($t('errors.http.unauthorized'))
 
 ### 4.5 错误处理
 
-**HTTP 错误**：由 `request.ts` interceptor 自动处理，使用 `errors.http.*`
+所有 API 错误由 `request.ts` interceptor 统一处理，自动显示 toast 提示。
 
-**业务错误**：使用 `showApiError()` 工具函数
+**处理流程**：
+
+1. 如果后端返回 `reason` 字段，尝试翻译 `errors.{reason}`
+2. 翻译不存在时，使用 HTTP 状态码对应的消息（`errors.http.*`）
+3. 都没有时使用通用错误消息
+
+**业务代码只需处理成功路径**：
 
 ```tsx
-import { showApiError } from '@/utils'
-
 try {
   await api.someAction()
-} catch (error) {
-  showApiError(error, t('someAction.error')) // 提供 fallback 消息
+  toast.success(t('someAction.success'))
+} catch {
+  // Error toast handled by request interceptor
 }
 ```
-
-`showApiError` 会：
-
-1. 检查 `error.reason`（业务错误码）
-2. 尝试翻译 `errors.{reason}`
-3. 找不到翻译时使用 fallback 消息
 
 **添加新业务错误**：在 `packages/locales/src/langs/*/errors.json` 添加：
 
 ```json
 {
-  "InvalidArgument.NewErrorCode": "错误描述"
+  "NewErrorCode": "错误描述"
 }
 ```
 
@@ -633,9 +632,6 @@ import { useTranslation } from '@/locales'
 
 // 国际化（非组件上下文）
 import { $t } from '@bingo/locales'
-
-// 错误处理
-import { showApiError } from '@/utils'
 
 // 表单
 import { useForm } from 'react-hook-form'

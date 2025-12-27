@@ -10,7 +10,6 @@ import { Mail, Lock, KeyRound, ArrowRight, UserPlus, ShieldCheck } from 'lucide-
 import { toast } from 'sonner'
 import { useAuthStore, authApi } from '@bingo/core'
 import { useTranslation } from '@/locales'
-import { showApiError } from '@/utils'
 import {
   createRegisterEmailSchema,
   createRegisterFormSchema,
@@ -58,8 +57,8 @@ export function RegisterPage() {
       setEmail(data.email)
       setStep('register')
       toast.success(t('auth.register.codeSent'))
-    } catch (error) {
-      showApiError(error, t('auth.register.sendCodeError'))
+    } catch {
+      // Error toast handled by request interceptor
     } finally {
       setIsLoading(false)
     }
@@ -71,8 +70,8 @@ export function RegisterPage() {
       await registerUser(email, data.password, data.code)
       toast.success(t('auth.register.success'))
       navigate('/login', { replace: true })
-    } catch (error) {
-      showApiError(error, t('auth.register.error'))
+    } catch {
+      // Error toast handled by request interceptor
     } finally {
       setIsLoading(false)
     }
@@ -83,8 +82,8 @@ export function RegisterPage() {
     try {
       await authApi.sendCode({ account: email, scene: 'register' })
       toast.success(t('auth.register.codeSent'))
-    } catch (error) {
-      showApiError(error, t('auth.register.sendCodeError'))
+    } catch {
+      // Error toast handled by request interceptor
     } finally {
       setIsLoading(false)
     }
