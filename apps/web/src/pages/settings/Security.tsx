@@ -17,12 +17,20 @@ import {
   useDisclosure,
   Chip,
 } from '@heroui/react'
-import { Shield, Key, Lock, Smartphone, CheckCircle, XCircle } from 'lucide-react'
+import { Shield, Key, Lock, Smartphone, CheckCircle, XCircle, Link2, LinkIcon } from 'lucide-react'
 import { toast } from 'sonner'
-import { authApi, type SecurityStatus, type TOTPSetupResponse } from '@bingo/core'
+import {
+  authApi,
+  type SecurityStatus,
+  type TOTPSetupResponse,
+  type AuthProvider,
+  type SocialBinding,
+} from '@bingo/core'
 import { useAuthStore } from '@bingo/core'
 import { useTranslation } from '@/locales'
 import { PasswordInput, PasswordStrengthIndicator } from '@/components/auth'
+import { getProviderIcon } from '@/components/auth/oauth-icons'
+import { saveOAuthSession } from '@/utils/oauth'
 import {
   createChangePasswordSchema,
   createPayPasswordSchema,
@@ -42,6 +50,11 @@ export function SecuritySettingsPage() {
   const [isLoadingStatus, setIsLoadingStatus] = useState(true)
   // Shared countdown for security scene verification code (used by TOTP disable and pay password)
   const [securityCodeCountdown, setSecurityCodeCountdown] = useState(0)
+  const [providers, setProviders] = useState<AuthProvider[]>([])
+  const [bindings, setBindings] = useState<SocialBinding[]>([])
+  const [isLoadingProviders, setIsLoadingProviders] = useState(true)
+  const [unbindingProvider, setUnbindingProvider] = useState<string | null>(null)
+  const [linkingProvider, setLinkingProvider] = useState<string | null>(null)
 
   const changePasswordModal = useDisclosure()
   const totpEnableModal = useDisclosure()
@@ -57,6 +70,7 @@ export function SecuritySettingsPage() {
 
   useEffect(() => {
     loadSecurityStatus()
+    loadSocialData()
   }, [])
 
   const loadSecurityStatus = async () => {
@@ -70,6 +84,18 @@ export function SecuritySettingsPage() {
     }
   }
 
+  const loadSocialData = async () => {
+    try {
+      const [providersData, bindingsData] = await Promise.all([authApi.getProviders(), authApi.getBindings()])
+      setProviders(providersData)
+      setBindings(bindingsData)
+    } catch {
+      // Error handled by request interceptor
+    } finally {
+      setIsLoadingProviders(false)
+    }
+  }
+
   const handleEnableTOTP = async () => {
     try {
       const setup = await authApi.getTOTPSetup()
@@ -77,6 +103,36 @@ export function SecuritySettingsPage() {
       totpEnableModal.onOpen()
     } catch {
       // Error toast handled by request interceptor
+    }
+  }
+
+  const handleLinkProvider = async (provider: AuthProvider) => {
+    setLinkingProvider(provider.name)
+    try {
+      const response = await authApi.getOAuthUrl(provider.name)
+      saveOAuthSession({
+        state: response.state,
+        codeVerifier: response.codeVerifier,
+        action: 'bind',
+        redirect: '/settings/security',
+      })
+      window.location.href = response.authUrl
+    } catch {
+      setLinkingProvider(null)
+    }
+  }
+
+  const handleUnlinkProvider = async (providerName: string) => {
+    setUnbindingProvider(providerName)
+    try {
+      await authApi.unbindProvider(providerName)
+      const providerLabel = t(`settings.security.socialAccounts.providers.${providerName}`, providerName)
+      toast.success(t('settings.security.socialAccounts.unlinkSuccess', { provider: providerLabel }))
+      loadSocialData()
+    } catch {
+      // Error handled by request interceptor
+    } finally {
+      setUnbindingProvider(null)
     }
   }
 
@@ -108,6 +164,17 @@ export function SecuritySettingsPage() {
           isLoading={isLoadingStatus}
           onEnable={handleEnableTOTP}
           onDisable={totpDisableModal.onOpen}
+        />
+
+        {/* Social Accounts */}
+        <SocialAccountsSection
+          providers={providers}
+          bindings={bindings}
+          isLoading={isLoadingProviders}
+          linkingProvider={linkingProvider}
+          unbindingProvider={unbindingProvider}
+          onLink={handleLinkProvider}
+          onUnlink={handleUnlinkProvider}
         />
       </div>
 
@@ -777,5 +844,106 @@ function PayPasswordModal({
         </ModalFooter>
       </ModalContent>
     </Modal>
+  )
+}
+
+// Social Accounts Section
+function SocialAccountsSection({
+  providers,
+  bindings,
+  isLoading,
+  linkingProvider,
+  unbindingProvider,
+  onLink,
+  onUnlink,
+}: {
+  providers: AuthProvider[]
+  bindings: SocialBinding[]
+  isLoading: boolean
+  linkingProvider: string | null
+  unbindingProvider: string | null
+  onLink: (provider: AuthProvider) => void
+  onUnlink: (providerName: string) => void
+}) {
+  const { t } = useTranslation()
+
+  const isBound = (providerName: string) => bindings.some((b) => b.provider === providerName)
+
+  if (isLoading || providers.length === 0) {
+    return null
+  }
+
+  return (
+    <Card className="border border-divider bg-content1">
+      <CardBody className="p-6">
+        <div className="mb-6 flex items-center gap-4">
+          <div className="flex size-12 shrink-0 items-center justify-center rounded-full bg-primary/10">
+            <Link2 className="text-primary" size={24} />
+          </div>
+          <div>
+            <h3 className="text-lg font-bold text-foreground">{t('settings.security.socialAccounts.title')}</h3>
+            <p className="text-sm text-default-500">{t('settings.security.socialAccounts.description')}</p>
+          </div>
+        </div>
+
+        <div className="flex flex-col gap-3">
+          {providers.map((provider) => {
+            const Icon = getProviderIcon(provider.name)
+            const bound = isBound(provider.name)
+            const isLinking = linkingProvider === provider.name
+            const isUnbinding = unbindingProvider === provider.name
+            const providerLabel = t(`settings.security.socialAccounts.providers.${provider.name}`, provider.name)
+
+            return (
+              <div
+                key={provider.name}
+                className="flex items-center justify-between rounded-lg border border-divider bg-content2 p-4"
+              >
+                <div className="flex items-center gap-3">
+                  {Icon && <Icon className="size-6" />}
+                  <span className="font-medium">{providerLabel}</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <Chip
+                    color={bound ? 'success' : 'default'}
+                    variant="flat"
+                    size="sm"
+                    startContent={bound ? <CheckCircle size={12} /> : undefined}
+                  >
+                    {bound
+                      ? t('settings.security.socialAccounts.linked')
+                      : t('settings.security.socialAccounts.notLinked')}
+                  </Chip>
+                  {bound ? (
+                    <Button
+                      size="sm"
+                      color="danger"
+                      variant="light"
+                      radius="full"
+                      isLoading={isUnbinding}
+                      onPress={() => onUnlink(provider.name)}
+                    >
+                      {t('settings.security.socialAccounts.unlink')}
+                    </Button>
+                  ) : (
+                    <Button
+                      size="sm"
+                      color="primary"
+                      variant="flat"
+                      radius="full"
+                      isLoading={isLinking}
+                      startContent={!isLinking && <LinkIcon size={14} />}
+                      onPress={() => onLink(provider)}
+                    >
+                      {t('settings.security.socialAccounts.link')}
+                    </Button>
+                  )}
+                </div>
+              </div>
+            )
+          })}
+        </div>
+      </CardBody>
+    </Card>
   )
 }
