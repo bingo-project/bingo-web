@@ -85,14 +85,8 @@ html {
   border-color: hsl(var(--heroui-default-400));
 }
 
-/* Checkbox wrapper proper sizing */
-[data-slot='wrapper'] {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
+/* Checkbox wrapper proper sizing - only target checkbox, not modal */
+/* NOTE: Removed [data-slot='wrapper'] as it was too broad and broke Modal positioning */
 
 /* Checkbox checkmark icon visibility */
 [data-slot='icon'] {
@@ -179,25 +173,4 @@ html {
 .rounded-b-large {
   border-bottom-left-radius: var(--heroui-radius-large);
   border-bottom-right-radius: var(--heroui-radius-large);
-}
-
-/* Modal: Fix positioning for Tailwind CSS v4 */
-[data-slot='wrapper'] {
-  position: fixed !important;
-  inset: 0 !important;
-  z-index: 50 !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  overflow: auto !important;
-}
-
-[data-slot='backdrop'] {
-  position: fixed !important;
-  inset: 0 !important;
-  z-index: 40 !important;
-}
-
-section[role='dialog'] {
-  margin: auto !important;
 }

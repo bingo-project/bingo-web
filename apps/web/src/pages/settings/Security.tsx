@@ -670,15 +670,7 @@ function PayPasswordModal({
   if (!isOpen) return null
 
   return (
-    <Modal
-      isOpen={isOpen}
-      onOpenChange={(open) => !open && onClose()}
-      size="lg"
-      classNames={{
-        wrapper: 'fixed inset-0 z-50 flex items-center justify-center',
-        backdrop: 'fixed inset-0 z-40 bg-black/50',
-      }}
-    >
+    <Modal isOpen={isOpen} onOpenChange={(open) => !open && onClose()} size="lg" placement="center">
       <ModalContent>
         <ModalHeader>
           {isReset ? t('settings.security.payPassword.resetTitle') : t('settings.security.payPassword.setup')}
