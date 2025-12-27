@@ -102,12 +102,12 @@ components / auth / AuthCard.tsx
 
 ### 1.3 命名规范
 
-| 类型     | 规范                                           | 示例                        |
-| -------- | ---------------------------------------------- | --------------------------- |
-| 页面组件 | PascalCase + `Page` 后缀（导出），文件名可省略 | `LoginPage` / `Login.tsx`   |
-| 通用组件 | PascalCase                                     | `AuthCard` / `AuthCard.tsx` |
-| hooks    | camelCase + `use` 前缀                         | `useAuth` / `useAuth.ts`    |
-| schemas  | camelCase + `Schema` 后缀                      | `loginSchema` / `login.ts`  |
+| 类型     | 规范                                           | 示例                            |
+| -------- | ---------------------------------------------- | ------------------------------- |
+| 页面组件 | PascalCase + `Page` 后缀（导出），文件名可省略 | `LoginPage` / `Login.tsx`       |
+| 通用组件 | PascalCase                                     | `AuthCard` / `AuthCard.tsx`     |
+| hooks    | camelCase + `use` 前缀                         | `useAuth` / `useAuth.ts`        |
+| schemas  | camelCase + `create` 前缀 + `Schema` 后缀      | `createLoginSchema` / `auth.ts` |
 
 ---
 
@@ -440,31 +440,58 @@ try {
 // ✅ 标准表单结构
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { loginSchema, type LoginFormData } from '@/schemas'
+import { createLoginSchema, type LoginFormData } from '@/schemas'
 
 const {
   register,
   handleSubmit,
   formState: { errors },
 } = useForm<LoginFormData>({
-  resolver: zodResolver(loginSchema),
+  resolver: zodResolver(createLoginSchema()),
 })
 ```
 
 ### 5.2 Schema 定义
 
+Schema 使用**工厂函数模式**，确保验证消息在表单初始化时获取当前语言的翻译：
+
 ```tsx
-// schemas/login.ts
+// schemas/auth.ts
 import { z } from 'zod'
 import { $t } from '@bingo/locales'
 
-export const loginSchema = z.object({
-  account: z.string().min(1, $t('errors.validation.emailRequired')),
-  password: z.string().min(6, $t('errors.validation.passwordMin')),
-  rememberMe: z.boolean().optional(),
-})
+// ✅ 使用工厂函数
+export const createLoginSchema = () =>
+  z.object({
+    account: z.string().min(1, $t('ui.formRules.required', { field: $t('auth.fields.account') })),
+    password: z
+      .string()
+      .min(6, $t('ui.formRules.minLength', { field: $t('auth.fields.password'), min: '6' }))
+      .max(18, $t('ui.formRules.maxLength', { field: $t('auth.fields.password'), max: '18' })),
+    rememberMe: z.boolean().optional(),
+  })
 
-export type LoginFormData = z.infer<typeof loginSchema>
+export type LoginFormData = z.infer<ReturnType<typeof createLoginSchema>>
+```
+
+**验证消息使用参数化翻译**：
+
+| 翻译 Key                 | 说明         | 示例                         |
+| ------------------------ | ------------ | ---------------------------- |
+| `ui.formRules.required`  | 必填         | "请输入{{field}}"            |
+| `ui.formRules.minLength` | 最小长度     | "{{field}}至少{{min}}个字符" |
+| `ui.formRules.maxLength` | 最大长度     | "{{field}}最多{{max}}个字符" |
+| `ui.formRules.mismatch`  | 不匹配       | "{{field}}不一致"            |
+| `auth.fields.*`          | 字段名翻译   | account、password、email...  |
+| `settings.fields.*`      | 设置页字段名 | nickname、currentPassword... |
+
+**使用方式**：
+
+```tsx
+// ✅ 调用工厂函数创建 schema
+const { register, handleSubmit } = useForm<LoginFormData>({
+  resolver: zodResolver(createLoginSchema()),
+})
 ```
 
 ### 5.3 错误显示
