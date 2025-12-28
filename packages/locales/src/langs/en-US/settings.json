@@ -173,5 +173,75 @@
         "twitter": "Twitter"
       }
     }
+  },
+  "notifications": {
+    "title": "Notification Settings",
+    "description": "Manage how you receive updates, alerts, and activity notifications.",
+    "dropdown": {
+      "title": "Notifications",
+      "markAllRead": "Mark all read",
+      "viewAll": "View all notifications",
+      "empty": "No notifications yet"
+    },
+    "center": {
+      "title": "Notification Center",
+      "unread": "{{count}} unread",
+      "filter": {
+        "allCategories": "All Categories",
+        "allStatus": "All Status",
+        "unread": "Unread",
+        "read": "Read"
+      },
+      "markAllRead": "Mark all as read",
+      "settings": "Settings",
+      "empty": {
+        "title": "No notifications",
+        "description": "You're all caught up! We'll notify you when something new arrives."
+      },
+      "emptyFiltered": {
+        "title": "No notifications found",
+        "description": "No notifications match your current filters.",
+        "clearFilters": "Clear filters"
+      },
+      "loadMore": "Load more",
+      "noMore": "No more notifications",
+      "deleteConfirm": {
+        "title": "Delete Notification",
+        "description": "Are you sure you want to delete this notification?",
+        "confirm": "Delete",
+        "cancel": "Cancel"
+      }
+    },
+    "categories": {
+      "system": {
+        "title": "System Notifications",
+        "description": "Platform updates, maintenance notices, and announcements."
+      },
+      "security": {
+        "title": "Security Alerts",
+        "description": "Login alerts, password changes, and security events."
+      },
+      "transaction": {
+        "title": "Transaction Notifications",
+        "description": "Deposits, withdrawals, and payment confirmations."
+      },
+      "social": {
+        "title": "Social Activity",
+        "description": "Comments, replies, follows, and mentions."
+      }
+    },
+    "channels": {
+      "inApp": "In-app notifications",
+      "email": "Email notifications"
+    },
+    "time": {
+      "justNow": "Just now",
+      "minutesAgo": "{{count}}m ago",
+      "hoursAgo": "{{count}}h ago",
+      "daysAgo": "{{count}}d ago"
+    },
+    "badge": {
+      "announcement": "Announcement"
+    }
   }
 }
