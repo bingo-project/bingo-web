@@ -1,7 +1,7 @@
 // ABOUTME: Security settings page
 // ABOUTME: Handles password change, payment password, and TOTP setup
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, lazy, Suspense } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import {
@@ -16,6 +16,7 @@ import {
   ModalFooter,
   useDisclosure,
   Chip,
+  Spinner,
 } from '@heroui/react'
 import { Shield, Key, Lock, Smartphone, CheckCircle, XCircle, Link2, LinkIcon } from 'lucide-react'
 import { toast } from 'sonner'
@@ -42,6 +43,8 @@ import {
   type TOTPDisableFormData,
 } from '@/schemas'
 
+const WalletBindSection = lazy(() => import('@/features/web3').then((m) => ({ default: m.WalletBindSection })))
+
 export function SecuritySettingsPage() {
   const { t } = useTranslation()
   const { user } = useAuthStore()
@@ -55,6 +58,7 @@ export function SecuritySettingsPage() {
   const [isLoadingProviders, setIsLoadingProviders] = useState(true)
   const [unbindingProvider, setUnbindingProvider] = useState<string | null>(null)
   const [linkingProvider, setLinkingProvider] = useState<string | null>(null)
+  const [hasWalletProvider, setHasWalletProvider] = useState(false)
 
   const changePasswordModal = useDisclosure()
   const totpEnableModal = useDisclosure()
@@ -87,7 +91,13 @@ export function SecuritySettingsPage() {
   const loadSocialData = async () => {
     try {
       const [providersData, bindingsData] = await Promise.all([authApi.getProviders(), authApi.getBindings()])
-      setProviders(Array.isArray(providersData) ? providersData : [])
+      const providerList = Array.isArray(providersData) ? providersData : []
+
+      // Check for wallet provider
+      setHasWalletProvider(providerList.some((p) => p.name === 'wallet'))
+
+      // Filter out wallet from OAuth providers
+      setProviders(providerList.filter((p) => p.name !== 'wallet'))
       setBindings(Array.isArray(bindingsData) ? bindingsData : [])
     } catch {
       // Error handled by request interceptor
@@ -176,6 +186,24 @@ export function SecuritySettingsPage() {
           onLink={handleLinkProvider}
           onUnlink={handleUnlinkProvider}
         />
+
+        {/* Wallet Binding */}
+        {hasWalletProvider && !isLoadingProviders && (
+          <Suspense
+            fallback={
+              <Card className="border border-divider bg-content1">
+                <CardBody className="p-6">
+                  <Spinner />
+                </CardBody>
+              </Card>
+            }
+          >
+            <WalletBindSection
+              binding={bindings.find((b) => b.provider === 'wallet')}
+              onBindingChange={loadSocialData}
+            />
+          </Suspense>
+        )}
       </div>
 
       {/* TOTP Enable Modal */}
