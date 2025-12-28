@@ -3,3 +3,4 @@
 
 export { ProfileSettingsPage } from './Profile'
 export { SecuritySettingsPage } from './Security'
+export { NotificationSettingsPage } from './Notifications'
