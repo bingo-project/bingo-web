@@ -24,8 +24,6 @@
     "preferences": "通知偏好",
     "profile": "个人资料",
     "security": "安全设置",
-    "notifications": "通知设置",
-    "subscription": "订阅管理",
     "logout": "退出登录"
   },
   "profile": {
