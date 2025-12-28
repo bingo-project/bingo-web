@@ -16,11 +16,20 @@ export function useWalletLogin(options: UseWalletLoginOptions = {}) {
   const [step, setStep] = useState<WalletLoginStep>('idle')
   const [error, setError] = useState<Error | null>(null)
 
-  const { connectors, connectAsync } = useConnect()
+  const { connectors: rawConnectors, connectAsync } = useConnect()
   const { address, isConnected } = useAccount()
   const { signMessageAsync } = useSignMessage()
   const { disconnectAsync } = useDisconnect()
   const { setAuth } = useAuthStore()
+
+  // Filter duplicate connectors (injected vs metaMask both point to MetaMask)
+  const connectors = rawConnectors.filter((connector) => {
+    // If MetaMask is available, prefer the metaMask connector over injected
+    if (connector.id === 'injected') {
+      return !rawConnectors.some((c) => c.id === 'metaMask')
+    }
+    return true
+  })
 
   const login = useCallback(
     async (connectorId?: string) => {

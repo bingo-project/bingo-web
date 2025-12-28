@@ -16,9 +16,17 @@ export function useWalletBind(options: UseWalletBindOptions = {}) {
   const [step, setStep] = useState<WalletBindStep>('idle')
   const [error, setError] = useState<Error | null>(null)
 
-  const { connectors, connectAsync } = useConnect()
+  const { connectors: rawConnectors, connectAsync } = useConnect()
   const { signMessageAsync } = useSignMessage()
   const { disconnectAsync } = useDisconnect()
+
+  // Filter duplicate connectors (injected vs metaMask both point to MetaMask)
+  const connectors = rawConnectors.filter((connector) => {
+    if (connector.id === 'injected') {
+      return !rawConnectors.some((c) => c.id === 'metaMask')
+    }
+    return true
+  })
 
   const bind = useCallback(
     async (connectorId?: string) => {
