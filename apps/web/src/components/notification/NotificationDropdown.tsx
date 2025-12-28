@@ -86,7 +86,7 @@ export function NotificationDropdown() {
 
   const handleViewAll = () => {
     setIsOpen(false)
-    navigate('/notifications')
+    navigate('/settings/notifications')
   }
 
   return (
