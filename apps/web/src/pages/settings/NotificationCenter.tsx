@@ -21,7 +21,6 @@ import { Bell, ChevronDown, Settings } from 'lucide-react'
 import { toast } from 'sonner'
 import { notificationApi, type Notification, type NotificationCategory, type NotificationListParams } from '@bingo/core'
 import { useTranslation } from '@/locales'
-import { Header } from '@/components/layout'
 import { NotificationItem } from '@/components/notification'
 
 const categories: (NotificationCategory | 'all')[] = ['all', 'system', 'security', 'transaction', 'social']
@@ -165,10 +164,8 @@ export function NotificationCenterPage() {
   }
 
   return (
-    <div className="min-h-screen bg-background">
-      <Header showNavLinks={false} />
-
-      <div className="mx-auto max-w-3xl px-4 pt-24 pb-10">
+    <div>
+      <div className="mx-auto max-w-3xl px-4 pb-10">
         {/* Page Header */}
         <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-center gap-3">
@@ -198,7 +195,7 @@ export function NotificationCenterPage() {
               size="sm"
               variant="light"
               radius="full"
-              onPress={() => navigate('/settings/notifications')}
+              onPress={() => navigate('/settings/notifications/preferences')}
               aria-label={t('settings.notifications.center.settings')}
             >
               <Settings size={18} />
