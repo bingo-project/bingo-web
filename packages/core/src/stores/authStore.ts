@@ -1,8 +1,9 @@
 // ABOUTME: Authentication state management with Zustand
-// ABOUTME: Handles user session, token storage, and auth actions
+// ABOUTME: Handles user session, token storage, auth actions, and WebSocket connection
 
 import { create } from 'zustand'
 import { authApi, type UserInfo, type LoginRequest, type RegisterRequest } from '../api/auth'
+import { wsClient } from '@bingo/websocket'
 
 const TOKEN_KEY = 'accessToken'
 const EXPIRES_KEY = 'expiresAt'
@@ -45,6 +46,9 @@ export const useAuthStore = create<AuthState>((set, get) => ({
       })
 
       await get().fetchUserInfo()
+
+      // Connect WebSocket after successful login
+      await wsClient.connect(response.accessToken)
     } finally {
       set({ isLoading: false })
     }
@@ -71,9 +75,15 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     })
 
     await get().fetchUserInfo()
+
+    // Connect WebSocket after OAuth login
+    await wsClient.connect(accessToken)
   },
 
   logout: () => {
+    // Disconnect WebSocket before clearing auth
+    wsClient.disconnect()
+
     localStorage.removeItem(TOKEN_KEY)
     localStorage.removeItem(EXPIRES_KEY)
     set({
@@ -100,6 +110,9 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     if (token && expiresAt) {
       set({ accessToken: token, expiresAt, isAuthenticated: true })
       await get().fetchUserInfo()
+
+      // Connect WebSocket on app init if authenticated
+      await wsClient.connect(token)
     }
   },
 }))

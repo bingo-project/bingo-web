@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@bingo/locales": "workspace:*",
+    "@bingo/websocket": "workspace:*",
     "axios": "^1.7.9",
     "sonner": "^2.0.3",
     "zustand": "^5.0.2"
