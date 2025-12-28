@@ -2,6 +2,7 @@
 // ABOUTME: Exports all Web3 related components and hooks
 
 export { WalletLoginButton } from './WalletLoginButton'
+export { WalletBindSection } from './WalletBindSection'
 export { WagmiProvider } from './WagmiProvider'
 export { WalletSelectModal } from './WalletSelectModal'
 export { useWalletLogin } from './hooks/useWalletLogin'
