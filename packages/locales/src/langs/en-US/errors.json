@@ -32,6 +32,9 @@
   "InvalidArgument.TOTPAlreadyEnabled": "2FA is already enabled",
   "InvalidArgument.PayPasswordInvalid": "Payment password is incorrect",
   "InvalidArgument.PayPasswordNotSet": "Payment password is not set",
+  "InvalidArgument.OAuthCodeInvalid": "Authorization code is invalid or expired",
+
+  "ExternalError.OAuthProviderError": "OAuth provider returned an error",
 
   "TooManyRequests": "Too many requests, please try again later"
 }
