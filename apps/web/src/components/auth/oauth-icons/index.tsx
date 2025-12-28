@@ -1,5 +1,7 @@
 // ABOUTME: OAuth provider icon components
-// ABOUTME: SVG icons for Google, GitHub, Apple, Microsoft, Discord, Twitter
+// ABOUTME: SVG icons for Google, GitHub, Apple, Microsoft, Discord, Twitter, Wallet
+
+import { Wallet } from 'lucide-react'
 
 export function GoogleIcon({ className }: { className?: string }) {
   return (
@@ -75,6 +77,7 @@ export const providerIcons: Record<string, React.FC<{ className?: string }>> = {
   microsoft: MicrosoftIcon,
   discord: DiscordIcon,
   twitter: TwitterIcon,
+  wallet: ({ className }) => <Wallet className={className} />,
 }
 
 export function getProviderIcon(provider: string): React.FC<{ className?: string }> | null {
