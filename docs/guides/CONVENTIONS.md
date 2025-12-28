@@ -429,6 +429,43 @@ try {
 }
 ```
 
+### 4.5.1 开发与联调流程
+
+开发涉及 API 调用的功能时，分两个阶段进行：
+
+**阶段一：开发**
+
+1. **查阅 API 文档**：获取接口定义和可能返回的错误码
+   - 后端运行中：`http://localhost:8080/api/docs/doc.json`
+   - 后端未运行：查看源文件 `../bingo/api/swagger/apiserver`
+2. **编写代码**：根据文档编写 API 调用和类型定义
+3. **添加错误码翻译**：将相关错误码添加到 `packages/locales/src/langs/*/errors.json`
+
+**阶段二：联调**（功能开发完成后）
+
+启动后端服务，使用 curl 验证接口响应格式是否与代码预期一致：
+
+```bash
+# 获取 token（需要鉴权的接口）
+TOKEN=$(curl -s -X POST http://localhost:8080/v1/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"account":"test@example.com","password":"123456"}' | jq -r '.token')
+
+# 请求需要鉴权的接口
+curl -s -H "Authorization: Bearer $TOKEN" http://localhost:8080/v1/some/endpoint | jq
+
+# 公开接口直接请求
+curl -s http://localhost:8080/v1/auth/providers | jq
+```
+
+**后端服务**：位于 `../bingo`。如未运行，可尝试启动：
+
+```bash
+cd ../bingo && make build BINS="bingo-apiserver" && ./_output/platforms/darwin/arm64/bingo-apiserver
+```
+
+启动失败则忽略联调步骤。
+
 ---
 
 ## 5. 表单规范
@@ -607,6 +644,7 @@ const { register, handleSubmit } = useForm<LoginFormData>({
 - [ ] i18n key 符合命名规范
 - [ ] 翻译条目放在正确位置（核心层 vs 应用层）
 - [ ] 业务错误已添加到 `errors.json`
+- [ ] 已从 API 文档获取相关错误码并添加翻译
 
 ### 表单（如适用）
 

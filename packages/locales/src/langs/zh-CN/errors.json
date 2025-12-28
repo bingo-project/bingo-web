@@ -33,6 +33,7 @@
   "InvalidArgument.PayPasswordInvalid": "支付密码错误",
   "InvalidArgument.PayPasswordNotSet": "支付密码未设置",
   "InvalidArgument.OAuthCodeInvalid": "授权码无效或已过期",
+  "InvalidArgument.CannotUnbindLastLogin": "无法解绑唯一的登录方式",
 
   "ExternalError.OAuthProviderError": "第三方服务返回错误",
 

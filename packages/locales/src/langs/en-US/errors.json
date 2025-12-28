@@ -33,6 +33,7 @@
   "InvalidArgument.PayPasswordInvalid": "Payment password is incorrect",
   "InvalidArgument.PayPasswordNotSet": "Payment password is not set",
   "InvalidArgument.OAuthCodeInvalid": "Authorization code is invalid or expired",
+  "InvalidArgument.CannotUnbindLastLogin": "Cannot unbind the only login method",
 
   "ExternalError.OAuthProviderError": "OAuth provider returned an error",
 

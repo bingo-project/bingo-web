@@ -115,10 +115,6 @@ export interface SocialBinding {
   bindTime: string
 }
 
-interface ListBindingsResponse {
-  data: SocialBinding[]
-}
-
 export const authApi = {
   login: (data: LoginRequest) => request.post<LoginResponse>('/v1/auth/login', data),
 
@@ -165,7 +161,7 @@ export const authApi = {
     request.post<LoginResponse>(`/v1/auth/login/${provider}`, data),
 
   // Social Account Bindings
-  getBindings: () => request.get<ListBindingsResponse>('/v1/auth/bindings').then((res) => res.data ?? []),
+  getBindings: () => request.get<SocialBinding[]>('/v1/auth/bindings'),
 
   bindProvider: (provider: string, data: OAuthLoginRequest) =>
     request.post<LoginResponse>(`/v1/auth/bindings/${provider}`, data),
