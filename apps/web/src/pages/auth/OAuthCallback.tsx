@@ -1,7 +1,7 @@
 // ABOUTME: OAuth callback page that handles provider redirects
 // ABOUTME: Validates state, exchanges code for token, and redirects user
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { useParams, useSearchParams, useNavigate } from 'react-router'
 import { Spinner } from '@heroui/react'
 import { toast } from 'sonner'
@@ -18,8 +18,11 @@ export function OAuthCallbackPage() {
   const navigate = useNavigate()
   const { setAuth } = useAuthStore()
   const [status, setStatus] = useState<CallbackStatus>('processing')
+  const isProcessing = useRef(false)
 
   useEffect(() => {
+    if (isProcessing.current) return
+    isProcessing.current = true
     handleCallback()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
