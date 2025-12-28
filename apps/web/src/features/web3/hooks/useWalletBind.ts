@@ -30,6 +30,11 @@ export function useWalletBind(options: UseWalletBindOptions = {}) {
 
   const bind = useCallback(
     async (connectorId?: string) => {
+      // Prevent duplicate requests
+      if (step !== 'idle' && step !== 'error') {
+        return
+      }
+
       try {
         setStep('connecting')
         setError(null)
@@ -71,7 +76,7 @@ export function useWalletBind(options: UseWalletBindOptions = {}) {
         await disconnectAsync().catch(() => {})
       }
     },
-    [connectors, connectAsync, signMessageAsync, disconnectAsync, options]
+    [step, connectors, connectAsync, signMessageAsync, disconnectAsync, options]
   )
 
   const reset = useCallback(() => {

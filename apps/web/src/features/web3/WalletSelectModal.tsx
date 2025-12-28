@@ -69,6 +69,7 @@ export function WalletSelectModal({ isOpen, onClose, connectors, step, onSelectC
                   variant="bordered"
                   radius="lg"
                   className="h-14 justify-start gap-4 border-divider bg-content2 px-4"
+                  isDisabled={isLoading}
                   onPress={() => onSelectConnector(connector.id)}
                 >
                   <span className="text-2xl">{connectorIcons[connector.id] || '👛'}</span>

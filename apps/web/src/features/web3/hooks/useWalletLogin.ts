@@ -33,6 +33,11 @@ export function useWalletLogin(options: UseWalletLoginOptions = {}) {
 
   const login = useCallback(
     async (connectorId?: string) => {
+      // Prevent duplicate requests
+      if (step !== 'idle' && step !== 'error') {
+        return
+      }
+
       try {
         setStep('connecting')
         setError(null)
@@ -85,7 +90,7 @@ export function useWalletLogin(options: UseWalletLoginOptions = {}) {
         }
       }
     },
-    [connectors, connectAsync, signMessageAsync, disconnectAsync, setAuth, isConnected, options]
+    [step, connectors, connectAsync, signMessageAsync, disconnectAsync, setAuth, isConnected, options]
   )
 
   const reset = useCallback(() => {
