@@ -4,7 +4,6 @@
 import { useState, useEffect } from 'react'
 import { Card, CardBody, Switch, Skeleton } from '@heroui/react'
 import { Bell, Megaphone, Shield, CreditCard, Users } from 'lucide-react'
-import { toast } from 'sonner'
 import { notificationApi, type NotificationPreferences, type NotificationCategory } from '@bingo/core'
 import { useTranslation } from '@/locales'
 
@@ -63,9 +62,8 @@ export function NotificationSettingsPage() {
         },
       })
     } catch {
-      // Rollback on error
+      // Rollback on error (toast handled by interceptor)
       setPreferences(prevPreferences)
-      toast.error(t('errors.http.unknown'))
     } finally {
       setSavingKey(null)
     }
