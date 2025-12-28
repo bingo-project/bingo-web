@@ -7,13 +7,15 @@
 
 ## 必读文档
 
-开发前必须阅读 [docs/guides/CONVENTIONS.md](../docs/guides/CONVENTIONS.md)，了解：
+开发或 review 代码前必须阅读 [docs/guides/CONVENTIONS.md](../docs/guides/CONVENTIONS.md)，了解：
 
 - HeroUI 优先原则
 - 文件规范（ABOUTME 注释、目录结构）
 - 组件规范（HeroUI 组件、props 用法）
 - 样式规范（语义化颜色、dark mode）
 - 国际化规范
+- 表单规范（React Hook Form + Zod）
+- 页面一致性规则
 - 生成代码检查清单
 
 ## 技术栈

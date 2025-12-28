@@ -609,111 +609,26 @@ const { register, handleSubmit } = useForm<LoginFormData>({
 
 ## 7. 生成代码检查清单
 
-**生成任何代码前，必须逐条确认**：
-
-### HeroUI 优先
-
-- [ ] 已查阅 HeroUI 官方文档，确认无现成组件/方案
-- [ ] 如需自定义，已说明理由
-
-### 文件规范
+### 必须检查（每次 review 必查）
 
 - [ ] 文件头有 2 行 ABOUTME 注释
-- [ ] 文件放在正确的目录（pages/ vs components/）
-- [ ] 命名符合规范（PascalCase）
-
-### 组件规范
-
 - [ ] 使用 HeroUI 组件而非原生 HTML
-- [ ] 颜色通过 `color` prop 设置
-- [ ] 圆角通过 `radius` prop 设置
-- [ ] 图标使用 `lucide-react`
-- [ ] Button 使用 `radius="full"`
-- [ ] Input 使用 `variant="bordered" radius="full"`
-
-### 样式规范
-
-- [ ] 使用语义化颜色（`bg-background`、`text-foreground` 等）
-- [ ] 组件内部样式通过 `classNames` prop
-- [ ] 无 CSS 选择器 hack
-- [ ] 无 `!important`
-
-### 国际化
-
 - [ ] 所有用户可见文案使用 `t()` 函数
-- [ ] i18n key 符合命名规范
+- [ ] 使用语义化颜色（`bg-background`、`text-foreground` 等）
+- [ ] 无 CSS 选择器 hack、无 `!important`
+
+### 建议检查（新增组件/功能时）
+
+- [ ] 已查阅 HeroUI 官方文档，确认无现成组件/方案
+- [ ] 文件放在正确的目录（pages/ vs components/）
+- [ ] 颜色通过 `color` prop、圆角通过 `radius` prop 设置
+- [ ] 组件内部样式通过 `classNames` prop
+- [ ] 图标使用 `lucide-react`
 - [ ] 翻译条目放在正确位置（核心层 vs 应用层）
 - [ ] 业务错误已添加到 `errors.json`
-- [ ] 已从 API 文档获取相关错误码并添加翻译
 
-### 表单（如适用）
+### 表单相关（如适用）
 
 - [ ] 使用 React Hook Form + Zod
-- [ ] Schema 定义在 `schemas/` 目录
+- [ ] Schema 使用工厂函数模式
 - [ ] 错误状态正确显示
-
----
-
-## 附录：快速参考
-
-### Import 路径
-
-```tsx
-// HeroUI 组件
-import { Button, Input, Card, Checkbox, Link } from '@heroui/react'
-
-// 图标
-import { Mail, Lock, Eye, EyeOff, ArrowRight } from 'lucide-react'
-
-// 国际化（组件内）
-import { useTranslation } from '@/locales'
-
-// 国际化（非组件上下文）
-import { $t } from '@bingo/locales'
-
-// 表单
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-
-// Toast
-import { toast } from 'sonner'
-
-// 路由
-import { Link, useNavigate } from 'react-router'
-```
-
-### 常用组件配置
-
-```tsx
-// 主 CTA 按钮
-<Button
-  color="primary"
-  radius="full"
-  className="bg-gradient-to-r from-primary to-blue-600 font-bold text-white"
->
-  Get Started
-</Button>
-
-// 次要按钮
-<Button variant="bordered" radius="full">
-  Cancel
-</Button>
-
-// 输入框
-<Input
-  variant="bordered"
-  radius="full"
-  placeholder="Email"
-  startContent={<Mail size={18} className="shrink-0 text-slate-400" />}
-  classNames={{
-    inputWrapper: 'h-12',
-  }}
-/>
-
-// 密码框（见 components/auth/PasswordInput.tsx）
-<PasswordInput
-  variant="bordered"
-  radius="full"
-  placeholder="Password"
-/>
-```
