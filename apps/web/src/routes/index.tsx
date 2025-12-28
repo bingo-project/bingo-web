@@ -5,7 +5,6 @@ import { createBrowserRouter, Navigate } from 'react-router'
 import { RootLayout, SettingsLayout } from '@/layouts'
 import {
   HomePage,
-  AboutPage,
   LoginPage,
   RegisterPage,
   ForgotPasswordPage,
@@ -20,10 +19,7 @@ export const router = createBrowserRouter([
     path: '/',
     element: <RootLayout />,
     errorElement: <ErrorPage />,
-    children: [
-      { index: true, element: <HomePage /> },
-      { path: 'about', element: <AboutPage /> },
-    ],
+    children: [{ index: true, element: <HomePage /> }],
   },
   { path: '/login', element: <LoginPage />, errorElement: <ErrorPage /> },
   { path: '/register', element: <RegisterPage />, errorElement: <ErrorPage /> },
