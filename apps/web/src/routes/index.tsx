@@ -11,6 +11,8 @@ import {
   ErrorPage,
   ProfileSettingsPage,
   SecuritySettingsPage,
+  NotificationSettingsPage,
+  NotificationCenterPage,
   OAuthCallbackPage,
 } from '@/pages'
 
@@ -33,7 +35,9 @@ export const router = createBrowserRouter([
       { index: true, element: <Navigate to="/settings/profile" replace /> },
       { path: 'profile', element: <ProfileSettingsPage /> },
       { path: 'security', element: <SecuritySettingsPage /> },
+      { path: 'notifications', element: <NotificationSettingsPage /> },
     ],
   },
+  { path: '/notifications', element: <NotificationCenterPage />, errorElement: <ErrorPage /> },
   { path: '*', element: <ErrorPage /> },
 ])

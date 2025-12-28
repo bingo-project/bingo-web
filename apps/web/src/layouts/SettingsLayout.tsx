@@ -11,7 +11,7 @@ import { Header } from '@/components/layout'
 const navItems = [
   { key: 'profile', path: '/settings/profile', icon: User },
   { key: 'security', path: '/settings/security', icon: Shield },
-  { key: 'notifications', path: '/settings/notifications', icon: Bell, disabled: true },
+  { key: 'notifications', path: '/settings/notifications', icon: Bell },
   { key: 'subscription', path: '/settings/subscription', icon: CreditCard, disabled: true },
 ]
 
