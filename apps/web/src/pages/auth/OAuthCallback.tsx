@@ -61,6 +61,10 @@ export function OAuthCallbackPage() {
       return
     }
 
+    // Clear session immediately to prevent duplicate API calls
+    const { action, redirect, codeVerifier } = session
+    clearOAuthSession()
+
     try {
       const params: { code: string; state: string; codeVerifier?: string } = {
         code,
@@ -68,33 +72,30 @@ export function OAuthCallbackPage() {
       }
 
       // Only include codeVerifier if present (not all providers support PKCE)
-      if (session.codeVerifier) {
-        params.codeVerifier = session.codeVerifier
+      if (codeVerifier) {
+        params.codeVerifier = codeVerifier
       }
 
-      if (session.action === 'login') {
+      if (action === 'login') {
         // OAuth login
         const response = await authApi.oauthLogin(provider, params)
         await setAuth(response.accessToken, response.expiresAt)
-        clearOAuthSession()
         toast.success(t('auth.login.success'))
-        navigate(session.redirect, { replace: true })
+        navigate(redirect, { replace: true })
       } else {
         // Bind social account
         await authApi.bindProvider(provider, params)
-        clearOAuthSession()
         const providerName = t(`settings.security.socialAccounts.providers.${provider}`, provider)
         toast.success(t('settings.security.socialAccounts.linkSuccess', { provider: providerName }))
-        navigate(session.redirect, { replace: true })
+        navigate(redirect, { replace: true })
       }
     } catch {
-      // Error is handled by request interceptor, show generic message
+      // Error is handled by request interceptor
       setStatus('error')
-      clearOAuthSession()
       toast.error(t('auth.login.oauthError'))
 
       // Redirect based on action
-      if (session.action === 'login') {
+      if (action === 'login') {
         navigate('/login', { replace: true })
       } else {
         navigate('/settings/security', { replace: true })
