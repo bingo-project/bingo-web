@@ -15,6 +15,7 @@
     "@bingo/locales": "workspace:*",
     "@bingo/ui": "workspace:*",
     "@bingo/utils": "workspace:*",
+    "@bingo/websocket": "workspace:*",
     "@heroui/react": "^2.8.6",
     "@hookform/resolvers": "^5.2.2",
     "framer-motion": "^12.0.0",

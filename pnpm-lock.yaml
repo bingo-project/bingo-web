@@ -74,6 +74,9 @@ importers:
       '@bingo/utils':
         specifier: workspace:*
         version: link:../../packages/utils
+      '@bingo/websocket':
+        specifier: workspace:*
+        version: link:../../packages/websocket
       '@heroui/react':
         specifier: ^2.8.6
         version: 2.8.7(@types/react@19.2.7)(framer-motion@12.23.26(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(tailwindcss@4.1.18)
@@ -138,6 +141,9 @@ importers:
       '@bingo/locales':
         specifier: workspace:*
         version: link:../locales
+      '@bingo/websocket':
+        specifier: workspace:*
+        version: link:../websocket
       axios:
         specifier: ^1.7.9
         version: 1.13.2
@@ -212,6 +218,22 @@ importers:
       '@bingo/tsconfig':
         specifier: workspace:*
         version: link:../tsconfig
+
+  packages/websocket:
+    dependencies:
+      react:
+        specifier: ^19.0.0
+        version: 19.2.3
+      zustand:
+        specifier: ^5.0.2
+        version: 5.0.9(@types/react@19.2.7)(react@19.2.3)(use-sync-external-store@1.6.0(react@19.2.3))
+    devDependencies:
+      '@bingo/tsconfig':
+        specifier: workspace:*
+        version: link:../tsconfig
+      '@types/react':
+        specifier: ^19.0.2
+        version: 19.2.7
 
 packages:
 
