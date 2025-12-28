@@ -154,14 +154,14 @@ export const authApi = {
 
   getOAuthUrl: (provider: string) => request.get<OAuthUrlResponse>(`/v1/auth/login/${provider}`),
 
-  oauthLogin: (provider: string, params: OAuthLoginRequest) =>
-    request.post<LoginResponse>(`/v1/auth/login/${provider}`, null, { params }),
+  oauthLogin: (provider: string, data: OAuthLoginRequest) =>
+    request.post<LoginResponse>(`/v1/auth/login/${provider}`, data),
 
   // Social Account Bindings
   getBindings: () => request.get<SocialBinding[]>('/v1/auth/bindings'),
 
-  bindProvider: (provider: string, params: OAuthLoginRequest) =>
-    request.post<LoginResponse>(`/v1/auth/bindings/${provider}`, null, { params }),
+  bindProvider: (provider: string, data: OAuthLoginRequest) =>
+    request.post<LoginResponse>(`/v1/auth/bindings/${provider}`, data),
 
   unbindProvider: (provider: string) => request.delete<void>(`/v1/auth/bindings/${provider}`),
 }
