@@ -16,6 +16,12 @@
   },
   "nav": {
     "title": "Settings",
+    "groups": {
+      "notifications": "Notifications",
+      "account": "Account"
+    },
+    "center": "Notification Center",
+    "preferences": "Preferences",
     "profile": "Profile",
     "security": "Security",
     "notifications": "Notifications",

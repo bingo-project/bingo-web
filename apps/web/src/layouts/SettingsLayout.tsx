@@ -3,17 +3,40 @@
 
 import { Outlet, NavLink, useNavigate } from 'react-router'
 import { Button } from '@heroui/react'
-import { User, Shield, Bell, CreditCard, LogOut } from 'lucide-react'
+import { User, Shield, Bell, Settings, LogOut, type LucideIcon } from 'lucide-react'
 import { useAuthStore } from '@bingo/core'
 import { useTranslation } from '@/locales'
 import { Header } from '@/components/layout'
 
-const navItems = [
-  { key: 'profile', path: '/settings/profile', icon: User },
-  { key: 'security', path: '/settings/security', icon: Shield },
-  { key: 'notifications', path: '/settings/notifications', icon: Bell },
-  { key: 'subscription', path: '/settings/subscription', icon: CreditCard, disabled: true },
+interface NavItem {
+  key: string
+  path: string
+  icon: LucideIcon
+}
+
+interface NavGroup {
+  key: string
+  items: NavItem[]
+}
+
+const navGroups: NavGroup[] = [
+  {
+    key: 'notifications',
+    items: [
+      { key: 'center', path: '/settings/notifications', icon: Bell },
+      { key: 'preferences', path: '/settings/notifications/preferences', icon: Settings },
+    ],
+  },
+  {
+    key: 'account',
+    items: [
+      { key: 'profile', path: '/settings/profile', icon: User },
+      { key: 'security', path: '/settings/security', icon: Shield },
+    ],
+  },
 ]
+
+const mobileNavItems: NavItem[] = navGroups.flatMap((group) => group.items)
 
 export function SettingsLayout() {
   const { t } = useTranslation()
@@ -36,24 +59,30 @@ export function SettingsLayout() {
             <h3 className="text-xs font-bold uppercase tracking-wider text-default-500">{t('settings.nav.title')}</h3>
           </div>
 
-          <nav className="flex flex-col gap-2">
-            {navItems.map((item) => (
-              <NavLink
-                key={item.key}
-                to={item.path}
-                className={({ isActive }) =>
-                  `flex items-center gap-3 rounded-full px-4 py-3 text-sm font-medium transition-all ${
-                    item.disabled
-                      ? 'pointer-events-none opacity-50'
-                      : isActive
-                        ? 'bg-primary font-bold text-white shadow-lg shadow-primary/20'
-                        : 'text-default-500 hover:bg-content2 hover:text-foreground'
-                  }`
-                }
-              >
-                <item.icon size={20} />
-                <span>{t(`settings.nav.${item.key}`)}</span>
-              </NavLink>
+          <nav className="flex flex-col gap-6">
+            {navGroups.map((group) => (
+              <div key={group.key} className="flex flex-col gap-1">
+                <h4 className="mb-2 px-4 text-xs font-semibold uppercase tracking-wider text-default-400">
+                  {t(`settings.nav.groups.${group.key}`)}
+                </h4>
+                {group.items.map((item) => (
+                  <NavLink
+                    key={item.key}
+                    to={item.path}
+                    end={item.path === '/settings/notifications'}
+                    className={({ isActive }) =>
+                      `flex items-center gap-3 rounded-full px-4 py-3 text-sm font-medium transition-all ${
+                        isActive
+                          ? 'bg-primary font-bold text-white shadow-lg shadow-primary/20'
+                          : 'text-default-500 hover:bg-content2 hover:text-foreground'
+                      }`
+                    }
+                  >
+                    <item.icon size={20} />
+                    <span>{t(`settings.nav.${item.key}`)}</span>
+                  </NavLink>
+                ))}
+              </div>
             ))}
           </nav>
 
@@ -75,17 +104,14 @@ export function SettingsLayout() {
         <div className="flex-1">
           {/* Mobile Navigation */}
           <div className="flex w-full items-center gap-2 overflow-x-auto border-b border-divider bg-background px-4 py-3 md:hidden">
-            {navItems.map((item) => (
+            {mobileNavItems.map((item) => (
               <NavLink
                 key={item.key}
                 to={item.path}
+                end={item.path === '/settings/notifications'}
                 className={({ isActive }) =>
                   `flex shrink-0 items-center gap-2 whitespace-nowrap rounded-full px-4 py-2 text-sm font-medium ${
-                    item.disabled
-                      ? 'pointer-events-none opacity-50'
-                      : isActive
-                        ? 'bg-primary text-white'
-                        : 'border border-divider bg-content1 text-default-500'
+                    isActive ? 'bg-primary text-white' : 'border border-divider bg-content1 text-default-500'
                   }`
                 }
               >

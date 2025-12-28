@@ -16,6 +16,12 @@
   },
   "nav": {
     "title": "设置",
+    "groups": {
+      "notifications": "通知",
+      "account": "账户"
+    },
+    "center": "通知中心",
+    "preferences": "通知偏好",
     "profile": "个人资料",
     "security": "安全设置",
     "notifications": "通知设置",
