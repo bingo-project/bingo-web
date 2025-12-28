@@ -20,6 +20,7 @@ interface Props {
 const connectorIcons: Record<string, string> = {
   injected: '🦊',
   metaMask: '🦊',
+  'io.metamask': '🦊',
   walletConnect: '🔗',
   coinbaseWalletSDK: '💰',
 }
@@ -27,6 +28,7 @@ const connectorIcons: Record<string, string> = {
 const connectorNames: Record<string, string> = {
   injected: 'MetaMask',
   metaMask: 'MetaMask',
+  'io.metamask': 'MetaMask',
   walletConnect: 'WalletConnect',
   coinbaseWalletSDK: 'Coinbase Wallet',
 }

@@ -22,11 +22,15 @@ export function useWalletLogin(options: UseWalletLoginOptions = {}) {
   const { disconnectAsync } = useDisconnect()
   const { setAuth } = useAuthStore()
 
-  // Filter duplicate connectors (injected vs metaMask both point to MetaMask)
+  // Filter duplicate connectors - when MetaMask is installed, wagmi may return
+  // both 'injected' and 'io.metamask' (or 'metaMask') connectors pointing to the same wallet
   const connectors = rawConnectors.filter((connector) => {
-    // If MetaMask is available, prefer the metaMask connector over injected
     if (connector.id === 'injected') {
-      return !rawConnectors.some((c) => c.id === 'metaMask')
+      // Check if there's a dedicated MetaMask connector
+      const hasMetaMask = rawConnectors.some(
+        (c) => c.id === 'metaMask' || c.id === 'io.metamask' || c.name.toLowerCase().includes('metamask')
+      )
+      return !hasMetaMask
     }
     return true
   })

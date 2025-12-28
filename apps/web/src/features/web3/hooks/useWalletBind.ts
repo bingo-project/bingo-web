@@ -20,10 +20,14 @@ export function useWalletBind(options: UseWalletBindOptions = {}) {
   const { signMessageAsync } = useSignMessage()
   const { disconnectAsync } = useDisconnect()
 
-  // Filter duplicate connectors (injected vs metaMask both point to MetaMask)
+  // Filter duplicate connectors - when MetaMask is installed, wagmi may return
+  // both 'injected' and 'io.metamask' (or 'metaMask') connectors pointing to the same wallet
   const connectors = rawConnectors.filter((connector) => {
     if (connector.id === 'injected') {
-      return !rawConnectors.some((c) => c.id === 'metaMask')
+      const hasMetaMask = rawConnectors.some(
+        (c) => c.id === 'metaMask' || c.id === 'io.metamask' || c.name.toLowerCase().includes('metamask')
+      )
+      return !hasMetaMask
     }
     return true
   })
