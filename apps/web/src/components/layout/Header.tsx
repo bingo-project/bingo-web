@@ -3,7 +3,8 @@
 
 import { Link, useNavigate } from 'react-router'
 import { Button, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Avatar } from '@heroui/react'
-import { Layers, Sun, Moon, Bell, User, Settings, LogOut, Globe } from 'lucide-react'
+import { Layers, Sun, Moon, User, Settings, LogOut, Globe } from 'lucide-react'
+import { NotificationDropdown } from '@/components/notification'
 import { useAuthStore } from '@bingo/core'
 import { useWebSocketStatus, type ConnectionState } from '@bingo/websocket'
 import { useTheme } from '@/hooks'
@@ -115,9 +116,7 @@ export function Header({ showNavLinks = true }: HeaderProps) {
               /* Logged in state */
               <div className="flex items-center gap-3">
                 {/* Notifications */}
-                <Button isIconOnly variant="light" radius="full" className="hidden sm:flex" aria-label="Notifications">
-                  <Bell size={20} className="text-default-700 dark:text-inherit" />
-                </Button>
+                <NotificationDropdown />
 
                 {/* User info & dropdown */}
                 <Dropdown placement="bottom-end">
