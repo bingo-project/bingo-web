@@ -87,8 +87,8 @@ export function SecuritySettingsPage() {
   const loadSocialData = async () => {
     try {
       const [providersData, bindingsData] = await Promise.all([authApi.getProviders(), authApi.getBindings()])
-      setProviders(providersData)
-      setBindings(bindingsData)
+      setProviders(Array.isArray(providersData) ? providersData : [])
+      setBindings(Array.isArray(bindingsData) ? bindingsData : [])
     } catch {
       // Error handled by request interceptor
     } finally {

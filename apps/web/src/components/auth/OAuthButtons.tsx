@@ -26,7 +26,7 @@ export function OAuthButtons({ action = 'login', redirectTo = '/' }: OAuthButton
   const loadProviders = async () => {
     try {
       const data = await authApi.getProviders()
-      setProviders(data)
+      setProviders(Array.isArray(data) ? data : [])
     } catch {
       // Silently fail - just don't show OAuth buttons
     } finally {
