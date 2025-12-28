@@ -147,7 +147,7 @@ export class WebSocketClient {
       throw new Error('No token available')
     }
 
-    await this.sendRequest('auth.loginByToken', { token: this.token, platform: 'web' })
+    await this.sendRequest('auth.loginByToken', { accessToken: this.token, platform: 'web' })
     this.setState('authenticated')
   }
 
