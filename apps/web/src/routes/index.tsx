@@ -32,12 +32,12 @@ export const router = createBrowserRouter([
     element: <SettingsLayout />,
     errorElement: <ErrorPage />,
     children: [
-      { index: true, element: <Navigate to="/settings/profile" replace /> },
+      { index: true, element: <Navigate to="/settings/notifications" replace /> },
+      { path: 'notifications', element: <NotificationCenterPage /> },
+      { path: 'notifications/preferences', element: <NotificationSettingsPage /> },
       { path: 'profile', element: <ProfileSettingsPage /> },
       { path: 'security', element: <SecuritySettingsPage /> },
-      { path: 'notifications', element: <NotificationSettingsPage /> },
     ],
   },
-  { path: '/notifications', element: <NotificationCenterPage />, errorElement: <ErrorPage /> },
   { path: '*', element: <ErrorPage /> },
 ])
