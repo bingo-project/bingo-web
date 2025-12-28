@@ -1,13 +1,16 @@
 // ABOUTME: OAuth callback page that handles provider redirects
 // ABOUTME: Validates state, exchanges code for token, and redirects user
 
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useState } from 'react'
 import { useParams, useSearchParams, useNavigate } from 'react-router'
 import { Spinner } from '@heroui/react'
 import { toast } from 'sonner'
 import { authApi, useAuthStore } from '@bingo/core'
 import { useTranslation } from '@/locales'
 import { getOAuthSession, clearOAuthSession, validateOAuthState } from '@/utils/oauth'
+
+// Module-level flag to prevent duplicate processing across StrictMode remounts
+let isCallbackProcessed = false
 
 type CallbackStatus = 'processing' | 'error'
 
@@ -18,12 +21,18 @@ export function OAuthCallbackPage() {
   const navigate = useNavigate()
   const { setAuth } = useAuthStore()
   const [status, setStatus] = useState<CallbackStatus>('processing')
-  const isProcessing = useRef(false)
 
   useEffect(() => {
-    if (isProcessing.current) return
-    isProcessing.current = true
+    if (isCallbackProcessed) return
+    isCallbackProcessed = true
     handleCallback()
+
+    return () => {
+      // Reset flag when navigating away (not on StrictMode unmount)
+      setTimeout(() => {
+        isCallbackProcessed = false
+      }, 100)
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -90,9 +99,8 @@ export function OAuthCallbackPage() {
         navigate(redirect, { replace: true })
       }
     } catch {
-      // Error is handled by request interceptor
+      // Error toast is handled by request interceptor
       setStatus('error')
-      toast.error(t('auth.login.oauthError'))
 
       // Redirect based on action
       if (action === 'login') {
