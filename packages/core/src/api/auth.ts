@@ -98,13 +98,13 @@ export interface AuthProvider {
 export interface OAuthUrlResponse {
   authUrl: string
   state: string
-  codeVerifier: string
+  codeVerifier?: string
 }
 
 export interface OAuthLoginRequest {
   code: string
   state: string
-  codeVerifier: string
+  codeVerifier?: string
 }
 
 export interface SocialBinding {

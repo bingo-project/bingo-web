@@ -10,14 +10,16 @@ export type OAuthAction = 'login' | 'bind'
 
 export interface OAuthSession {
   state: string
-  codeVerifier: string
+  codeVerifier?: string
   action: OAuthAction
   redirect: string
 }
 
 export function saveOAuthSession(session: OAuthSession): void {
   sessionStorage.setItem(OAUTH_STATE_KEY, session.state)
-  sessionStorage.setItem(OAUTH_CODE_VERIFIER_KEY, session.codeVerifier)
+  if (session.codeVerifier) {
+    sessionStorage.setItem(OAUTH_CODE_VERIFIER_KEY, session.codeVerifier)
+  }
   sessionStorage.setItem(OAUTH_ACTION_KEY, session.action)
   sessionStorage.setItem(OAUTH_REDIRECT_KEY, session.redirect)
 }
@@ -28,11 +30,11 @@ export function getOAuthSession(): OAuthSession | null {
   const action = sessionStorage.getItem(OAUTH_ACTION_KEY) as OAuthAction | null
   const redirect = sessionStorage.getItem(OAUTH_REDIRECT_KEY)
 
-  if (!state || !codeVerifier || !action) {
+  if (!state || !action) {
     return null
   }
 
-  return { state, codeVerifier, action, redirect: redirect || '/' }
+  return { state, codeVerifier: codeVerifier || undefined, action, redirect: redirect || '/' }
 }
 
 export function clearOAuthSession(): void {

@@ -62,10 +62,14 @@ export function OAuthCallbackPage() {
     }
 
     try {
-      const params = {
+      const params: { code: string; state: string; codeVerifier?: string } = {
         code,
         state,
-        codeVerifier: session.codeVerifier,
+      }
+
+      // Only include codeVerifier if present (not all providers support PKCE)
+      if (session.codeVerifier) {
+        params.codeVerifier = session.codeVerifier
       }
 
       if (session.action === 'login') {
