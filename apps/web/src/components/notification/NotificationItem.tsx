@@ -13,7 +13,7 @@ const categoryConfig: Record<NotificationCategory, { icon: typeof Megaphone; bgC
   social: { icon: Users, bgColor: 'bg-purple-500/10', iconColor: 'text-purple-500' },
 }
 
-function formatRelativeTime(dateString: string, t: (key: string, options?: object) => string): string {
+function formatRelativeTime(dateString: string, t: ReturnType<typeof useTranslation>['t']): string {
   const date = new Date(dateString)
   const now = new Date()
   const diffMs = now.getTime() - date.getTime()

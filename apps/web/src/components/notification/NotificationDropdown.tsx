@@ -45,8 +45,9 @@ export function NotificationDropdown() {
 
     const unsubMessage = wsClient.on('ntf.message', handleNewMessage)
     const unsubAnnouncement = wsClient.on('ntf.announcement', handleNewMessage)
-    const unsubUnreadCount = wsClient.on('ntf.unread_count', (data: { count: number }) => {
-      setUnreadCount(data.count)
+    const unsubUnreadCount = wsClient.on('ntf.unread_count', (data: unknown) => {
+      const payload = data as { count: number }
+      setUnreadCount(payload.count)
     })
 
     return () => {
