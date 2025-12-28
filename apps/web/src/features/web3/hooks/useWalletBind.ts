@@ -70,7 +70,18 @@ export function useWalletBind(options: UseWalletBindOptions = {}) {
         options.onSuccess?.()
       } catch (err) {
         setStep('error')
-        const error = err instanceof Error ? err : new Error('Wallet binding failed')
+
+        // Check for pending request error (MetaMask -32002)
+        const isPendingRequest =
+          (err as { code?: number })?.code === -32002 ||
+          (err instanceof Error && err.message.includes('already pending'))
+
+        const error = isPendingRequest
+          ? Object.assign(new Error('pending_request'), { code: -32002 })
+          : err instanceof Error
+            ? err
+            : new Error('Wallet binding failed')
+
         setError(error)
         options.onError?.(error)
         await disconnectAsync().catch(() => {})

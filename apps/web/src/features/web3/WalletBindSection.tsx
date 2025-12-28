@@ -28,7 +28,9 @@ function WalletBindSectionInner({ binding, onBindingChange }: Props) {
       onBindingChange()
     },
     onError: (error) => {
-      if (error.message.includes('rejected') || error.message.includes('denied')) {
+      if (error.message === 'pending_request') {
+        toast.error(t('auth.wallet.pendingRequest'))
+      } else if (error.message.includes('rejected') || error.message.includes('denied')) {
         toast.error(t('auth.wallet.userRejectedConnection'))
       } else {
         toast.error(t('auth.wallet.walletLoginFailed'))

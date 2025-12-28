@@ -80,7 +80,18 @@ export function useWalletLogin(options: UseWalletLoginOptions = {}) {
         options.onSuccess?.()
       } catch (err) {
         setStep('error')
-        const error = err instanceof Error ? err : new Error('Wallet login failed')
+
+        // Check for pending request error (MetaMask -32002)
+        const isPendingRequest =
+          (err as { code?: number })?.code === -32002 ||
+          (err instanceof Error && err.message.includes('already pending'))
+
+        const error = isPendingRequest
+          ? Object.assign(new Error('pending_request'), { code: -32002 })
+          : err instanceof Error
+            ? err
+            : new Error('Wallet login failed')
+
         setError(error)
         options.onError?.(error)
 
