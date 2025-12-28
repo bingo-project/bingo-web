@@ -5,6 +5,7 @@ import { Link, useNavigate } from 'react-router'
 import { Button, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Avatar } from '@heroui/react'
 import { Layers, Sun, Moon, Bell, User, Settings, LogOut, Globe } from 'lucide-react'
 import { useAuthStore } from '@bingo/core'
+import { useWebSocketStatus, type ConnectionState } from '@bingo/websocket'
 import { useTheme } from '@/hooks'
 import { useTranslation, i18n, changeLanguage, type SupportedLanguage } from '@/locales'
 
@@ -18,10 +19,26 @@ interface HeaderProps {
   showNavLinks?: boolean
 }
 
+function getStatusColor(status: ConnectionState | null): string {
+  if (!status) return 'bg-green-500'
+  switch (status) {
+    case 'authenticated':
+      return 'bg-green-500'
+    case 'connected':
+    case 'connecting':
+    case 'reconnecting':
+      return 'bg-yellow-500'
+    case 'disconnected':
+    default:
+      return 'bg-default-400'
+  }
+}
+
 export function Header({ showNavLinks = true }: HeaderProps) {
   const { theme, toggleTheme } = useTheme()
   const { t } = useTranslation()
   const navigate = useNavigate()
+  const wsStatus = useWebSocketStatus()
 
   const { isAuthenticated, user, logout } = useAuthStore()
 
@@ -117,7 +134,9 @@ export function Header({ showNavLinks = true }: HeaderProps) {
                           size="sm"
                           className="ring-2 ring-transparent transition-all hover:ring-primary"
                         />
-                        <span className="absolute bottom-0 right-0 size-2.5 rounded-full border-2 border-background bg-green-500" />
+                        <span
+                          className={`absolute bottom-0 right-0 size-2.5 rounded-full border-2 border-background ${getStatusColor(wsStatus)}`}
+                        />
                       </div>
                     </div>
                   </DropdownTrigger>
