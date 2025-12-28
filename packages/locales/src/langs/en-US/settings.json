@@ -38,7 +38,24 @@
       "uid": "User ID",
       "email": "Email Address",
       "verified": "Verified",
+      "notBound": "Not Bound",
       "lastUpdated": "Last updated on {{date}}"
+    },
+    "bindEmail": {
+      "title": "Bind Email",
+      "description": "After binding, you can log in directly with your email.",
+      "button": "Bind Email",
+      "email": "Email Address",
+      "emailPlaceholder": "Enter your email address",
+      "code": "Verification Code",
+      "codePlaceholder": "Enter verification code",
+      "sendCode": "Send Code",
+      "codeSent": "Code sent",
+      "submit": "Confirm",
+      "submitting": "Binding...",
+      "cancel": "Cancel",
+      "success": "Email bound successfully",
+      "error": "Failed to bind email"
     },
     "actions": {
       "save": "Save Changes",

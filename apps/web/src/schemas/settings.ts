@@ -74,8 +74,15 @@ export const createTotpDisableSchema = () =>
       .regex(/^\d+$/, $t('ui.formRules.digitsOnly', { field: $t('settings.fields.totpCode') })),
   })
 
+export const createBindEmailSchema = () =>
+  z.object({
+    email: z.string().email($t('ui.formRules.invalidEmail')),
+    code: z.string().min(1, $t('ui.formRules.required', { field: $t('settings.fields.verificationCode') })),
+  })
+
 export type ProfileFormData = z.infer<ReturnType<typeof createProfileSchema>>
 export type ChangePasswordFormData = z.infer<ReturnType<typeof createChangePasswordSchema>>
 export type PayPasswordFormData = z.infer<ReturnType<typeof createPayPasswordSchema>>
 export type TOTPEnableFormData = z.infer<ReturnType<typeof createTotpEnableSchema>>
 export type TOTPDisableFormData = z.infer<ReturnType<typeof createTotpDisableSchema>>
+export type BindEmailFormData = z.infer<ReturnType<typeof createBindEmailSchema>>

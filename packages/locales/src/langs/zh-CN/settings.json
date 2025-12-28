@@ -38,7 +38,24 @@
       "uid": "用户 ID",
       "email": "邮箱地址",
       "verified": "已验证",
+      "notBound": "未绑定",
       "lastUpdated": "上次更新于 {{date}}"
+    },
+    "bindEmail": {
+      "title": "绑定邮箱",
+      "description": "绑定邮箱后，您可以使用邮箱直接登录。",
+      "button": "绑定邮箱",
+      "email": "邮箱地址",
+      "emailPlaceholder": "请输入邮箱地址",
+      "code": "验证码",
+      "codePlaceholder": "请输入验证码",
+      "sendCode": "发送验证码",
+      "codeSent": "验证码已发送",
+      "submit": "确认绑定",
+      "submitting": "绑定中...",
+      "cancel": "取消",
+      "success": "邮箱绑定成功",
+      "error": "邮箱绑定失败"
     },
     "actions": {
       "save": "保存更改",

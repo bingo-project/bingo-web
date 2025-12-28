@@ -1,15 +1,26 @@
 // ABOUTME: User profile settings page
-// ABOUTME: Allows editing avatar and nickname
+// ABOUTME: Allows editing avatar, nickname, and binding email
 
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Button, Input, Card, CardBody } from '@heroui/react'
-import { Upload, Trash2, CheckCircle } from 'lucide-react'
+import {
+  Button,
+  Input,
+  Card,
+  CardBody,
+  Modal,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  useDisclosure,
+} from '@heroui/react'
+import { Upload, Trash2, CheckCircle, Mail, AlertCircle } from 'lucide-react'
 import { toast } from 'sonner'
 import { useAuthStore, authApi } from '@bingo/core'
 import { useTranslation } from '@/locales'
-import { createProfileSchema, type ProfileFormData } from '@/schemas'
+import { createProfileSchema, createBindEmailSchema, type ProfileFormData, type BindEmailFormData } from '@/schemas'
 
 export function ProfileSettingsPage() {
   const { t } = useTranslation()
@@ -18,6 +29,9 @@ export function ProfileSettingsPage() {
   const [isRemoving, setIsRemoving] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
+  const bindEmailModal = useDisclosure()
+
+  const hasEmail = Boolean(user?.email)
 
   const {
     register,
@@ -177,22 +191,41 @@ export function ProfileSettingsPage() {
                   <label className="ml-1 text-xs font-bold uppercase tracking-wider text-default-500">
                     {t('settings.profile.form.email')}
                   </label>
-                  <div className="relative">
-                    <Input
-                      value={user?.email || ''}
-                      variant="bordered"
-                      radius="full"
-                      isReadOnly
-                      classNames={{
-                        inputWrapper: 'h-12 bg-content2/50',
-                        input: 'text-default-500',
-                      }}
-                    />
-                    <div className="absolute right-4 top-1/2 flex -translate-y-1/2 items-center gap-1.5 rounded-full border border-success/20 bg-success/10 px-2 py-0.5 text-success">
-                      <CheckCircle size={14} />
-                      <span className="text-xs font-bold">{t('settings.profile.form.verified')}</span>
+                  {hasEmail ? (
+                    <div className="relative">
+                      <Input
+                        value={user?.email || ''}
+                        variant="bordered"
+                        radius="full"
+                        isReadOnly
+                        classNames={{
+                          inputWrapper: 'h-12 bg-content2/50',
+                          input: 'text-default-500',
+                        }}
+                      />
+                      <div className="absolute right-4 top-1/2 flex -translate-y-1/2 items-center gap-1.5 rounded-full border border-success/20 bg-success/10 px-2 py-0.5 text-success">
+                        <CheckCircle size={14} />
+                        <span className="text-xs font-bold">{t('settings.profile.form.verified')}</span>
+                      </div>
                     </div>
-                  </div>
+                  ) : (
+                    <div className="flex h-12 items-center justify-between rounded-full border-2 border-dashed border-warning/50 bg-warning/5 px-4">
+                      <div className="flex items-center gap-2 text-warning">
+                        <AlertCircle size={16} />
+                        <span className="text-sm">{t('settings.profile.form.notBound')}</span>
+                      </div>
+                      <Button
+                        size="sm"
+                        color="warning"
+                        variant="flat"
+                        radius="full"
+                        startContent={<Mail size={14} />}
+                        onPress={bindEmailModal.onOpen}
+                      >
+                        {t('settings.profile.bindEmail.button')}
+                      </Button>
+                    </div>
+                  )}
                 </div>
               </div>
 
@@ -217,6 +250,145 @@ export function ProfileSettingsPage() {
           </CardBody>
         </Card>
       </div>
+
+      <BindEmailModal
+        isOpen={bindEmailModal.isOpen}
+        onClose={bindEmailModal.onClose}
+        onSuccess={() => {
+          fetchUserInfo()
+          bindEmailModal.onClose()
+        }}
+      />
     </div>
+  )
+}
+
+function BindEmailModal({
+  isOpen,
+  onClose,
+  onSuccess,
+}: {
+  isOpen: boolean
+  onClose: () => void
+  onSuccess: () => void
+}) {
+  const { t } = useTranslation()
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [isSendingCode, setIsSendingCode] = useState(false)
+  const [countdown, setCountdown] = useState(0)
+
+  const {
+    register,
+    handleSubmit,
+    reset,
+    watch,
+    formState: { errors },
+  } = useForm<BindEmailFormData>({
+    resolver: zodResolver(createBindEmailSchema()),
+  })
+
+  const emailValue = watch('email')
+
+  useEffect(() => {
+    if (countdown > 0) {
+      const timer = setTimeout(() => setCountdown(countdown - 1), 1000)
+      return () => clearTimeout(timer)
+    }
+  }, [countdown])
+
+  const handleSendCode = async () => {
+    if (!emailValue) return
+
+    setIsSendingCode(true)
+    try {
+      await authApi.sendCode({ account: emailValue, scene: 'bind' })
+      setCountdown(60)
+      toast.success(t('settings.profile.bindEmail.codeSent'))
+    } catch {
+      // Error handled by request interceptor
+    } finally {
+      setIsSendingCode(false)
+    }
+  }
+
+  const onSubmit = async (data: BindEmailFormData) => {
+    setIsSubmitting(true)
+    try {
+      await authApi.updateProfile({ email: data.email, code: data.code })
+      toast.success(t('settings.profile.bindEmail.success'))
+      reset()
+      setCountdown(0)
+      onSuccess()
+    } catch {
+      // Error handled by request interceptor
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
+
+  const handleClose = () => {
+    reset()
+    setCountdown(0)
+    onClose()
+  }
+
+  if (!isOpen) return null
+
+  return (
+    <Modal isOpen={isOpen} onOpenChange={(open) => !open && handleClose()} size="lg" placement="center">
+      <ModalContent>
+        <ModalHeader>{t('settings.profile.bindEmail.title')}</ModalHeader>
+        <ModalBody>
+          <p className="mb-4 text-default-500">{t('settings.profile.bindEmail.description')}</p>
+          <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5">
+            <Input
+              {...register('email')}
+              type="email"
+              label={t('settings.profile.bindEmail.email')}
+              placeholder={t('settings.profile.bindEmail.emailPlaceholder')}
+              labelPlacement="outside"
+              variant="bordered"
+              radius="full"
+              isInvalid={!!errors.email}
+              errorMessage={errors.email?.message}
+              classNames={{ inputWrapper: 'h-12' }}
+            />
+            <div>
+              <div className="flex items-end gap-2">
+                <Input
+                  {...register('code')}
+                  label={t('settings.profile.bindEmail.code')}
+                  placeholder={t('settings.profile.bindEmail.codePlaceholder')}
+                  labelPlacement="outside"
+                  variant="bordered"
+                  radius="full"
+                  isInvalid={!!errors.code}
+                  classNames={{ inputWrapper: 'h-12' }}
+                />
+                <Button
+                  className="h-12 min-w-28 shrink-0"
+                  variant="bordered"
+                  radius="full"
+                  isLoading={isSendingCode}
+                  isDisabled={countdown > 0 || !emailValue}
+                  onPress={handleSendCode}
+                >
+                  {countdown > 0 ? `${countdown}s` : t('settings.profile.bindEmail.sendCode')}
+                </Button>
+              </div>
+              {errors.code?.message && <p className="mt-1 text-xs text-danger">{errors.code.message}</p>}
+            </div>
+          </form>
+        </ModalBody>
+        <ModalFooter>
+          <Button variant="light" radius="full" onPress={handleClose}>
+            {t('settings.profile.bindEmail.cancel')}
+          </Button>
+          <Button color="primary" radius="full" isLoading={isSubmitting} onPress={() => handleSubmit(onSubmit)()}>
+            {isSubmitting ? t('settings.profile.bindEmail.submitting') : t('settings.profile.bindEmail.submit')}
+          </Button>
+        </ModalFooter>
+      </ModalContent>
+    </Modal>
   )
 }
