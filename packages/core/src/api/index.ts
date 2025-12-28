@@ -24,3 +24,13 @@ export {
   type OAuthLoginRequest,
   type SocialBinding,
 } from './auth'
+export {
+  notificationApi,
+  type Notification,
+  type NotificationCategory,
+  type NotificationSource,
+  type NotificationListParams,
+  type NotificationListResponse,
+  type NotificationPreferences,
+  type UnreadCountResponse,
+} from './notification'
