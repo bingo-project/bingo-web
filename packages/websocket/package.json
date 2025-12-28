@@ -1,0 +1,21 @@
+{
+  "name": "@bingo/websocket",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "dependencies": {
+    "zustand": "^5.0.2"
+  },
+  "peerDependencies": {
+    "react": "^19.0.0"
+  },
+  "devDependencies": {
+    "@bingo/tsconfig": "workspace:*",
+    "@types/react": "^19.0.2"
+  }
+}
