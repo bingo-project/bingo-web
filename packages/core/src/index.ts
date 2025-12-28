@@ -4,3 +4,4 @@
 export * from './stores'
 export * from './hooks'
 export * from './api'
+export { initWebSocketHandlers } from './websocket'
