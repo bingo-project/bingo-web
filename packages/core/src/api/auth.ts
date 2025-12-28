@@ -115,6 +115,17 @@ export interface SocialBinding {
   bindTime: string
 }
 
+// Web3 Login
+export interface NonceResponse {
+  message: string
+  nonce: string
+}
+
+export interface WalletLoginRequest {
+  message: string
+  signature: string
+}
+
 export const authApi = {
   login: (data: LoginRequest) => request.post<LoginResponse>('/v1/auth/login', data),
 
@@ -167,4 +178,12 @@ export const authApi = {
     request.post<LoginResponse>(`/v1/auth/bindings/${provider}`, data),
 
   unbindProvider: (provider: string) => request.delete<void>(`/v1/auth/bindings/${provider}`),
+
+  // Web3 Login
+  getNonce: (address: string) => request.get<NonceResponse>('/v1/auth/nonce', { params: { address } }),
+
+  walletLogin: (data: WalletLoginRequest) => request.post<LoginResponse>('/v1/auth/login/address', data),
+
+  // Web3 Binding
+  bindWallet: (data: WalletLoginRequest) => request.post<void>('/v1/auth/bindings/wallet', data),
 }
