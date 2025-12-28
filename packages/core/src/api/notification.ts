@@ -3,7 +3,7 @@
 
 import { request } from './request'
 
-// Types
+// Frontend types (camelCase)
 export type NotificationCategory = 'system' | 'security' | 'transaction' | 'social'
 export type NotificationSource = 'message' | 'announcement'
 
@@ -31,15 +31,91 @@ export interface NotificationListResponse {
   total: number
 }
 
+export interface ChannelPreference {
+  inApp: boolean
+  email: boolean
+}
+
 export interface NotificationPreferences {
-  system: { inApp: boolean; email: boolean }
-  security: { inApp: boolean; email: boolean }
-  transaction: { inApp: boolean; email: boolean }
-  social: { inApp: boolean; email: boolean }
+  system: ChannelPreference
+  security: ChannelPreference
+  transaction: ChannelPreference
+  social: ChannelPreference
 }
 
 export interface UnreadCountResponse {
   count: number
+}
+
+// Backend API types (snake_case)
+interface ApiNotification {
+  uuid: string
+  source: NotificationSource
+  category: NotificationCategory
+  type: string
+  title: string
+  content: string
+  actionUrl?: string
+  is_read: boolean
+  created_at: string
+}
+
+interface ApiNotificationListResponse {
+  data: ApiNotification[]
+  total: number
+}
+
+interface ApiChannelPreference {
+  in_app: boolean
+  email: boolean
+}
+
+interface ApiNotificationPreferences {
+  system: ApiChannelPreference
+  security: ApiChannelPreference
+  transaction: ApiChannelPreference
+  social: ApiChannelPreference
+}
+
+// Transform functions
+function transformNotification(api: ApiNotification): Notification {
+  return {
+    uuid: api.uuid,
+    source: api.source,
+    category: api.category,
+    type: api.type,
+    title: api.title,
+    content: api.content,
+    actionUrl: api.actionUrl,
+    isRead: api.is_read,
+    createdAt: api.created_at,
+  }
+}
+
+function transformPreferencesToFrontend(api: ApiNotificationPreferences): NotificationPreferences {
+  const transform = (p: ApiChannelPreference): ChannelPreference => ({
+    inApp: p.in_app,
+    email: p.email,
+  })
+  return {
+    system: transform(api.system),
+    security: transform(api.security),
+    transaction: transform(api.transaction),
+    social: transform(api.social),
+  }
+}
+
+function transformPreferencesToApi(prefs: NotificationPreferences): ApiNotificationPreferences {
+  const transform = (p: ChannelPreference): ApiChannelPreference => ({
+    in_app: p.inApp,
+    email: p.email,
+  })
+  return {
+    system: transform(prefs.system),
+    security: transform(prefs.security),
+    transaction: transform(prefs.transaction),
+    social: transform(prefs.social),
+  }
 }
 
 // Mock data
@@ -128,7 +204,18 @@ export const notificationApi = {
         total: filtered.length,
       }
     }
-    return request.get<NotificationListResponse>('/v1/notifications', { params })
+    // Transform params to snake_case for API
+    const apiParams: Record<string, unknown> = {}
+    if (params.category) apiParams.category = params.category
+    if (params.isRead !== undefined) apiParams.is_read = params.isRead
+    if (params.page) apiParams.page = params.page
+    if (params.pageSize) apiParams.page_size = params.pageSize
+
+    const response = await request.get<ApiNotificationListResponse>('/v1/notifications', { params: apiParams })
+    return {
+      data: response.data.map(transformNotification),
+      total: response.total,
+    }
   },
 
   getUnreadCount: async (): Promise<UnreadCountResponse> => {
@@ -173,7 +260,8 @@ export const notificationApi = {
       await new Promise((r) => setTimeout(r, 200))
       return { ...mockPreferences }
     }
-    return request.get<NotificationPreferences>('/v1/notifications/preferences')
+    const response = await request.get<ApiNotificationPreferences>('/v1/notifications/preferences')
+    return transformPreferencesToFrontend(response)
   },
 
   updatePreferences: async (data: NotificationPreferences): Promise<void> => {
@@ -182,6 +270,6 @@ export const notificationApi = {
       Object.assign(mockPreferences, data)
       return
     }
-    return request.put('/v1/notifications/preferences', data)
+    return request.put('/v1/notifications/preferences', transformPreferencesToApi(data))
   },
 }
