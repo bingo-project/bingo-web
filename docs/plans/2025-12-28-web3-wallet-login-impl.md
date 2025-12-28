@@ -99,6 +99,10 @@ export interface WalletLoginRequest {
 
   walletLogin: (data: WalletLoginRequest) =>
     request.post<LoginResponse>('/v1/auth/login/address', data),
+
+  // Web3 Binding
+  bindWallet: (data: WalletLoginRequest) =>
+    request.post<void>('/v1/auth/bindings/wallet', data),
 ```
 
 **Step 2: 验证类型正确**
@@ -118,7 +122,7 @@ git commit -m "feat(core): add Web3 wallet login API methods"
 
 ---
 
-## Phase 2: Web3 Feature 模块
+## Phase 2: Web3 Feature 模块（Hooks）
 
 ### Task 4: 创建 wagmi 配置
 
@@ -314,7 +318,104 @@ git commit -m "feat(web): add useWalletLogin hook"
 
 ---
 
-### Task 7: 创建 WalletSelectModal 组件
+### Task 7: 创建 useWalletBind hook
+
+**Files:**
+
+- Create: `apps/web/src/features/web3/hooks/useWalletBind.ts`
+
+**Step 1: 创建钱包绑定 hook**
+
+```typescript
+// ABOUTME: Hook for wallet binding flow in settings
+// ABOUTME: Handles connect, sign message, and bind API call
+
+import { useState, useCallback } from 'react'
+import { useConnect, useSignMessage, useDisconnect } from 'wagmi'
+import { authApi } from '@bingo/core'
+
+export type WalletBindStep = 'idle' | 'connecting' | 'signing' | 'binding' | 'success' | 'error'
+
+interface UseWalletBindOptions {
+  onSuccess?: () => void
+  onError?: (error: Error) => void
+}
+
+export function useWalletBind(options: UseWalletBindOptions = {}) {
+  const [step, setStep] = useState<WalletBindStep>('idle')
+  const [error, setError] = useState<Error | null>(null)
+
+  const { connectors, connectAsync } = useConnect()
+  const { signMessageAsync } = useSignMessage()
+  const { disconnectAsync } = useDisconnect()
+
+  const bind = useCallback(
+    async (connectorId?: string) => {
+      try {
+        setStep('connecting')
+        setError(null)
+
+        const connector = connectorId ? connectors.find((c) => c.id === connectorId) : connectors[0]
+        if (!connector) {
+          throw new Error('No wallet connector available')
+        }
+
+        const result = await connectAsync({ connector })
+        const walletAddress = result.accounts[0]
+        if (!walletAddress) {
+          throw new Error('No address returned from wallet')
+        }
+
+        setStep('signing')
+        const nonceResponse = await authApi.getNonce(walletAddress)
+
+        const signature = await signMessageAsync({
+          message: nonceResponse.message,
+        })
+
+        setStep('binding')
+        await authApi.bindWallet({
+          message: nonceResponse.message,
+          signature,
+        })
+
+        // Disconnect wallet after binding (we only needed the signature)
+        await disconnectAsync().catch(() => {})
+
+        setStep('success')
+        options.onSuccess?.()
+      } catch (err) {
+        setStep('error')
+        const error = err instanceof Error ? err : new Error('Wallet binding failed')
+        setError(error)
+        options.onError?.(error)
+        await disconnectAsync().catch(() => {})
+      }
+    },
+    [connectors, connectAsync, signMessageAsync, disconnectAsync, options]
+  )
+
+  const reset = useCallback(() => {
+    setStep('idle')
+    setError(null)
+  }, [])
+
+  return { step, error, bind, reset, connectors }
+}
+```
+
+**Step 2: Commit**
+
+```bash
+git add apps/web/src/features/web3/hooks/useWalletBind.ts
+git commit -m "feat(web): add useWalletBind hook"
+```
+
+---
+
+## Phase 3: Web3 Feature 模块（UI 组件）
+
+### Task 8: 创建 WalletSelectModal 组件
 
 **Files:**
 
@@ -324,7 +425,7 @@ git commit -m "feat(web): add useWalletLogin hook"
 
 ```typescript
 // ABOUTME: Modal for selecting wallet type
-// ABOUTME: Displays available wallet connectors
+// ABOUTME: Displays available wallet connectors with loading states
 
 import {
   Modal,
@@ -337,12 +438,15 @@ import {
 import { useTranslation } from '@/locales'
 import type { Connector } from 'wagmi'
 import type { WalletLoginStep } from './hooks/useWalletLogin'
+import type { WalletBindStep } from './hooks/useWalletBind'
+
+type WalletStep = WalletLoginStep | WalletBindStep
 
 interface Props {
   isOpen: boolean
   onClose: () => void
   connectors: readonly Connector[]
-  step: WalletLoginStep
+  step: WalletStep
   onSelectConnector: (connectorId: string) => void
 }
 
@@ -368,7 +472,7 @@ export function WalletSelectModal({
   onSelectConnector,
 }: Props) {
   const { t } = useTranslation()
-  const isLoading = step === 'connecting' || step === 'signing' || step === 'verifying'
+  const isLoading = step === 'connecting' || step === 'signing' || step === 'verifying' || step === 'binding'
 
   const getStepMessage = () => {
     switch (step) {
@@ -377,6 +481,7 @@ export function WalletSelectModal({
       case 'signing':
         return t('auth.wallet.signingMessage')
       case 'verifying':
+      case 'binding':
         return t('auth.login.processing')
       default:
         return null
@@ -429,7 +534,7 @@ git commit -m "feat(web): add WalletSelectModal component"
 
 ---
 
-### Task 8: 创建 WalletLoginButton 组件
+### Task 9: 创建 WalletLoginButton 组件
 
 **Files:**
 
@@ -537,7 +642,7 @@ git commit -m "feat(web): add WalletLoginButton component"
 
 ---
 
-### Task 9: 创建 feature 模块入口
+### Task 10: 创建 feature 模块入口
 
 **Files:**
 
@@ -553,7 +658,9 @@ export { WalletLoginButton } from './WalletLoginButton'
 export { WagmiProvider } from './WagmiProvider'
 export { WalletSelectModal } from './WalletSelectModal'
 export { useWalletLogin } from './hooks/useWalletLogin'
+export { useWalletBind } from './hooks/useWalletBind'
 export type { WalletLoginStep } from './hooks/useWalletLogin'
+export type { WalletBindStep } from './hooks/useWalletBind'
 ```
 
 **Step 2: Commit**
@@ -565,9 +672,9 @@ git commit -m "feat(web): add web3 feature module entry"
 
 ---
 
-## Phase 3: 集成到登录页
+## Phase 4: 集成到登录页
 
-### Task 10: 添加钱包图标
+### Task 11: 添加钱包图标
 
 **Files:**
 
@@ -601,7 +708,7 @@ git commit -m "feat(web): add wallet icon to provider icons"
 
 ---
 
-### Task 11: 修改 OAuthButtons 支持钱包登录
+### Task 12: 修改 OAuthButtons 支持钱包登录
 
 **Files:**
 
@@ -757,9 +864,9 @@ git commit -m "feat(web): integrate wallet login into OAuthButtons"
 
 ---
 
-## Phase 4: 国际化
+## Phase 5: 国际化
 
-### Task 12: 添加中文翻译
+### Task 13: 添加中文翻译
 
 **Files:**
 
@@ -796,7 +903,7 @@ git commit -m "feat(locales): add Chinese translations for wallet login"
 
 ---
 
-### Task 13: 添加英文翻译
+### Task 14: 添加英文翻译
 
 **Files:**
 
@@ -833,9 +940,9 @@ git commit -m "feat(locales): add English translations for wallet login"
 
 ---
 
-## Phase 5: 设置页钱包绑定
+## Phase 6: 设置页钱包绑定
 
-### Task 14: 创建 WalletBindSection 组件
+### Task 15: 创建 WalletBindSection 组件
 
 **Files:**
 
@@ -855,7 +962,7 @@ import { useTranslation } from '@/locales'
 import { authApi, type SocialBinding } from '@bingo/core'
 import { WagmiProvider } from './WagmiProvider'
 import { WalletSelectModal } from './WalletSelectModal'
-import { useWalletLogin, type WalletLoginStep } from './hooks/useWalletLogin'
+import { useWalletBind } from './hooks/useWalletBind'
 
 interface Props {
   binding: SocialBinding | undefined
@@ -866,9 +973,8 @@ function WalletBindSectionInner({ binding, onBindingChange }: Props) {
   const { t } = useTranslation()
   const modal = useDisclosure()
   const [isUnbinding, setIsUnbinding] = useState(false)
-  const [bindStep, setBindStep] = useState<WalletLoginStep>('idle')
 
-  const { connectors, login, reset } = useWalletLogin({
+  const { step, connectors, bind, reset } = useWalletBind({
     onSuccess: () => {
       toast.success(t('settings.security.socialAccounts.linkSuccess', { provider: t('auth.wallet.walletAddress') }))
       modal.onClose()
@@ -881,7 +987,6 @@ function WalletBindSectionInner({ binding, onBindingChange }: Props) {
         toast.error(t('auth.wallet.walletLoginFailed'))
       }
       reset()
-      setBindStep('idle')
     },
   })
 
@@ -889,12 +994,8 @@ function WalletBindSectionInner({ binding, onBindingChange }: Props) {
     modal.onOpen()
   }
 
-  const handleSelectConnector = async (connectorId: string) => {
-    setBindStep('connecting')
-    // Note: For binding, we need to use bindProvider instead of walletLogin
-    // This would require extending useWalletLogin or creating a separate hook
-    // For now, using the login flow as placeholder
-    login(connectorId)
+  const handleSelectConnector = (connectorId: string) => {
+    bind(connectorId)
   }
 
   const handleUnbind = async () => {
@@ -912,7 +1013,6 @@ function WalletBindSectionInner({ binding, onBindingChange }: Props) {
 
   const handleClose = () => {
     reset()
-    setBindStep('idle')
     modal.onClose()
   }
 
@@ -977,7 +1077,7 @@ function WalletBindSectionInner({ binding, onBindingChange }: Props) {
         isOpen={modal.isOpen}
         onClose={handleClose}
         connectors={connectors}
-        step={bindStep}
+        step={step}
         onSelectConnector={handleSelectConnector}
       />
     </>
@@ -1010,7 +1110,7 @@ git commit -m "feat(web): add WalletBindSection component"
 
 ---
 
-### Task 15: 集成到 Security 页面
+### Task 16: 集成到 Security 页面
 
 **Files:**
 
@@ -1088,9 +1188,163 @@ git commit -m "feat(web): integrate wallet binding into Security page"
 
 ---
 
-## Phase 6: 最终验证
+## Phase 7: 测试
 
-### Task 16: 完整构建验证
+### Task 17: 为 hooks 添加单元测试
+
+**Files:**
+
+- Create: `apps/web/src/features/web3/hooks/__tests__/useWalletLogin.test.ts`
+- Create: `apps/web/src/features/web3/hooks/__tests__/useWalletBind.test.ts`
+
+**Step 1: 创建 useWalletLogin 测试**
+
+```typescript
+// ABOUTME: Unit tests for useWalletLogin hook
+// ABOUTME: Tests wallet connection and login flow states
+
+import { describe, it, expect, vi, beforeEach } from 'vitest'
+import { renderHook, act, waitFor } from '@testing-library/react'
+import { useWalletLogin } from '../useWalletLogin'
+
+// Mock wagmi hooks
+vi.mock('wagmi', () => ({
+  useConnect: vi.fn(() => ({
+    connectors: [{ id: 'injected', name: 'MetaMask' }],
+    connectAsync: vi.fn(),
+  })),
+  useAccount: vi.fn(() => ({
+    address: undefined,
+    isConnected: false,
+  })),
+  useSignMessage: vi.fn(() => ({
+    signMessageAsync: vi.fn(),
+  })),
+  useDisconnect: vi.fn(() => ({
+    disconnectAsync: vi.fn(),
+  })),
+}))
+
+// Mock auth API
+vi.mock('@bingo/core', () => ({
+  authApi: {
+    getNonce: vi.fn(),
+    walletLogin: vi.fn(),
+  },
+  useAuthStore: vi.fn(() => ({
+    setToken: vi.fn(),
+    fetchUserInfo: vi.fn(),
+  })),
+}))
+
+describe('useWalletLogin', () => {
+  beforeEach(() => {
+    vi.clearAllMocks()
+  })
+
+  it('should initialize with idle state', () => {
+    const { result } = renderHook(() => useWalletLogin())
+
+    expect(result.current.step).toBe('idle')
+    expect(result.current.error).toBeNull()
+    expect(result.current.connectors).toHaveLength(1)
+  })
+
+  it('should reset state correctly', () => {
+    const { result } = renderHook(() => useWalletLogin())
+
+    act(() => {
+      result.current.reset()
+    })
+
+    expect(result.current.step).toBe('idle')
+    expect(result.current.error).toBeNull()
+  })
+
+  // Add more tests for login flow, error handling, etc.
+})
+```
+
+**Step 2: 创建 useWalletBind 测试**
+
+```typescript
+// ABOUTME: Unit tests for useWalletBind hook
+// ABOUTME: Tests wallet connection and binding flow states
+
+import { describe, it, expect, vi, beforeEach } from 'vitest'
+import { renderHook, act } from '@testing-library/react'
+import { useWalletBind } from '../useWalletBind'
+
+// Mock wagmi hooks
+vi.mock('wagmi', () => ({
+  useConnect: vi.fn(() => ({
+    connectors: [{ id: 'injected', name: 'MetaMask' }],
+    connectAsync: vi.fn(),
+  })),
+  useSignMessage: vi.fn(() => ({
+    signMessageAsync: vi.fn(),
+  })),
+  useDisconnect: vi.fn(() => ({
+    disconnectAsync: vi.fn(),
+  })),
+}))
+
+// Mock auth API
+vi.mock('@bingo/core', () => ({
+  authApi: {
+    getNonce: vi.fn(),
+    bindWallet: vi.fn(),
+  },
+}))
+
+describe('useWalletBind', () => {
+  beforeEach(() => {
+    vi.clearAllMocks()
+  })
+
+  it('should initialize with idle state', () => {
+    const { result } = renderHook(() => useWalletBind())
+
+    expect(result.current.step).toBe('idle')
+    expect(result.current.error).toBeNull()
+    expect(result.current.connectors).toHaveLength(1)
+  })
+
+  it('should reset state correctly', () => {
+    const { result } = renderHook(() => useWalletBind())
+
+    act(() => {
+      result.current.reset()
+    })
+
+    expect(result.current.step).toBe('idle')
+    expect(result.current.error).toBeNull()
+  })
+
+  // Add more tests for bind flow, error handling, etc.
+})
+```
+
+**Step 3: 运行测试**
+
+```bash
+pnpm --filter @bingo/web test -- --run src/features/web3
+```
+
+Expected: 测试通过
+
+**Step 4: Commit**
+
+```bash
+git add apps/web/src/features/web3/hooks/__tests__/
+git commit -m "test(web): add unit tests for wallet hooks"
+```
+
+---
+
+## Phase 8: 最终验证
+
+### Task 18: 完整构建验证
 
 **Step 1: 运行完整构建**
 
