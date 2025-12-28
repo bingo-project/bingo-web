@@ -6,13 +6,16 @@ import ReactDOM from 'react-dom/client'
 import { RouterProvider } from 'react-router'
 import { HeroUIProvider } from '@heroui/react'
 import { Toaster } from 'sonner'
-import { useAuthStore } from '@bingo/core'
+import { useAuthStore, initWebSocketHandlers } from '@bingo/core'
 import { initI18n } from './locales'
 import { router } from './routes'
 import './index.css'
 
 // Initialize app before rendering
 Promise.all([initI18n(), useAuthStore.getState().initAuth()]).then(() => {
+  // Initialize WebSocket handlers after auth is ready
+  initWebSocketHandlers(() => router.navigate('/login'))
+
   ReactDOM.createRoot(document.getElementById('root')!).render(
     <React.StrictMode>
       <HeroUIProvider disableRipple>
