@@ -44,8 +44,15 @@ export function LoginPage() {
     try {
       await login(data.account, data.password)
       navigate(redirect, { replace: true })
-    } catch {
-      toast.error(t('auth.login.error'))
+    } catch (error: unknown) {
+      const err = error as { response?: { status?: number }; message?: string }
+      if (err?.response?.status === 401 || err?.response?.status === 403) {
+        toast.error(t('auth.login.error'))
+      } else if (err?.message?.includes('WebSocket')) {
+        toast.error(t('auth.login.websocketError'))
+      } else {
+        toast.error(t('auth.login.oauthError'))
+      }
     }
   }
 
