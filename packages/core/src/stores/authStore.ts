@@ -112,7 +112,11 @@ export const useAuthStore = create<AuthState>((set, get) => ({
       await get().fetchUserInfo()
 
       // Connect WebSocket on app init if authenticated
-      await wsClient.connect(token)
+      try {
+        await wsClient.connect(token)
+      } catch (error) {
+        console.error('Failed to connect to WebSocket:', error)
+      }
     }
   },
 }))
