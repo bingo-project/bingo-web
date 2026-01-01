@@ -1,0 +1,20 @@
+{
+  "square": {
+    "title": "AI 广场",
+    "subtitle": "选择一位 AI 助手开始对话",
+    "historyTitle": "历史记录",
+    "noHistory": "暂无历史记录",
+    "newChat": "新对话",
+    "startChat": "开始对话",
+    "createFailed": "创建会话失败"
+  },
+  "chat": {
+    "defaultTitle": "新对话",
+    "loadFailed": "加载历史记录失败",
+    "sendFailed": "发送消息失败",
+    "you": "你",
+    "ai": "AI",
+    "inputPlaceholder": "有问题尽管问我...",
+    "disclaimer": "AI 可能会犯错，请核对重要信息。"
+  }
+}

@@ -2,3 +2,4 @@
 // ABOUTME: Re-exports all Zustand stores
 
 export { useAuthStore } from './authStore'
+export { useAiStore } from './aiStore'

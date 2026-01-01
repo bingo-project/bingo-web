@@ -34,3 +34,5 @@ export {
   type NotificationPreferences,
   type UnreadCountResponse,
 } from './notification'
+export * from './ai'
+export * from './generated/types.gen'

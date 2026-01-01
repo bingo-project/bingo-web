@@ -1,0 +1,20 @@
+{
+  "square": {
+    "title": "AI Square",
+    "subtitle": "Choose an AI assistant to start chatting",
+    "historyTitle": "Chat History",
+    "noHistory": "No chat history yet",
+    "newChat": "New Chat",
+    "startChat": "Start Chat",
+    "createFailed": "Failed to create session"
+  },
+  "chat": {
+    "defaultTitle": "New Conversation",
+    "loadFailed": "Failed to load chat history",
+    "sendFailed": "Failed to send message",
+    "you": "You",
+    "ai": "Assistant",
+    "inputPlaceholder": "Ask me anything...",
+    "disclaimer": "AI can make mistakes. Please verify important information."
+  }
+}

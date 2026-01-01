@@ -15,6 +15,9 @@ import enUSUI from './langs/en-US/ui.json'
 import zhCNSettings from './langs/zh-CN/settings.json'
 import enUSSettings from './langs/en-US/settings.json'
 
+import zhCNAi from './langs/zh-CN/ai.json'
+import enUSAi from './langs/en-US/ai.json'
+
 export type SupportedLanguage = 'zh-CN' | 'en-US'
 
 const LANGUAGE_KEY = 'bingo-language'
@@ -48,8 +51,12 @@ export interface LocaleSetupOptions {
 }
 
 const coreResources = {
-  'zh-CN': { translation: { ...zhCNCommon, errors: zhCNErrors, auth: zhCNAuth, ui: zhCNUI, settings: zhCNSettings } },
-  'en-US': { translation: { ...enUSCommon, errors: enUSErrors, auth: enUSAuth, ui: enUSUI, settings: enUSSettings } },
+  'zh-CN': {
+    translation: { ...zhCNCommon, errors: zhCNErrors, auth: zhCNAuth, ui: zhCNUI, settings: zhCNSettings, ai: zhCNAi },
+  },
+  'en-US': {
+    translation: { ...enUSCommon, errors: enUSErrors, auth: enUSAuth, ui: enUSUI, settings: enUSSettings, ai: enUSAi },
+  },
 }
 
 let isInitialized = false

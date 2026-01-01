@@ -14,6 +14,9 @@ import {
   NotificationSettingsPage,
   NotificationCenterPage,
   OAuthCallbackPage,
+  AiSquarePage,
+  AiChatPage,
+  AiLayout,
 } from '@/pages'
 
 export const router = createBrowserRouter([
@@ -37,6 +40,20 @@ export const router = createBrowserRouter([
       { path: 'notifications/preferences', element: <NotificationSettingsPage /> },
       { path: 'profile', element: <ProfileSettingsPage /> },
       { path: 'security', element: <SecuritySettingsPage /> },
+    ],
+  },
+  {
+    path: '/ai',
+    element: <RootLayout />,
+    errorElement: <ErrorPage />,
+    children: [
+      {
+        element: <AiLayout />,
+        children: [
+          { index: true, element: <AiSquarePage /> },
+          { path: 'chat/:sessionId', element: <AiChatPage /> },
+        ],
+      },
     ],
   },
   { path: '*', element: <ErrorPage /> },
