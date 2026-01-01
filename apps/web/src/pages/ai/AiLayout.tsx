@@ -2,7 +2,7 @@
 // ABOUTME: Provides common sidebar for all AI pages
 
 import React, { useEffect } from 'react'
-import { Outlet, useNavigate, useLocation } from 'react-router'
+import { Outlet, useNavigate, useLocation, Link } from 'react-router'
 import { useTranslation } from 'react-i18next'
 import {
   Button,
@@ -14,14 +14,17 @@ import {
   DropdownMenu,
   DropdownItem,
 } from '@heroui/react'
-import { Plus, Settings, User, LogOut, Home, Trash2, Layers } from 'lucide-react'
+import { Plus, Settings, User, LogOut, Trash2, Layers, Sun, Moon, Globe } from 'lucide-react'
 import { useAiStore, useAuthStore } from '@bingo/core'
+import { useTheme } from '@/hooks'
+import { changeLanguage, i18n } from '@/locales'
 
 export const AiLayout: React.FC = () => {
   const { t } = useTranslation() // Use default namespace
   const navigate = useNavigate()
   const location = useLocation()
 
+  const { theme, toggleTheme } = useTheme()
   const { user, logout } = useAuthStore()
 
   const handleLogout = () => {
@@ -50,16 +53,16 @@ export const AiLayout: React.FC = () => {
   }
 
   return (
-    <div className="flex h-[calc(100vh-64px)] overflow-hidden bg-slate-50 dark:bg-black/20">
+    <div className="flex h-screen overflow-hidden bg-slate-50 dark:bg-black/20">
       {/* Sidebar - Desktop only for MVP, or responsive drawer */}
       <aside className="w-64 border-r border-divider bg-background hidden md:flex flex-col shrink-0">
         <div className="p-6 pb-2">
-          <div className="flex items-center gap-2 mb-8">
+          <Link to="/" className="flex items-center gap-2 mb-8 cursor-pointer hover:opacity-80 transition-opacity">
             <div className="flex size-8 items-center justify-center rounded-lg bg-primary text-white">
               <Layers size={20} />
             </div>
             <span className="text-xl font-medium tracking-tight">Bingo</span>
-          </div>
+          </Link>
           <Button
             className="w-full bg-linear-to-r from-primary to-secondary text-white font-bold shadow-lg shadow-primary/25"
             radius="full"
@@ -138,8 +141,25 @@ export const AiLayout: React.FC = () => {
               </div>
             </DropdownTrigger>
             <DropdownMenu aria-label="User menu">
-              <DropdownItem key="home" startContent={<Home size={18} />} onPress={() => navigate('/')}>
-                {t('nav.home') || 'Home'}
+              <DropdownItem
+                key="switch-theme"
+                startContent={
+                  <div className="flex items-center">
+                    <Sun size={18} className="dark:hidden" />
+                    <Moon size={18} className="hidden dark:block" />
+                  </div>
+                }
+                onPress={toggleTheme}
+              >
+                {theme === 'dark' ? t('theme.lightMode') : t('theme.darkMode')}
+              </DropdownItem>
+              <DropdownItem
+                key="switch-lang"
+                showDivider
+                startContent={<Globe size={18} />}
+                onPress={() => changeLanguage(i18n.language === 'en-US' ? 'zh-CN' : 'en-US')}
+              >
+                {i18n.language === 'en-US' ? '简体中文' : 'English'}
               </DropdownItem>
               <DropdownItem
                 key="profile"

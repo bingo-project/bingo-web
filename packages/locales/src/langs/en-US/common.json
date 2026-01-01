@@ -39,6 +39,11 @@
     "yes": "Yes",
     "no": "No"
   },
+  "theme": {
+    "darkMode": "Dark Mode",
+    "lightMode": "Light Mode",
+    "language": "Language"
+  },
   "placeholder": {
     "input": "Please enter",
     "select": "Please select"

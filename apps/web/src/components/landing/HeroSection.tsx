@@ -67,11 +67,23 @@ export function HeroSection() {
           </Button>
 
           <div className="flex w-full items-center justify-center gap-3 sm:w-auto">
+            {/* Start AI Chat Button */}
+            <Button
+              as={Link}
+              to="/ai"
+              size="lg"
+              radius="full"
+              className="inline-flex h-12 w-full shrink-0 items-center justify-center gap-2 border border-default-200 bg-default-100 px-8 text-base font-medium text-foreground transition-all hover:bg-default-200 hover:scale-105 sm:w-auto"
+            >
+              <MessageSquarePlus size={20} className="shrink-0 text-purple-500" />
+              {t('hero.startAiChat') || 'AI Square'}
+            </Button>
+
             <Button
               variant="bordered"
               size="lg"
               radius="full"
-              className="inline-flex h-12 w-full shrink-0 items-center justify-center gap-2 border-divider bg-content1 px-8 text-base font-medium text-foreground transition-all hover:bg-default-100 sm:w-auto"
+              className="hidden h-12 w-full shrink-0 items-center justify-center gap-2 border-divider bg-content1 px-8 text-base font-medium text-foreground transition-all hover:bg-default-100 sm:inline-flex sm:w-auto"
             >
               <svg className="size-5 shrink-0" fill="currentColor" viewBox="0 0 24 24">
                 <path
@@ -81,19 +93,6 @@ export function HeroSection() {
                 />
               </svg>
               {t('hero.viewOnGitHub')}
-            </Button>
-
-            {/* Start AI Chat Button */}
-            <Button
-              as={Link}
-              to="/ai"
-              variant="bordered"
-              size="lg"
-              radius="full"
-              className="hidden h-12 w-full shrink-0 items-center justify-center gap-2 border-divider bg-content1 px-8 text-base font-medium text-foreground transition-all hover:bg-default-100 sm:w-auto lg:inline-flex"
-            >
-              <MessageSquarePlus size={20} className="shrink-0" />
-              {t('hero.startAiChat') || 'Start AI Chat'}
             </Button>
           </div>
         </div>

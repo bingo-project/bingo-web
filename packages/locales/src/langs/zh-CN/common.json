@@ -39,6 +39,11 @@
     "yes": "是",
     "no": "否"
   },
+  "theme": {
+    "darkMode": "深色模式",
+    "lightMode": "浅色模式",
+    "language": "语言"
+  },
   "placeholder": {
     "input": "请输入",
     "select": "请选择"

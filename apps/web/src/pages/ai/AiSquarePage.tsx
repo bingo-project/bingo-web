@@ -104,9 +104,8 @@ export const AiSquarePage: React.FC = () => {
                   </p>
 
                   <Button
-                    className="w-full !h-8 min-h-0 bg-content2 text-foreground font-medium group-hover:bg-linear-to-r group-hover:from-primary group-hover:to-secondary group-hover:text-white transition-all shadow-none group-hover:shadow-md flex items-center justify-center text-xs"
+                    className="w-full h-7 min-h-0 bg-content2 text-foreground font-medium group-hover:bg-linear-to-r group-hover:from-primary group-hover:to-secondary group-hover:text-white transition-all shadow-none group-hover:shadow-md flex items-center justify-center text-xs"
                     radius="full"
-                    size="sm"
                     onPress={(e) => {
                       // Prevent card click
                       if (e && typeof e.continuePropagation === 'function') {
