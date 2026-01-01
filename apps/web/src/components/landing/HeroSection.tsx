@@ -1,10 +1,10 @@
 // ABOUTME: Landing page hero section
 // ABOUTME: Main banner with title, subtitle, tech stack badges, and CTA buttons
 
-import { useState, type ReactNode } from 'react'
+import { type ReactNode } from 'react'
 import { Link } from 'react-router'
 import { Button } from '@heroui/react'
-import { Code, Zap, Braces, Coins, ArrowRight, Check, Copy } from 'lucide-react'
+import { Code, Zap, Braces, Coins, ArrowRight, MessageSquarePlus } from 'lucide-react'
 import { useTranslation } from '@/locales'
 
 const TECH_STACK: { name: string; icon: ReactNode; color: string }[] = [
@@ -14,17 +14,8 @@ const TECH_STACK: { name: string; icon: ReactNode; color: string }[] = [
   { name: 'Web3', icon: <Coins size={16} />, color: '#7238f0' },
 ]
 
-const COMMAND = 'npx create-bingo-app'
-
 export function HeroSection() {
   const { t } = useTranslation()
-  const [copied, setCopied] = useState(false)
-
-  const handleCopy = async () => {
-    await navigator.clipboard.writeText(COMMAND)
-    setCopied(true)
-    setTimeout(() => setCopied(false), 2000)
-  }
 
   return (
     <section className="relative overflow-hidden pt-32 pb-20 lg:pt-48 lg:pb-32">
@@ -92,21 +83,18 @@ export function HeroSection() {
               {t('hero.viewOnGitHub')}
             </Button>
 
-            {/* Terminal Command */}
-            <div className="hidden h-12 items-center gap-3 rounded-full border border-white/10 bg-black/80 px-4 font-mono text-sm text-default-400 lg:flex">
-              <span>$ {COMMAND}</span>
-              <Button
-                isIconOnly
-                variant="light"
-                size="sm"
-                radius="full"
-                onPress={handleCopy}
-                className="min-w-6 h-6 text-white hover:text-primary"
-                aria-label="Copy to clipboard"
-              >
-                {copied ? <Check size={16} /> : <Copy size={16} />}
-              </Button>
-            </div>
+            {/* Start AI Chat Button */}
+            <Button
+              as={Link}
+              to="/ai"
+              variant="bordered"
+              size="lg"
+              radius="full"
+              className="hidden h-12 w-full shrink-0 items-center justify-center gap-2 border-divider bg-content1 px-8 text-base font-medium text-foreground transition-all hover:bg-default-100 sm:w-auto lg:inline-flex"
+            >
+              <MessageSquarePlus size={20} className="shrink-0" />
+              {t('hero.startAiChat') || 'Start AI Chat'}
+            </Button>
           </div>
         </div>
       </div>
