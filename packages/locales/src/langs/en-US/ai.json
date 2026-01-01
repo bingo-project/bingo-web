@@ -6,7 +6,22 @@
     "noHistory": "No chat history yet",
     "newChat": "New Chat",
     "startChat": "Start Chat",
-    "createFailed": "Failed to create session"
+    "createFailed": "Failed to create session",
+    "searchPlaceholder": "Search AI assistants..."
+  },
+  "welcome": {
+    "title": "How can I help you today?",
+    "subtitle": "I'm here to assist with code, writing, analysis, or just a friendly chat.",
+    "suggestions": {
+      "debug": "Debug my code",
+      "debugDesc": "Paste a snippet and I'll find the errors.",
+      "article": "Write an article",
+      "articleDesc": "Create a blog post about AI trends.",
+      "concept": "Explain a concept",
+      "conceptDesc": "Explain quantum computing simply.",
+      "trip": "Plan a trip",
+      "tripDesc": "Itinerary for 3 days in Tokyo."
+    }
   },
   "chat": {
     "defaultTitle": "New Conversation",

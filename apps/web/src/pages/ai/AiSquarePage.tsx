@@ -1,23 +1,32 @@
-// ABOUTME: Displays list of AI roles
-// ABOUTME: Used as index page for /ai route, inside AiLayout
-
-import React, { useEffect } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router'
 import { useTranslation } from 'react-i18next'
-import { Card, CardBody, Button, Spinner } from '@heroui/react'
-import { Bot } from 'lucide-react'
+import { Card, CardBody, Button, Spinner, Input } from '@heroui/react'
+import { Bot, Search } from 'lucide-react'
 import { useAiStore } from '@bingo/core'
 import { toast } from 'sonner'
 
 export const AiSquarePage: React.FC = () => {
   const { t } = useTranslation() // Use default namespace
   const navigate = useNavigate()
+  const [searchQuery, setSearchQuery] = useState('')
 
   const { roles, isLoadingRoles, fetchRoles, createSession } = useAiStore()
 
   useEffect(() => {
     fetchRoles()
   }, [fetchRoles])
+
+  const filteredRoles = useMemo(() => {
+    if (!searchQuery.trim()) return roles
+    const query = searchQuery.toLowerCase()
+    return roles.filter(
+      (role) =>
+        role.name?.toLowerCase().includes(query) ||
+        role.description?.toLowerCase().includes(query) ||
+        role.category?.toLowerCase().includes(query)
+    )
+  }, [roles, searchQuery])
 
   const handleRoleClick = async (roleModel: string, roleName: string) => {
     try {
@@ -32,12 +41,31 @@ export const AiSquarePage: React.FC = () => {
 
   return (
     <main className="flex-1 overflow-y-auto p-4 md:p-8 h-full">
-      <div className="max-w-5xl mx-auto">
-        <header className="mb-8 text-center md:text-left">
-          <h1 className="text-3xl font-bold bg-clip-text text-transparent bg-linear-to-r from-primary to-secondary inline-block mb-2">
-            {t('ai.square.title')}
-          </h1>
-          <p className="text-slate-500 dark:text-slate-400">{t('ai.square.subtitle')}</p>
+      <div className="max-w-6xl mx-auto">
+        <header className="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4">
+          <div className="text-center md:text-left">
+            <h1 className="text-3xl font-bold bg-clip-text text-transparent bg-linear-to-r from-primary to-secondary inline-block mb-2">
+              {t('ai.square.title')}
+            </h1>
+            <p className="text-slate-500 dark:text-slate-400">{t('ai.square.subtitle')}</p>
+          </div>
+          <div className="w-full md:w-72">
+            <Input
+              classNames={{
+                base: 'max-w-full sm:max-w-[20rem] h-10',
+                mainWrapper: 'h-full',
+                input: 'text-small',
+                inputWrapper: 'h-full font-normal text-default-500 bg-default-400/20 dark:bg-default-500/20',
+              }}
+              placeholder={t('ai.square.searchPlaceholder')}
+              size="sm"
+              startContent={<Search size={18} />}
+              type="search"
+              value={searchQuery}
+              onValueChange={setSearchQuery}
+              radius="full"
+            />
+          </div>
         </header>
 
         {isLoadingRoles ? (
@@ -46,15 +74,16 @@ export const AiSquarePage: React.FC = () => {
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
-            {roles.map((role, index) => (
+            {filteredRoles.map((role, index) => (
               <Card
                 key={role.model || index}
                 isHoverable
-                className="border border-transparent hover:border-primary/20 transition-all duration-300 group cursor-pointer"
+                isPressable
+                className="border border-transparent hover:border-primary/20 transition-all duration-300 group"
                 onPress={() => handleRoleClick(role.model!, role.name!)}
               >
-                <CardBody className="p-5 flex flex-col h-full">
-                  <div className="flex justify-between items-start mb-4">
+                <CardBody className="p-5 flex flex-col h-full items-start text-left">
+                  <div className="flex justify-between items-start w-full mb-4">
                     <div className="p-3 rounded-full bg-linear-to-br from-primary/10 to-secondary/10 text-primary group-hover:scale-110 transition-transform duration-300">
                       {role.icon ? (
                         <img src={role.icon} alt={role.name} className="w-8 h-8" />
@@ -75,9 +104,16 @@ export const AiSquarePage: React.FC = () => {
                   </p>
 
                   <Button
-                    className="w-full bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white font-medium group-hover:bg-linear-to-r group-hover:from-primary group-hover:to-secondary group-hover:text-white transition-all shadow-none group-hover:shadow-md"
+                    className="w-full !h-8 min-h-0 bg-content2 text-foreground font-medium group-hover:bg-linear-to-r group-hover:from-primary group-hover:to-secondary group-hover:text-white transition-all shadow-none group-hover:shadow-md flex items-center justify-center text-xs"
                     radius="full"
                     size="sm"
+                    onPress={(e) => {
+                      // Prevent card click
+                      if (e && typeof e.continuePropagation === 'function') {
+                        e.continuePropagation()
+                      }
+                      handleRoleClick(role.model!, role.name!)
+                    }}
                   >
                     {t('ai.square.startChat')}
                   </Button>

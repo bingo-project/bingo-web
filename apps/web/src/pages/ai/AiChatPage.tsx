@@ -7,6 +7,7 @@ import { Avatar, Button, Textarea, Spinner, ScrollShadow } from '@heroui/react'
 import { Send, ArrowLeft } from 'lucide-react'
 import { useAiStore } from '@bingo/core'
 import { toast } from 'sonner'
+import { AiChatWelcome } from './components/AiChatWelcome'
 import ReactMarkdown from 'react-markdown'
 // @ts-expect-error No types available
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
@@ -47,10 +48,10 @@ export const AiChatPage: React.FC = () => {
     scrollToBottom()
   }, [sessionMessages])
 
-  const handleSend = async () => {
-    if (!input.trim() || !sessionId || isSendingMessage) return
+  const handleSend = async (msg?: string) => {
+    const content = msg || input
+    if (!content.trim() || !sessionId || isSendingMessage) return
 
-    const content = input
     setInput('')
 
     try {
@@ -78,10 +79,14 @@ export const AiChatPage: React.FC = () => {
     )
   }
 
+  if (!isLoadingHistory && sessionMessages.length === 0) {
+    return <AiChatWelcome onSend={handleSend} />
+  }
+
   return (
-    <div className="flex flex-col h-full bg-white dark:bg-slate-950">
+    <div className="flex flex-col h-full bg-background">
       {/* Header */}
-      <header className="flex items-center px-4 py-3 border-b border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md sticky top-0 z-10 md:hidden">
+      <header className="flex items-center px-4 py-3 border-b border-divider bg-background/80 backdrop-blur-md sticky top-0 z-10 md:hidden">
         <Button isIconOnly variant="light" onPress={() => navigate('/ai')} className="mr-2">
           <ArrowLeft className="w-5 h-5" />
         </Button>
@@ -118,7 +123,7 @@ export const AiChatPage: React.FC = () => {
                     ${
                       isUser
                         ? 'bg-linear-to-br from-primary to-primary-600 text-white rounded-tr-none shadow-md shadow-primary/20'
-                        : 'bg-slate-100 dark:bg-slate-800/50 text-slate-700 dark:text-slate-200 rounded-tl-none border border-slate-200 dark:border-white/5'
+                        : 'bg-content2 text-foreground rounded-tl-none border border-divider'
                     }
                  `}
                 >
@@ -160,7 +165,7 @@ export const AiChatPage: React.FC = () => {
       </ScrollShadow>
 
       {/* Input Area */}
-      <div className="p-4 bg-white dark:bg-slate-950 sticky bottom-0 z-20">
+      <div className="p-4 bg-background sticky bottom-0 z-20">
         <div className="max-w-4xl mx-auto relative group">
           <Textarea
             placeholder={t('ai.chat.inputPlaceholder')}

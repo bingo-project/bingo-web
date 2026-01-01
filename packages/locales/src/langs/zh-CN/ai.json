@@ -6,7 +6,22 @@
     "noHistory": "暂无历史记录",
     "newChat": "新对话",
     "startChat": "开始对话",
-    "createFailed": "创建会话失败"
+    "createFailed": "创建会话失败",
+    "searchPlaceholder": "搜索 AI 助手..."
+  },
+  "welcome": {
+    "title": "今天有什么可以帮您？",
+    "subtitle": "我可以帮您写代码、写文章、分析问题，或者只是聊聊天。",
+    "suggestions": {
+      "debug": "调试代码",
+      "debugDesc": "粘贴一段代码，我来帮您找错误。",
+      "article": "撰写文章",
+      "articleDesc": "写一篇关于 AI 趋势的博客文章。",
+      "concept": "解释概念",
+      "conceptDesc": "用通俗易懂的语言解释量子计算。",
+      "trip": "规划行程",
+      "tripDesc": "制定一份东京三日游的行程。"
+    }
   },
   "chat": {
     "defaultTitle": "新对话",

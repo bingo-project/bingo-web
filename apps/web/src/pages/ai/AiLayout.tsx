@@ -14,7 +14,7 @@ import {
   DropdownMenu,
   DropdownItem,
 } from '@heroui/react'
-import { MessageSquarePlus, Plus, Settings, User, LogOut, Home } from 'lucide-react'
+import { Plus, Settings, User, LogOut, Home, Trash2, Layers } from 'lucide-react'
 import { useAiStore, useAuthStore } from '@bingo/core'
 
 export const AiLayout: React.FC = () => {
@@ -29,7 +29,7 @@ export const AiLayout: React.FC = () => {
     navigate('/')
   }
 
-  const { sessions, isLoadingSessions, fetchSessions } = useAiStore()
+  const { sessions, isLoadingSessions, fetchSessions, deleteSession } = useAiStore()
 
   useEffect(() => {
     fetchSessions()
@@ -52,14 +52,22 @@ export const AiLayout: React.FC = () => {
   return (
     <div className="flex h-[calc(100vh-64px)] overflow-hidden bg-slate-50 dark:bg-black/20">
       {/* Sidebar - Desktop only for MVP, or responsive drawer */}
-      <aside className="w-64 border-r border-slate-200 dark:border-white/10 bg-white dark:bg-slate-900 hidden md:flex flex-col shrink-0">
-        <div className="p-4 border-b border-slate-100 dark:border-white/5 flex items-center justify-between">
-          <h2 className="text-lg font-bold text-slate-800 dark:text-slate-100 flex items-center gap-2">
-            <MessageSquarePlus className="w-5 h-5 text-primary" />
-            {t('ai.square.historyTitle')}
-          </h2>
-          <Button isIconOnly size="sm" variant="light" onPress={handleNewChat} title={t('ai.square.newChat')}>
-            <Plus className="w-5 h-5 text-primary" />
+      <aside className="w-64 border-r border-divider bg-background hidden md:flex flex-col shrink-0">
+        <div className="p-6 pb-2">
+          <div className="flex items-center gap-2 mb-8">
+            <div className="flex size-8 items-center justify-center rounded-lg bg-primary text-white">
+              <Layers size={20} />
+            </div>
+            <span className="text-xl font-medium tracking-tight">Bingo</span>
+          </div>
+          <Button
+            className="w-full bg-linear-to-r from-primary to-secondary text-white font-bold shadow-lg shadow-primary/25"
+            radius="full"
+            size="lg"
+            onPress={handleNewChat}
+          >
+            <Plus size={20} />
+            {t('ai.square.newChat')}
           </Button>
         </div>
 
@@ -73,24 +81,39 @@ export const AiLayout: React.FC = () => {
           ) : (
             <div className="flex flex-col gap-1">
               {sessions.map((session) => (
-                <Button
-                  key={session.session_id}
-                  variant={isActive(session.session_id!) ? 'flat' : 'light'}
-                  color={isActive(session.session_id!) ? 'primary' : 'default'}
-                  className={`justify-start h-auto py-3 px-3 w-full text-left ${isActive(session.session_id!) ? 'bg-primary/10' : ''}`}
-                  onPress={() => handleSessionClick(session.session_id!)}
-                >
-                  <div className="overflow-hidden w-full">
-                    <p
-                      className={`truncate text-sm font-medium ${isActive(session.session_id!) ? 'text-primary' : 'text-slate-700 dark:text-slate-200'}`}
-                    >
-                      {session.title || t('ai.square.newChat')}
-                    </p>
-                    <p className="truncate text-xs text-slate-400">
-                      {new Date(session.updated_at!).toLocaleDateString()}
-                    </p>
-                  </div>
-                </Button>
+                <div key={session.session_id} className="group relative px-2">
+                  <Button
+                    variant={isActive(session.session_id!) ? 'flat' : 'light'}
+                    color={isActive(session.session_id!) ? 'primary' : 'default'}
+                    className={`justify-start h-auto py-3 px-3 w-full text-left ${isActive(session.session_id!) ? 'bg-primary/10' : ''}`}
+                    onPress={() => handleSessionClick(session.session_id!)}
+                  >
+                    <div className="overflow-hidden w-full pr-6">
+                      <p
+                        className={`truncate text-sm font-medium ${isActive(session.session_id!) ? 'text-primary' : 'text-slate-700 dark:text-slate-200'}`}
+                      >
+                        {session.title || t('ai.square.newChat')}
+                      </p>
+                      <p className="truncate text-xs text-slate-400">
+                        {new Date(session.updated_at!).toLocaleDateString()}
+                      </p>
+                    </div>
+                  </Button>
+                  <Button
+                    isIconOnly
+                    size="sm"
+                    variant="light"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 text-slate-400 hover:text-danger hover:bg-danger/10 transition-all z-10"
+                    onPress={(e) => {
+                      e.continuePropagation() // Prevent triggering session click? No, onPress doesn't bubble like that in HeroUI maybe?
+                      // Actually better to stop propagation manually if needed, but HeroUI Button onPress might mask parent.
+                      // Let's rely on z-index and separate button.
+                      deleteSession(session.session_id!)
+                    }}
+                  >
+                    <Trash2 size={16} />
+                  </Button>
+                </div>
               ))}
             </div>
           )}
