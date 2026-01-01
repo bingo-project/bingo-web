@@ -32,7 +32,7 @@ export interface AiState {
   // Actions
   fetchRoles: () => Promise<void>
   fetchSessions: () => Promise<void>
-  createSession: (model: string, title?: string) => Promise<string>
+  createSession: (model: string, title?: string, roleId?: string) => Promise<string>
   deleteSession: (sessionId: string) => Promise<void>
   updateSession: (sessionId: string, title: string) => Promise<void>
   setCurrentSession: (sessionId: string) => void
@@ -83,8 +83,8 @@ export const useAiStore = create<AiState>()(
       }
     },
 
-    createSession: async (model, title) => {
-      const newSession = await createAiSession({ model, title })
+    createSession: async (model, title, roleId) => {
+      const newSession = await createAiSession({ model, title, role_id: roleId })
 
       if (newSession && newSession.session_id) {
         set(

@@ -26,7 +26,7 @@ export const getAiSessions = () => {
   return request.get<V1SessionInfo[]>('/v1/ai/sessions')
 }
 
-export const createAiSession = (data: V1CreateSessionRequest) => {
+export const createAiSession = (data: V1CreateSessionRequest & { role_id?: string }) => {
   return request.post<V1SessionInfo>('/v1/ai/sessions', data)
 }
 

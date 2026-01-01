@@ -28,10 +28,10 @@ export const AiSquarePage: React.FC = () => {
     )
   }, [roles, searchQuery])
 
-  const handleRoleClick = async (roleModel: string, roleName: string) => {
+  const handleRoleClick = async (roleModel: string, roleName: string, roleId?: string) => {
     try {
       const modelToUse = roleModel || 'glm-4-flash'
-      const sessionId = await createSession(modelToUse, roleName)
+      const sessionId = await createSession(modelToUse, roleName, roleId)
       navigate(`/ai/chat/${sessionId}`)
     } catch (error) {
       console.error(error)
@@ -80,7 +80,7 @@ export const AiSquarePage: React.FC = () => {
                 isHoverable
                 isPressable
                 className="border border-transparent hover:border-primary/20 transition-all duration-300 group"
-                onPress={() => handleRoleClick(role.model!, role.name!)}
+                onPress={() => handleRoleClick(role.model!, role.name!, role.role_id)}
               >
                 <CardBody className="p-5 flex flex-col h-full items-start text-left">
                   <div className="flex justify-between items-start w-full mb-4">
@@ -111,7 +111,7 @@ export const AiSquarePage: React.FC = () => {
                       if (e && typeof e.continuePropagation === 'function') {
                         e.continuePropagation()
                       }
-                      handleRoleClick(role.model!, role.name!)
+                      handleRoleClick(role.model!, role.name!, role.role_id)
                     }}
                   >
                     {t('ai.square.startChat')}
