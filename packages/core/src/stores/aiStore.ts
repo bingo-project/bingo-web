@@ -72,9 +72,9 @@ export const useAiStore = create<AiState>()(
       try {
         const res = await getAiSessions()
         if (res) {
-          // Sort by updated_at desc
+          // Sort by updatedAt desc
           const sorted = [...res].sort((a, b) => {
-            return new Date(b.updated_at || 0).getTime() - new Date(a.updated_at || 0).getTime()
+            return new Date(b.updatedAt || 0).getTime() - new Date(a.updatedAt || 0).getTime()
           })
           set({ sessions: sorted })
         }
@@ -84,17 +84,17 @@ export const useAiStore = create<AiState>()(
     },
 
     createSession: async (model, title, roleId) => {
-      const newSession = await createAiSession({ model, title, role_id: roleId })
+      const newSession = await createAiSession({ model, title, roleId })
 
-      if (newSession && newSession.session_id) {
+      if (newSession && newSession.sessionId) {
         set(
           produce((state: AiState) => {
             state.sessions.unshift(newSession)
-            state.currentSessionId = newSession.session_id!
-            state.messages[newSession.session_id!] = []
+            state.currentSessionId = newSession.sessionId!
+            state.messages[newSession.sessionId!] = []
           })
         )
-        return newSession.session_id
+        return newSession.sessionId
       }
       throw new Error('Failed to create session')
     },
@@ -103,7 +103,7 @@ export const useAiStore = create<AiState>()(
       await deleteAiSession(sessionId)
       set(
         produce((state: AiState) => {
-          state.sessions = state.sessions.filter((s) => s.session_id !== sessionId)
+          state.sessions = state.sessions.filter((s) => s.sessionId !== sessionId)
           if (state.currentSessionId === sessionId) {
             state.currentSessionId = null
           }
@@ -117,7 +117,7 @@ export const useAiStore = create<AiState>()(
       // Manually update local state
       set(
         produce((state: AiState) => {
-          const session = state.sessions.find((s) => s.session_id === sessionId)
+          const session = state.sessions.find((s) => s.sessionId === sessionId)
           if (session) {
             session.title = title
           }
@@ -174,8 +174,8 @@ export const useAiStore = create<AiState>()(
             model,
             messages: [...(get().messages[sessionId] || [])],
             stream: true,
-            role_id: roleId,
-            session_id: sessionId,
+            roleId,
+            sessionId,
           }),
         })
 

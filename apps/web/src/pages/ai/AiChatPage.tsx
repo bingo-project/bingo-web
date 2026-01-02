@@ -26,7 +26,7 @@ export const AiChatPage: React.FC = () => {
   const sessionMessages = useMemo(() => {
     return sessionId ? messages[sessionId] || [] : []
   }, [sessionId, messages])
-  const currentSession = sessions.find((s) => s.session_id === sessionId)
+  const currentSession = sessions.find((s) => s.sessionId === sessionId)
 
   useEffect(() => {
     if (sessionId) {

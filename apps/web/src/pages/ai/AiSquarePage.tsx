@@ -80,7 +80,7 @@ export const AiSquarePage: React.FC = () => {
                 isHoverable
                 isPressable
                 className="border border-transparent hover:border-primary/20 transition-all duration-300 group"
-                onPress={() => handleRoleClick(role.model!, role.name!, role.role_id)}
+                onPress={() => handleRoleClick(role.model!, role.name!, role.roleId)}
               >
                 <CardBody className="p-5 flex flex-col h-full items-start text-left">
                   <div className="flex justify-between items-start w-full mb-4">
@@ -111,7 +111,7 @@ export const AiSquarePage: React.FC = () => {
                       if (e && typeof e.continuePropagation === 'function') {
                         e.continuePropagation()
                       }
-                      handleRoleClick(role.model!, role.name!, role.role_id)
+                      handleRoleClick(role.model!, role.name!, role.roleId)
                     }}
                   >
                     {t('ai.square.startChat')}
