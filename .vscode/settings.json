@@ -8,7 +8,7 @@
   "i18n-ally.enabledFrameworks": ["react"],
   "i18n-ally.keystyle": "nested",
   "i18n-ally.sortKeys": true,
-  "i18n-ally.namespace": false,
+  "i18n-ally.namespace": true,
 
   // editor
   "editor.tabSize": 2,
