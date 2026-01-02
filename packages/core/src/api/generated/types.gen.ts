@@ -16,13 +16,13 @@ export type V1AiRoleInfo = {
   category?: string
   description?: string
   icon?: string
-  max_tokens?: number
+  maxTokens?: number
   model?: string
   name?: string
-  role_id?: string
+  roleId?: string
   sort?: number
   status?: string
-  system_prompt?: string
+  systemPrompt?: string
   temperature?: number
 }
 
@@ -60,7 +60,7 @@ export type V1ChangePasswordRequest = {
 
 export type V1ChannelPreference = {
   email?: boolean
-  in_app?: boolean
+  inApp?: boolean
 }
 
 export type V1ChatChoice = {
@@ -74,11 +74,10 @@ export type V1ChatCompletionRequest = {
   max_tokens?: number
   messages: Array<V1ChatMessage>
   model: string
-  role_id?: string
   /**
    * Extension fields
    */
-  session_id?: string
+  sessionId?: string
   stream?: boolean
   temperature?: number
 }
@@ -104,7 +103,17 @@ export type V1ChatUsage = {
 }
 
 export type V1CreateSessionRequest = {
-  model: string
+  /**
+   * Optional: override role's default model
+   */
+  model?: string
+  /**
+   * Optional: bind role to session
+   */
+  roleId?: string
+  /**
+   * Optional: defaults to role name or "新对话"
+   */
   title?: string
 }
 
@@ -193,11 +202,11 @@ export type V1LoginResponse = {
 export type V1ModelInfo = {
   created?: number
   id?: string
-  input_price?: number
-  max_tokens?: number
+  inputPrice?: number
+  maxTokens?: number
   object?: string
-  output_price?: number
-  owned_by?: string
+  outputPrice?: number
+  ownedBy?: string
 }
 
 export type V1NonceResponse = {
@@ -261,18 +270,20 @@ export type V1SendCodeRequest = {
 
 export type V1SessionHistoryResponse = {
   messages?: Array<V1ChatMessage>
-  session_id?: string
+  sessionId?: string
 }
 
 export type V1SessionInfo = {
-  created_at?: string
-  message_count?: number
+  createdAt?: string
+  messageCount?: number
   model?: string
-  session_id?: string
+  roleId?: string
+  roleName?: string
+  sessionId?: string
   status?: string
   title?: string
-  total_tokens?: number
-  updated_at?: string
+  totalTokens?: number
+  updatedAt?: string
 }
 
 export type V1SetPayPasswordRequest = {
@@ -405,10 +416,6 @@ export type GetV1AiRolesData = {
      * Filter by category
      */
     category?: string
-    /**
-     * Filter by status
-     */
-    status?: string
   }
   url: '/v1/ai/roles'
 }

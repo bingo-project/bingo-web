@@ -632,3 +632,46 @@ const { register, handleSubmit } = useForm<LoginFormData>({
 - [ ] 使用 React Hook Form + Zod
 - [ ] Schema 使用工厂函数模式
 - [ ] 错误状态正确显示
+- [ ] API 调用使用自定义 request 封装，不使用生成代码
+
+---
+
+## 8. API 代码生成规范
+
+### 8.1 仅生成类型定义
+
+项目使用 `@hey-api/openapi-ts` 生成 API 代码，**仅允许生成 TypeScript 类型定义**。
+
+**配置要求**：
+
+- 仅启用 `@hey-api/typescript` 插件
+- 禁用 clients, services, schemas, sdk 等生成
+- 输出文件仅包含 `types.gen.ts` (和 `index.ts`)
+
+```typescript
+// openapi-ts.config.ts
+export default defineConfig({
+  plugins: [
+    {
+      name: '@hey-api/typescript',
+      enums: 'javascript', // 或 'typescript'
+    },
+  ],
+  // ❌ 禁止配置 client
+  // client: '@hey-api/client-axios',
+})
+```
+
+### 8.2 禁止生成 Client/Service 实现
+
+**为什么？**
+
+- 项目统一使用 `packages/core/src/api/request.ts` 进行请求封装
+- `request.ts` 集中处理了认证、错误提示（Toast）、拦截器等逻辑
+- 生成的 client 代码会增加冗余，且难以统一管理全局行为
+
+### 8.3 开发流程
+
+1. 运行 `pnpm api:gen` 更新类型
+2. 在 `api` 目录下的手动封装文件中引入新类型
+3. 使用 `request.get<ResponseType>('/v1/...')` 编写调用逻辑
