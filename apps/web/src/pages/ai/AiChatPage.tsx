@@ -9,9 +9,7 @@ import { useAiStore } from '@bingo/core'
 import { toast } from 'sonner'
 import { AiChatWelcome } from './components/AiChatWelcome'
 import ReactMarkdown from 'react-markdown'
-// @ts-expect-error No types available
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
-// @ts-expect-error No types available
 import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism'
 
 export const AiChatPage: React.FC = () => {
@@ -184,7 +182,7 @@ export const AiChatPage: React.FC = () => {
               isIconOnly
               className="bg-primary text-white shadow-lg rounded-full w-8 h-8 min-w-0"
               size="sm"
-              onPress={handleSend}
+              onPress={() => handleSend()}
               isLoading={isSendingMessage}
               isDisabled={!input.trim() || isSendingMessage}
             >
