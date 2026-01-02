@@ -11,27 +11,27 @@ export const AiSquarePage: React.FC = () => {
   const navigate = useNavigate()
   const [searchQuery, setSearchQuery] = useState('')
 
-  const { roles, isLoadingRoles, fetchRoles, createSession } = useAiStore()
+  const { agents, isLoadingAgents, fetchAgents, createSession } = useAiStore()
 
   useEffect(() => {
-    fetchRoles()
-  }, [fetchRoles])
+    fetchAgents()
+  }, [fetchAgents])
 
-  const filteredRoles = useMemo(() => {
-    if (!searchQuery.trim()) return roles
+  const filteredAgents = useMemo(() => {
+    if (!searchQuery.trim()) return agents
     const query = searchQuery.toLowerCase()
-    return roles.filter(
-      (role) =>
-        role.name?.toLowerCase().includes(query) ||
-        role.description?.toLowerCase().includes(query) ||
-        role.category?.toLowerCase().includes(query)
+    return agents.filter(
+      (agent) =>
+        agent.name?.toLowerCase().includes(query) ||
+        agent.description?.toLowerCase().includes(query) ||
+        agent.category?.toLowerCase().includes(query)
     )
-  }, [roles, searchQuery])
+  }, [agents, searchQuery])
 
-  const handleRoleClick = async (roleModel: string, roleName: string, roleId?: string) => {
+  const handleAgentClick = async (agentModel: string, agentName: string, agentId?: string) => {
     try {
-      const modelToUse = roleModel || 'glm-4-flash'
-      const sessionId = await createSession(modelToUse, roleName, roleId)
+      const modelToUse = agentModel || 'glm-4-flash'
+      const sessionId = await createSession(modelToUse, agentName, agentId)
       navigate(`/ai/chat/${sessionId}`)
     } catch (error) {
       console.error(error)
@@ -68,39 +68,39 @@ export const AiSquarePage: React.FC = () => {
           </div>
         </header>
 
-        {isLoadingRoles ? (
+        {isLoadingAgents ? (
           <div className="flex justify-center py-12">
             <Spinner size="lg" />
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
-            {filteredRoles.map((role, index) => (
+            {filteredAgents.map((agent, index) => (
               <Card
-                key={role.model || index}
+                key={agent.model || index}
                 isHoverable
                 isPressable
                 className="border border-transparent hover:border-primary/20 transition-all duration-300 group"
-                onPress={() => handleRoleClick(role.model!, role.name!, role.roleId)}
+                onPress={() => handleAgentClick(agent.model!, agent.name!, agent.agentId)}
               >
                 <CardBody className="p-5 flex flex-col h-full items-start text-left">
                   <div className="flex justify-between items-start w-full mb-4">
                     <div className="p-3 rounded-full bg-linear-to-br from-primary/10 to-secondary/10 text-primary group-hover:scale-110 transition-transform duration-300">
-                      {role.icon ? (
-                        <img src={role.icon} alt={role.name} className="w-8 h-8" />
+                      {agent.icon ? (
+                        <img src={agent.icon} alt={agent.name} className="w-8 h-8" />
                       ) : (
                         <Bot className="w-8 h-8" />
                       )}
                     </div>
-                    {role.category && (
+                    {agent.category && (
                       <span className="px-2 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-[10px] font-bold text-slate-500 uppercase tracking-wider">
-                        {role.category}
+                        {agent.category}
                       </span>
                     )}
                   </div>
 
-                  <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-2 line-clamp-1">{role.name}</h3>
+                  <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-2 line-clamp-1">{agent.name}</h3>
                   <p className="text-sm text-slate-500 dark:text-slate-400 mb-6 line-clamp-2 grow">
-                    {role.description}
+                    {agent.description}
                   </p>
 
                   <Button
@@ -111,7 +111,7 @@ export const AiSquarePage: React.FC = () => {
                       if (e && typeof e.continuePropagation === 'function') {
                         e.continuePropagation()
                       }
-                      handleRoleClick(role.model!, role.name!, role.roleId)
+                      handleAgentClick(agent.model!, agent.name!, agent.agentId)
                     }}
                   >
                     {t('ai.square.startChat')}

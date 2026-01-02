@@ -1,19 +1,21 @@
-// ABOUTME: AI module API manual wrapper
-// ABOUTME: Uses request.ts for consistent auth/error handling
-
 import { request } from './request'
 import type {
-  V1ListAiRoleResponse,
+  V1ListAiAgentResponse,
   V1ListModelsResponse,
   V1SessionInfo,
   V1CreateSessionRequest,
   V1UpdateSessionRequest,
   V1SessionHistoryResponse,
+  V1AiAgentInfo,
 } from './generated/types.gen'
 
-// Roles
-export const getAiRoles = () => {
-  return request.get<V1ListAiRoleResponse>('/v1/ai/roles')
+// Agents
+export const getAiAgents = () => {
+  return request.get<V1ListAiAgentResponse>('/v1/ai/agents')
+}
+
+export const getAiAgent = (agentId: string) => {
+  return request.get<V1AiAgentInfo>(`/v1/ai/agents/${agentId}`)
 }
 
 // Models

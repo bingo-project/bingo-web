@@ -12,14 +12,14 @@ export type CoreErrResponse = {
   reason?: string
 }
 
-export type V1AiRoleInfo = {
+export type V1AiAgentInfo = {
+  agentId?: string
   category?: string
   description?: string
   icon?: string
   maxTokens?: number
   model?: string
   name?: string
-  roleId?: string
   sort?: number
   status?: string
   systemPrompt?: string
@@ -73,7 +73,7 @@ export type V1ChatChoice = {
 export type V1ChatCompletionRequest = {
   max_tokens?: number
   messages: Array<V1ChatMessage>
-  model: string
+  model?: string
   /**
    * Extension fields
    */
@@ -104,15 +104,15 @@ export type V1ChatUsage = {
 
 export type V1CreateSessionRequest = {
   /**
-   * Optional: override role's default model
+   * Optional: bind agent to session
+   */
+  agentId?: string
+  /**
+   * Optional: override agent's default model
    */
   model?: string
   /**
-   * Optional: bind role to session
-   */
-  roleId?: string
-  /**
-   * Optional: defaults to role name or "新对话"
+   * Optional: defaults to agent name or "新对话"
    */
   title?: string
 }
@@ -136,8 +136,8 @@ export type V1HealthzResponse = {
   status?: string
 }
 
-export type V1ListAiRoleResponse = {
-  data?: Array<V1AiRoleInfo>
+export type V1ListAiAgentResponse = {
+  data?: Array<V1AiAgentInfo>
   total?: number
 }
 
@@ -274,11 +274,11 @@ export type V1SessionHistoryResponse = {
 }
 
 export type V1SessionInfo = {
+  agentId?: string
+  agentName?: string
   createdAt?: string
   messageCount?: number
   model?: string
-  roleId?: string
-  roleName?: string
   sessionId?: string
   status?: string
   title?: string
@@ -408,7 +408,7 @@ export type GetHealthzResponses = {
 
 export type GetHealthzResponse = GetHealthzResponses[keyof GetHealthzResponses]
 
-export type GetV1AiRolesData = {
+export type GetV1AiAgentsData = {
   body?: never
   path?: never
   query?: {
@@ -417,60 +417,60 @@ export type GetV1AiRolesData = {
      */
     category?: string
   }
-  url: '/v1/ai/roles'
+  url: '/v1/ai/agents'
 }
 
-export type GetV1AiRolesErrors = {
+export type GetV1AiAgentsErrors = {
   /**
-   * Bad Request
+   * Internal Server Error
    */
-  400: CoreErrResponse
+  500: CoreErrResponse
 }
 
-export type GetV1AiRolesError = GetV1AiRolesErrors[keyof GetV1AiRolesErrors]
+export type GetV1AiAgentsError = GetV1AiAgentsErrors[keyof GetV1AiAgentsErrors]
 
-export type GetV1AiRolesResponses = {
+export type GetV1AiAgentsResponses = {
   /**
    * OK
    */
-  200: V1ListAiRoleResponse
+  200: V1ListAiAgentResponse
 }
 
-export type GetV1AiRolesResponse = GetV1AiRolesResponses[keyof GetV1AiRolesResponses]
+export type GetV1AiAgentsResponse = GetV1AiAgentsResponses[keyof GetV1AiAgentsResponses]
 
-export type GetV1AiRolesByRoleIdData = {
+export type GetV1AiAgentsByIdData = {
   body?: never
   path: {
     /**
-     * Role ID
+     * Agent ID
      */
-    role_id: string
+    id: string
   }
   query?: never
-  url: '/v1/ai/roles/{role_id}'
+  url: '/v1/ai/agents/{id}'
 }
 
-export type GetV1AiRolesByRoleIdErrors = {
-  /**
-   * Bad Request
-   */
-  400: CoreErrResponse
+export type GetV1AiAgentsByIdErrors = {
   /**
    * Not Found
    */
   404: CoreErrResponse
+  /**
+   * Internal Server Error
+   */
+  500: CoreErrResponse
 }
 
-export type GetV1AiRolesByRoleIdError = GetV1AiRolesByRoleIdErrors[keyof GetV1AiRolesByRoleIdErrors]
+export type GetV1AiAgentsByIdError = GetV1AiAgentsByIdErrors[keyof GetV1AiAgentsByIdErrors]
 
-export type GetV1AiRolesByRoleIdResponses = {
+export type GetV1AiAgentsByIdResponses = {
   /**
    * OK
    */
-  200: V1AiRoleInfo
+  200: V1AiAgentInfo
 }
 
-export type GetV1AiRolesByRoleIdResponse = GetV1AiRolesByRoleIdResponses[keyof GetV1AiRolesByRoleIdResponses]
+export type GetV1AiAgentsByIdResponse = GetV1AiAgentsByIdResponses[keyof GetV1AiAgentsByIdResponses]
 
 export type GetV1AiSessionsData = {
   body?: never

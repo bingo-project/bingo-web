@@ -1,69 +1,69 @@
 // ABOUTME: AI Chat state management
-// ABOUTME: Manages roles, sessions, and real-time chat messages
+// ABOUTME: Manages agents, sessions, and real-time chat messages
 
 import { create } from 'zustand'
 import { immer } from 'zustand/middleware/immer'
 import { produce } from 'immer'
 import {
-  getAiRoles,
+  getAiAgents,
   getAiSessions,
   createAiSession,
   getAiSessionHistory,
   deleteAiSession,
   updateAiSession,
 } from '../api/ai'
-import type { V1AiRoleInfo, V1SessionInfo, V1ChatMessage } from '../api/generated/types.gen'
+import type { V1AiAgentInfo, V1SessionInfo, V1ChatMessage } from '../api/generated/types.gen'
 
 const TOKEN_KEY = 'accessToken'
 
 export interface AiState {
   // Data
-  roles: V1AiRoleInfo[]
+  agents: V1AiAgentInfo[]
   sessions: V1SessionInfo[]
   currentSessionId: string | null
   messages: Record<string, V1ChatMessage[]> // Key: sessionId
 
   // Loading States
-  isLoadingRoles: boolean
+  isLoadingAgents: boolean
   isLoadingSessions: boolean
   isLoadingHistory: boolean
   isSendingMessage: boolean
 
   // Actions
-  fetchRoles: () => Promise<void>
+  fetchAgents: () => Promise<void>
   fetchSessions: () => Promise<void>
-  createSession: (model: string, title?: string, roleId?: string) => Promise<string>
+  createSession: (model: string, title?: string, agentId?: string) => Promise<string>
   deleteSession: (sessionId: string) => Promise<void>
   updateSession: (sessionId: string, title: string) => Promise<void>
   setCurrentSession: (sessionId: string) => void
   fetchHistory: (sessionId: string) => Promise<void>
 
   // Chat Actions
-  sendMessage: (content: string, model: string, roleId?: string) => Promise<void>
+  sendMessage: (content: string, model: string, agentId?: string) => Promise<void>
   clearContext: (sessionId: string) => void
 }
 
 export const useAiStore = create<AiState>()(
   immer((set, get) => ({
-    roles: [],
+    agents: [],
     sessions: [],
     currentSessionId: null,
     messages: {},
 
-    isLoadingRoles: false,
+    isLoadingAgents: false,
     isLoadingSessions: false,
     isLoadingHistory: false,
     isSendingMessage: false,
 
-    fetchRoles: async () => {
-      set({ isLoadingRoles: true })
+    fetchAgents: async () => {
+      set({ isLoadingAgents: true })
       try {
-        const res = await getAiRoles()
+        const res = await getAiAgents()
         if (res && res.data) {
-          set({ roles: res.data })
+          set({ agents: res.data })
         }
       } finally {
-        set({ isLoadingRoles: false })
+        set({ isLoadingAgents: false })
       }
     },
 
@@ -83,8 +83,8 @@ export const useAiStore = create<AiState>()(
       }
     },
 
-    createSession: async (model, title, roleId) => {
-      const newSession = await createAiSession({ model, title, roleId })
+    createSession: async (model, title, agentId) => {
+      const newSession = await createAiSession({ model, title, agentId })
 
       if (newSession && newSession.sessionId) {
         set(
@@ -145,7 +145,7 @@ export const useAiStore = create<AiState>()(
       }
     },
 
-    sendMessage: async (content, model, roleId) => {
+    sendMessage: async (content, model, agentId) => {
       const sessionId = get().currentSessionId
       if (!sessionId) return
 
@@ -174,7 +174,7 @@ export const useAiStore = create<AiState>()(
             model,
             messages: [...(get().messages[sessionId] || [])],
             stream: true,
-            roleId,
+            agentId: agentId,
             sessionId,
           }),
         })
