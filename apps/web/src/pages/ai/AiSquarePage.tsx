@@ -28,10 +28,9 @@ export const AiSquarePage: React.FC = () => {
     )
   }, [agents, searchQuery])
 
-  const handleAgentClick = async (agentModel: string, agentName: string, agentId?: string) => {
+  const handleAgentClick = async (agentName: string, agentId?: string) => {
     try {
-      const modelToUse = agentModel || 'glm-4-flash'
-      const sessionId = await createSession(modelToUse, agentName, agentId)
+      const sessionId = await createSession(agentName, agentId)
       navigate(`/ai/chat/${sessionId}`)
     } catch (error) {
       console.error(error)
@@ -80,7 +79,7 @@ export const AiSquarePage: React.FC = () => {
                 isHoverable
                 isPressable
                 className="border border-transparent hover:border-primary/20 transition-all duration-300 group"
-                onPress={() => handleAgentClick(agent.model!, agent.name!, agent.agentId)}
+                onPress={() => handleAgentClick(agent.name!, agent.agentId)}
               >
                 <CardBody className="p-5 flex flex-col h-full items-start text-left">
                   <div className="flex justify-between items-start w-full mb-4">
@@ -111,7 +110,7 @@ export const AiSquarePage: React.FC = () => {
                       if (e && typeof e.continuePropagation === 'function') {
                         e.continuePropagation()
                       }
-                      handleAgentClick(agent.model!, agent.name!, agent.agentId)
+                      handleAgentClick(agent.name!, agent.agentId)
                     }}
                   >
                     {t('ai.square.startChat')}

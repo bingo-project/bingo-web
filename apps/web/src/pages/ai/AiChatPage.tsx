@@ -53,8 +53,7 @@ export const AiChatPage: React.FC = () => {
     setInput('')
 
     try {
-      const model = currentSession?.model || 'glm-4-flash'
-      await sendMessage(content, model)
+      await sendMessage(content)
     } catch (error) {
       console.error(error)
       toast.error(t('ai.chat.sendFailed'))

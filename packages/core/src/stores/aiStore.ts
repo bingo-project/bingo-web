@@ -32,14 +32,14 @@ export interface AiState {
   // Actions
   fetchAgents: () => Promise<void>
   fetchSessions: () => Promise<void>
-  createSession: (model: string, title?: string, agentId?: string) => Promise<string>
+  createSession: (title?: string, agentId?: string) => Promise<string>
   deleteSession: (sessionId: string) => Promise<void>
   updateSession: (sessionId: string, title: string) => Promise<void>
   setCurrentSession: (sessionId: string) => void
   fetchHistory: (sessionId: string) => Promise<void>
 
   // Chat Actions
-  sendMessage: (content: string, model: string, agentId?: string) => Promise<void>
+  sendMessage: (content: string) => Promise<void>
   clearContext: (sessionId: string) => void
 }
 
@@ -83,8 +83,8 @@ export const useAiStore = create<AiState>()(
       }
     },
 
-    createSession: async (model, title, agentId) => {
-      const newSession = await createAiSession({ model, title, agentId })
+    createSession: async (title, agentId) => {
+      const newSession = await createAiSession({ title, agentId })
 
       if (newSession && newSession.sessionId) {
         set(
@@ -145,7 +145,7 @@ export const useAiStore = create<AiState>()(
       }
     },
 
-    sendMessage: async (content, model, agentId) => {
+    sendMessage: async (content) => {
       const sessionId = get().currentSessionId
       if (!sessionId) return
 
@@ -171,10 +171,8 @@ export const useAiStore = create<AiState>()(
             Authorization: token ? `Bearer ${token}` : '',
           },
           body: JSON.stringify({
-            model,
             messages: [...(get().messages[sessionId] || [])],
             stream: true,
-            agentId: agentId,
             sessionId,
           }),
         })
