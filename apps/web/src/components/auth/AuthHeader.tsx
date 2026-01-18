@@ -18,7 +18,7 @@ export function AuthHeader() {
 
   return (
     <header className="fixed top-0 right-0 left-0 z-50 border-b border-divider bg-background/80 backdrop-blur-md">
-      <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         <Link to="/" className="flex items-center gap-2">
           <div className="flex size-8 items-center justify-center rounded-lg bg-primary text-white">
             <Layers size={20} />
@@ -26,15 +26,28 @@ export function AuthHeader() {
           <span className="text-xl font-medium tracking-tight text-foreground">Bingo</span>
         </Link>
 
-        <div className="flex items-center gap-3">
-          <Button isIconOnly variant="light" radius="full" onPress={toggleTheme} aria-label="Toggle theme">
-            {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} className="text-default-700 dark:text-inherit" />}
+        <div className="flex items-center gap-1">
+          <Button
+            isIconOnly
+            variant="light"
+            radius="md"
+            onPress={toggleTheme}
+            aria-label="Toggle theme"
+            className="h-9 w-9 min-w-9 text-default-600"
+          >
+            {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} className="text-default-600 dark:text-inherit" />}
           </Button>
 
           <Dropdown>
             <DropdownTrigger>
-              <Button isIconOnly variant="light" radius="full" aria-label="Switch language">
-                <Globe size={20} className="text-default-700 dark:text-inherit" />
+              <Button
+                isIconOnly
+                variant="light"
+                radius="md"
+                aria-label="Switch language"
+                className="h-9 w-9 min-w-9 text-default-600"
+              >
+                <Globe size={18} className="text-default-600 dark:text-inherit" />
               </Button>
             </DropdownTrigger>
             <DropdownMenu
@@ -55,9 +68,9 @@ export function AuthHeader() {
             as={Link}
             to="/"
             variant="bordered"
-            radius="full"
-            className="border-divider text-foreground hover:bg-default-100"
-            startContent={<ArrowLeft size={18} />}
+            radius="md"
+            className="h-9 border-divider px-3 text-sm text-default-600 hover:bg-default-100 hover:text-primary dark:text-default-400"
+            startContent={<ArrowLeft size={16} />}
           >
             {t('auth.common.backToHome')}
           </Button>

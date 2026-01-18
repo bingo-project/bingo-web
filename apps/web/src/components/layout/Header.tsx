@@ -56,7 +56,7 @@ export function Header({ showNavLinks = true }: HeaderProps) {
   return (
     <header className="fixed top-0 right-0 left-0 z-50 border-b border-divider bg-background/80 backdrop-blur-md transition-all duration-300">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="flex h-20 items-center justify-between">
+        <div className="flex h-16 items-center justify-between">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2">
             <div className="flex size-8 items-center justify-center rounded-lg bg-primary text-white">
@@ -72,7 +72,7 @@ export function Header({ showNavLinks = true }: HeaderProps) {
                 <a
                   key={link.href}
                   href={link.href}
-                  className="text-sm font-medium transition-colors hover:text-primary"
+                  className="text-sm text-default-600 transition-colors hover:text-primary dark:text-default-400"
                 >
                   {t(link.labelKey)}
                 </a>
@@ -81,8 +81,15 @@ export function Header({ showNavLinks = true }: HeaderProps) {
           )}
 
           {/* Actions */}
-          <div className="flex items-center gap-3">
-            <Button isIconOnly variant="light" radius="full" onPress={toggleTheme} aria-label="Toggle theme">
+          <div className="flex items-center gap-1">
+            <Button
+              isIconOnly
+              variant="light"
+              radius="md"
+              onPress={toggleTheme}
+              aria-label="Toggle theme"
+              className="h-9 w-9 min-w-9 text-default-600"
+            >
               {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} className="text-default-700 dark:text-inherit" />}
             </Button>
 
@@ -91,11 +98,11 @@ export function Header({ showNavLinks = true }: HeaderProps) {
                 <Button
                   isIconOnly
                   variant="light"
-                  radius="full"
+                  radius="md"
                   aria-label="Switch language"
-                  className="hidden sm:flex"
+                  className="hidden h-9 w-9 min-w-9 text-default-600 sm:flex"
                 >
-                  <Globe size={20} className="text-default-700 dark:text-inherit" />
+                  <Globe size={18} className="text-default-600 dark:text-inherit" />
                 </Button>
               </DropdownTrigger>
               <DropdownMenu
@@ -171,9 +178,9 @@ export function Header({ showNavLinks = true }: HeaderProps) {
                 <Button
                   as={Link}
                   to="/login"
-                  variant="bordered"
-                  radius="full"
-                  className="hidden h-10 w-24 items-center justify-center border-divider px-5 font-medium hover:bg-default-100 sm:inline-flex"
+                  variant="light"
+                  radius="md"
+                  className="hidden h-9 items-center justify-center px-3 text-sm text-default-600 hover:text-primary sm:inline-flex dark:text-default-400"
                 >
                   {t('nav.login')}
                 </Button>
@@ -182,8 +189,8 @@ export function Header({ showNavLinks = true }: HeaderProps) {
                   as={Link}
                   to="/register"
                   color="primary"
-                  radius="full"
-                  className="inline-flex h-10 w-32 items-center justify-center bg-gradient-primary px-5 font-medium text-white hover:shadow-lg hover:shadow-primary/25"
+                  radius="md"
+                  className="inline-flex h-9 items-center justify-center bg-gradient-primary px-4 text-sm font-semibold text-white shadow-md shadow-primary/20 transition-all hover:bg-primary-dark hover:shadow-lg"
                 >
                   {t('nav.getStarted')}
                 </Button>
