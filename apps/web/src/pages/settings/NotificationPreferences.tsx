@@ -71,7 +71,7 @@ export function NotificationSettingsPage() {
 
   if (isLoading) {
     return (
-      <div className="max-w-3xl">
+      <div>
         <div className="mb-10 hidden md:block">
           <Skeleton className="mb-3 h-10 w-64 rounded-lg" />
         </div>
@@ -99,12 +99,12 @@ export function NotificationSettingsPage() {
   }
 
   return (
-    <div className="max-w-3xl">
+    <div>
       {/* Page Title - Hidden on mobile */}
       <div className="mb-10 hidden md:block">
-        <h1 className="mb-3 flex items-center gap-3 text-3xl font-black leading-tight tracking-tight text-foreground md:text-4xl">
+        <h1 className="mb-3 flex items-center gap-3 text-3xl font-semibold leading-tight tracking-tight text-foreground md:text-4xl">
           <Bell className="text-primary" />
-          {t('settings.notifications.title')}
+          {t('settings.nav.preferences')}
         </h1>
         <p className="text-default-500">{t('settings.notifications.description')}</p>
       </div>
@@ -125,7 +125,7 @@ export function NotificationSettingsPage() {
                       <Icon className={config.iconColor} size={24} />
                     </div>
                     <div>
-                      <h3 className="text-lg font-bold text-foreground">
+                      <h3 className="text-lg font-semibold text-foreground">
                         {t(`settings.notifications.categories.${category}.title`)}
                       </h3>
                       <p className="text-sm text-default-500">

@@ -16,7 +16,7 @@ import {
   ModalFooter,
   useDisclosure,
 } from '@heroui/react'
-import { Upload, Trash2, CheckCircle, Mail, AlertCircle } from 'lucide-react'
+import { Upload, Trash2, CheckCircle, Mail, AlertCircle, User } from 'lucide-react'
 import { toast } from 'sonner'
 import { useAuthStore, authApi } from '@bingo/core'
 import { useTranslation } from '@/locales'
@@ -99,11 +99,12 @@ export function ProfileSettingsPage() {
   }
 
   return (
-    <div className="max-w-3xl">
+    <div>
       {/* Page Title - Hidden on mobile since nav tabs show current page */}
       <div className="mb-10 hidden md:block">
-        <h1 className="mb-3 text-3xl font-black leading-tight tracking-tight text-foreground md:text-4xl">
-          {t('settings.profile.title')}
+        <h1 className="mb-3 flex items-center gap-3 text-3xl font-semibold leading-tight tracking-tight text-foreground md:text-4xl">
+          <User className="text-primary" />
+          {t('settings.nav.profile')}
         </h1>
         <p className="max-w-2xl text-base text-default-500 md:text-lg">{t('settings.profile.subtitle')}</p>
       </div>
@@ -166,7 +167,7 @@ export function ProfileSettingsPage() {
         {/* Profile Form */}
         <Card className="border border-divider bg-content1">
           <div className="border-b border-divider bg-content2/50 px-6 py-4">
-            <h3 className="text-lg font-bold text-foreground">{t('settings.profile.form.personalInfo')}</h3>
+            <h3 className="text-lg font-semibold text-foreground">{t('settings.profile.form.personalInfo')}</h3>
             <p className="mt-1 text-xs text-default-400">UID: {user?.uid || '-'}</p>
           </div>
           <CardBody className="p-6 md:p-8">

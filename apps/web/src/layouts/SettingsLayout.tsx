@@ -52,9 +52,9 @@ export function SettingsLayout() {
     <div className="min-h-screen bg-background">
       <Header showNavLinks={false} />
 
-      <div className="mx-auto flex max-w-[1440px] pt-20">
+      <div className="mx-auto flex max-w-7xl pt-20 md:px-4 lg:px-6">
         {/* Sidebar (Desktop) */}
-        <aside className="sticky top-20 hidden h-[calc(100vh-80px)] w-64 flex-col gap-2 overflow-y-auto border-r border-divider p-6 md:flex">
+        <aside className="sticky top-20 hidden h-[calc(100vh-80px)] w-64 shrink-0 flex-col gap-2 overflow-y-auto border-r border-divider py-6 pr-6 md:flex">
           <div className="mb-4 px-4">
             <h3 className="text-xs font-bold uppercase tracking-wider text-default-500">{t('settings.nav.title')}</h3>
           </div>
@@ -101,7 +101,7 @@ export function SettingsLayout() {
         </aside>
 
         {/* Main Content Area */}
-        <div className="flex-1">
+        <div className="min-w-0 flex-1">
           {/* Mobile Navigation */}
           <div className="flex w-full items-center gap-2 overflow-x-auto border-b border-divider bg-background px-4 py-3 md:hidden">
             {mobileNavItems.map((item) => (
@@ -118,10 +118,12 @@ export function SettingsLayout() {
                 {t(`settings.nav.${item.key}`)}
               </NavLink>
             ))}
+            {/* Spacer for scroll padding */}
+            <div className="shrink-0 w-4" aria-hidden="true" />
           </div>
 
           {/* Page Content */}
-          <main className="p-4 md:p-10 lg:pr-20">
+          <main className="p-4 md:py-10">
             <Outlet />
           </main>
         </div>

@@ -165,13 +165,13 @@ export function NotificationCenterPage() {
 
   return (
     <div>
-      <div className="mx-auto max-w-3xl px-4 pb-10">
+      <div className="pb-10">
         {/* Page Header */}
         <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-center gap-3">
-            <Bell className="text-primary" size={32} />
+            <Bell className="text-primary" />
             <div>
-              <h1 className="text-2xl font-bold text-foreground">{t('settings.notifications.center.title')}</h1>
+              <h1 className="text-3xl font-semibold text-foreground md:text-4xl">{t('settings.nav.center')}</h1>
               {unreadCount > 0 && (
                 <p className="text-sm text-default-500">
                   {t('settings.notifications.center.unread', { count: unreadCount })}

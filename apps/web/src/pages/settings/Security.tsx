@@ -147,12 +147,12 @@ export function SecuritySettingsPage() {
   }
 
   return (
-    <div className="max-w-3xl">
+    <div>
       {/* Page Title - Hidden on mobile since nav tabs show current page */}
       <div className="mb-10 hidden md:block">
-        <h1 className="mb-3 flex items-center gap-3 text-3xl font-black leading-tight tracking-tight text-foreground md:text-4xl">
+        <h1 className="mb-3 flex items-center gap-3 text-3xl font-semibold leading-tight tracking-tight text-foreground md:text-4xl">
           <Shield className="text-primary" />
-          {t('settings.security.title')}
+          {t('settings.nav.security')}
         </h1>
       </div>
 
@@ -261,17 +261,17 @@ function ChangePasswordSection({ onChangePassword }: { onChangePassword: () => v
 
   return (
     <Card className="border border-divider bg-content1">
-      <CardBody className="flex flex-row items-center justify-between gap-4 p-6">
+      <CardBody className="flex flex-col gap-4 p-6 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex items-center gap-4">
           <div className="flex size-12 shrink-0 items-center justify-center rounded-full bg-primary/10">
             <Lock className="text-primary" size={24} />
           </div>
           <div>
-            <h3 className="text-lg font-bold text-foreground">{t('settings.security.changePassword.title')}</h3>
+            <h3 className="text-lg font-semibold text-foreground">{t('settings.security.changePassword.title')}</h3>
             <p className="text-sm text-default-500">{t('settings.security.changePassword.description')}</p>
           </div>
         </div>
-        <div className="shrink-0">
+        <div className="shrink-0 self-end sm:self-auto">
           <Button color="primary" radius="full" onPress={onChangePassword}>
             {t('settings.security.changePassword.button')}
           </Button>
@@ -398,17 +398,17 @@ function PaymentPasswordSection({
 
   return (
     <Card className="border border-divider bg-content1">
-      <CardBody className="flex flex-row items-center justify-between gap-4 p-6">
+      <CardBody className="flex flex-col gap-4 p-6 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex items-center gap-4">
           <div className="flex size-12 shrink-0 items-center justify-center rounded-full bg-primary/10">
             <Key className="text-primary" size={24} />
           </div>
           <div>
-            <h3 className="text-lg font-bold text-foreground">{t('settings.security.payPassword.title')}</h3>
+            <h3 className="text-lg font-semibold text-foreground">{t('settings.security.payPassword.title')}</h3>
             <p className="text-sm text-default-500">{t('settings.security.payPassword.description')}</p>
           </div>
         </div>
-        <div className="flex shrink-0 items-center gap-4">
+        <div className="flex shrink-0 items-center gap-4 self-end sm:self-auto">
           <Chip
             color={isSet ? 'success' : 'warning'}
             variant="flat"
@@ -447,17 +447,17 @@ function TOTPSection({
 
   return (
     <Card className="border border-divider bg-content1">
-      <CardBody className="flex flex-row items-center justify-between gap-4 p-6">
+      <CardBody className="flex flex-col gap-4 p-6 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex items-center gap-4">
           <div className="flex size-12 shrink-0 items-center justify-center rounded-full bg-primary/10">
             <Smartphone className="text-primary" size={24} />
           </div>
           <div>
-            <h3 className="text-lg font-bold text-foreground">{t('settings.security.totp.title')}</h3>
+            <h3 className="text-lg font-semibold text-foreground">{t('settings.security.totp.title')}</h3>
             <p className="text-sm text-default-500">{t('settings.security.totp.description')}</p>
           </div>
         </div>
-        <div className="flex shrink-0 items-center gap-4">
+        <div className="flex shrink-0 items-center gap-4 self-end sm:self-auto">
           <Chip
             color={isEnabled ? 'success' : 'warning'}
             variant="flat"
@@ -909,7 +909,7 @@ function SocialAccountsSection({
             <Link2 className="text-primary" size={24} />
           </div>
           <div>
-            <h3 className="text-lg font-bold text-foreground">{t('settings.security.socialAccounts.title')}</h3>
+            <h3 className="text-lg font-semibold text-foreground">{t('settings.security.socialAccounts.title')}</h3>
             <p className="text-sm text-default-500">{t('settings.security.socialAccounts.description')}</p>
           </div>
         </div>
